@@ -1,0 +1,28 @@
+{
+  "name": "matcha",
+  "version": "1.0.0",
+  "description": "Site de rencontres",
+  "main": "server.js",
+  "dependencies": {
+    "express": "~4.15.2",
+    "nodemon": "~1.11.0",
+    "pm2": "~2.4.6",
+    "pug": "^2.0.0-beta.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon core/server.js",
+    "watch": "pm2 start core/server.js --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmarsal/Matcha.git"
+  },
+  "author": "jmarsal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmarsal/Matcha/issues"
+  },
+  "homepage": "https://github.com/jmarsal/Matcha#readme"
+}

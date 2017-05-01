@@ -1,0 +1,10 @@
+@import "compass";
+
+html{
+    margin:0;
+    padding: 0;
+    background: url(/webroot/images/background/background.jpg) no-repeat center fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+    font-size: 2vw;
+}
