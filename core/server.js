@@ -2,9 +2,11 @@
  * Created by jbmar on 29/04/2017.
  */
 
+import path from 'path';
+
 var express = require('express'),
     app = express();
-app.use(express.static('.'));
+app.use(express.static(path.join(__dirname, '../public')));
 
 //Si accueil
 app.get('/', (request, response) => {
