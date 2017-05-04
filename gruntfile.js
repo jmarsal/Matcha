@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                 stdout: true
             },
             sass: {
-                command: 'node-sass front/sass/main.scss public/css/app.css'
+                command: 'node-sass src/front/sass/main.scss public/css/app.css'
             }
         },
         /** Watch Task **/
@@ -44,11 +44,11 @@ module.exports = function (grunt) {
                 livereload: true,
             },
             sass: {
-                files: ['front/sass/*.scss'],
+                files: ['src/front/sass/*.scss'],
                 tasks: ['shell:sass']
             },
             templates: {
-                files: ['views/**/*'],
+                files: ['src/views/**/*'],
                 tasks: []
             }
         }
