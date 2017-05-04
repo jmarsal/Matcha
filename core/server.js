@@ -2,7 +2,8 @@
  * Created by jbmar on 29/04/2017.
  */
 
-import path from 'path';
+// import path from 'path';
+const path = require('path');
 
 var express = require('express'),
     app = express();

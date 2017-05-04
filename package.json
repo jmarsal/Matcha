@@ -12,7 +12,7 @@
     "grunt-contrib-uglify": "^2.3.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-shell": "^2.1.0",
-    "livereload-js": "^2.2.2",
+    "livereload": "^0.6.2",
     "nodemon": "~1.11.0",
     "path": "^0.12.7",
     "pm2": "~2.4.6",
