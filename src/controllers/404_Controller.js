@@ -5,6 +5,6 @@
 exports.p_404 = function (response) {
     var pug = require('pug');
 
-    const compiledFunction = pug.renderFile('./views/404/404.pug');
+    const compiledFunction = pug.renderFile('src/views/404/404.pug');
     response.status(404).send(compiledFunction)
 };

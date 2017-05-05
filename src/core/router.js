@@ -2,31 +2,32 @@
  * Created by jbmar on 01/05/2017.
  */
 
-import express from 'express';
+const express = require('express');
 
 // Core
-import FrontController from './controllers/404_Controller';
-import AppController from './controllers/AccountController';
-import AuthController from './controllers/AccueilController';
-import AuthController from './controllers/AppController';
-import AuthController from './controllers/ProfilUserController';
-import AuthController from './controllers/RechercheController';
+const AccueilController = require('../controllers/AccueilController');
+// import FrontController from './controllers/404_Controller';
+// import AccountController from './controllers/AccountController';
+// import AppController from './controllers/AppController';
+// import ProfilUserController from './controllers/ProfilUserController';
+// import RechercheController from './controllers/RechercheController';
 
 class Router {
     constructor() {
-        constructor() {
-            if (!app) {
-                console.error('Error! Exiting... You must provide the Express instance to the Router.');
-                process.exit(1);
-            }
-
-            this.registerRoutes();
+        if (!app) {
+            console.error('Error! Exiting... You must provide the Express instance to the Router.');
+            process.exit(1);
         }
+
+        this.registerRoutes();
     }
 
     registerRoutes() {
-
+        // APP
+        new AccueilController();
     }
 }
+
+module.exports = Router;
 
 
