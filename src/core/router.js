@@ -6,11 +6,11 @@ const express = require('express');
 
 // Core
 const AccueilController = require('../controllers/AccueilController');
-// import FrontController from './controllers/404_Controller';
-// import AccountController from './controllers/AccountController';
-// import AppController from './controllers/AppController';
-// import ProfilUserController from './controllers/ProfilUserController';
-// import RechercheController from './controllers/RechercheController';
+const Error404 =  require('../controllers/404_Controller');
+const AccountController =  require('../controllers/AccountController');
+const AppController =  require('../controllers/AppController');
+const ProfilUserController =  require('../controllers/ProfilUserController');
+const RechercheController =  require('../controllers/RechercheController');
 
 class Router {
     constructor() {
@@ -25,6 +25,11 @@ class Router {
     registerRoutes() {
         // APP
         new AccueilController();
+        new AccountController();
+        // new AppController();
+        // new ProfilUserController();
+        // new RechercheController();
+        new Error404();
     }
 }
 

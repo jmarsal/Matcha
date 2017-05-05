@@ -16,13 +16,31 @@ class Server {
         app.set('views', path.join(__dirname, './src'));
         app.use(express.static(path.join(__dirname, '../../public')));
 
-        app.set('router', new Router());
+        app.disable('x-powered-by');
+        this.setupViewEngine();
 
-        // Si accueil
-        // app.get('/', (request, response) => {
-        //     let accueilController = require('../controllers/AccueilController');
-        //     accueilController.accueil(response);
-        // });
+        app.set('router', new Router());
+    }
+
+    setupViewEngine() {
+        app.set('views', path.join(__dirname, '../../src'));
+        app.set('view engine', 'pug');
+    }
+
+    listen() {
+        app.get('httpServer').listen(this.port, () => {
+            console.log(`Listening on port ${ this.port }`);
+        });
+    }
+}
+
+module.exports = Server;
+
+// Si accueil
+// app.get('/', (request, response) => {
+//     let accueilController = require('../controllers/AccueilController');
+//     accueilController.accueil(response);
+// });
 //Si App / Parcourir
 //         app.get('/Parcourir', (request, response) => {
 //             let appController = require('../controllers/AppController');
@@ -48,13 +66,3 @@ class Server {
 //             let errorController = require('../controllers/404_Controller');
 //             errorController.p_404(response);
 //         });
-    }
-
-    listen() {
-        app.get('httpServer').listen(this.port, () => {
-            console.log(`Listening on port ${ this.port }`);
-        });
-    }
-}
-
-module.exports = Server;

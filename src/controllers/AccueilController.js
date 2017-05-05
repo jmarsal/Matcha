@@ -13,49 +13,22 @@ class AccueilController {
 
         this.router = express.Router();
         this.registerRoutes();
-        // app.use(subdomain('/', this.router));
+        app.use('/', this.router);
     }
 
     registerRoutes() {
         this.accueilRoute();
-        // this.trackPlayRoute();
-        // this.latestRoute();
-        // this.popularRoute();
-        // this.artistRoute();
     }
 
     accueilRoute() {
-        this.router.get('/', (request, response) => {
-            console.log('router get ok');
-            const pug = require('pug'),
-                accueil = pug.renderFile('src/views/accueil/accueilContent.pug', {
-                    title: 'Accueil !!!'
-                })
-            ;
-
-            response.status(200).send(accueil);
+        this.router.get('/', (req, res) => {
+            res.redirect('./accueil/');
         });
-        this.router.get('/matcha', (request, response) => {
-            console.log('router matcha ok');
-            const pug = require('pug'),
-                accueil = pug.renderFile('src/views/accueil/accueilContent.pug', {
-                    title: 'Accueil !!!'
-                })
-            ;
-
-            response.status(200).send(accueil);
-        });
-        app.use(function(request, response, next){
-            const errorController = require('./404_Controller');
-            errorController.p_404(response);
+        this.router.get('/accueil', (req, res) => {
+            res.render('views/accueil/accueilContent', {
+                title: 'Accueil !!!'
+            });
         });
     }
 }
 module.exports = AccueilController;
-// function (response) {
-// var pug = require('pug'),
-//     accueil = pug.renderFile('src/views/accueil/accueilContent.pug', {
-//         title: 'Accueil !!!'})
-// ;
-// response.status(200).send(accueil)
-// };

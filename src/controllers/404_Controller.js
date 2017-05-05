@@ -2,9 +2,21 @@
  * Created by jbmar on 30/04/2017.
  */
 
-exports.p_404 = function (response) {
-    var pug = require('pug');
+const express = require('express');
+const pug = require('pug');
 
-    const compiledFunction = pug.renderFile('src/views/404/404.pug');
-    response.status(404).send(compiledFunction)
-};
+class Error404 {
+    constructor() {
+        if (!app) {
+            console.error('Error! Exiting... You must provide the Express instance to controllers.');
+            process.exit(1);
+        }
+
+        app.use(function(request, response, next){
+            response.render('views/404/404', {
+                title: 'Not Found !!! Error 404.'
+            });
+        });
+    }
+}
+module.exports = Error404;
