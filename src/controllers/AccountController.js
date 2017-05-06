@@ -1,14 +1,7 @@
 /**
  * Created by jbmar on 30/04/2017.
  */
-// exports.account = function (response) {
-//     var pug = require('pug'),
-//         account = pug.renderFile('./views/accueil/appContent.pug', {
-//             title: 'Mon compte !!!'})
-//     ;
-//
-//     response.status(200).send(account)
-// };
+
 const express = require('express');
 
 class AccountController {
@@ -29,7 +22,7 @@ class AccountController {
 
     accueilRoute() {
         this.router.get('/account', (req, res) => {
-            res.render('./views/accueil/accueilContent', {
+            res.render('./views/app/appContent', {
                 title: 'Mon compte !!!'
             });
         });

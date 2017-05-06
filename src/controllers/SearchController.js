@@ -1,10 +1,18 @@
 /**
  * Created by jbmar on 30/04/2017.
  */
+exports.recherche = function (response) {
+    var pug = require('pug'),
+        recherche = pug.renderFile('./views/accueil/appContent.pug', {
+            title: 'Recherche !!!'})
+    ;
+
+    response.status(200).send(recherche)
+};
 
 const express = require('express');
 
-class ProfilUserController {
+class SearchController {
     constructor() {
         if (!app) {
             console.error('Error! Exiting... You must provide the Express instance to controllers.');
@@ -21,11 +29,11 @@ class ProfilUserController {
     }
 
     accueilRoute() {
-        this.router.get('/profil', (req, res) => {
+        this.router.get('/search', (req, res) => {
             res.render('./views/app/appContent', {
-                title: 'Profil User !!!'
+                title: 'Recherche !!!'
             });
         });
     }
 }
-module.exports = ProfilUserController;
+module.exports = SearchController;
