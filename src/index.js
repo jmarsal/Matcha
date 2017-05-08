@@ -2,7 +2,9 @@
  * Created by jmarsal on 5/3/17.
  */
 
-import Server from './core/Server';
+const Database = require('./core/Database');
+const Server = require('./core/Server');
 
+global.connectionDb = new Database();
 const server = new Server();
 server.listen();

@@ -1,10 +1,18 @@
 /**
  * Created by jbmar on 30/04/2017.
  */
+exports.recherche = function (response) {
+    var pug = require('pug'),
+        recherche = pug.renderFile('./views/accueil/browseContent.pug', {
+            title: 'Recherche !!!'})
+    ;
+
+    response.status(200).send(recherche)
+};
 
 const express = require('express');
 
-class AppController {
+class SearchController {
     constructor() {
         if (!app) {
             console.error('Error! Exiting... You must provide the Express instance to controllers.');
@@ -21,11 +29,11 @@ class AppController {
     }
 
     accueilRoute() {
-        this.router.get('/browse', (req, res) => {
-            res.render('./views/browse/browseContent', {
-                title: 'Parcourir !!!'
+        this.router.get('/search', (req, res) => {
+            res.render('./views/search/searchContent', {
+                title: 'Recherche !!!'
             });
         });
     }
 }
-module.exports = AppController;
+module.exports = SearchController;
