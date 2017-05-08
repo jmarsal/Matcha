@@ -1,0 +1,41 @@
+@import "../variables/paletteColors";
+
+.post{
+    padding-top: 66px;
+    height: 100%;
+    position: relative;
+    
+    & .hash1{
+        font-size: 1vw;
+        margin-left: 5%;
+    }
+    & .hash2{
+        margin-left: 8%;
+        margin-top: 5%;
+    }
+    & .hash3{
+        font-size: 1.5vw;
+        margin-left: 60%;
+    }
+    & .hash4{
+        font-size: 3vw;
+        margin-left: 25%;
+        margin-top: 5%;
+    }
+    & .hash5{
+        font-size: 1vw;
+        margin-left: 90%;
+    }
+    & .hash6{
+        margin-left: 70%;
+        margin-top: 5%;
+    }
+    & .hash7{
+        font-size: 3vw;
+        margin-left: 55%;
+    }
+    & .hash8{
+        margin-left: 20%;
+        margin-top: 5%;
+    }
+}

@@ -22,7 +22,7 @@ class AppController {
 
     accueilRoute() {
         this.router.get('/browse', (req, res) => {
-            res.render('./views/app/appContent', {
+            res.render('./views/browse/browseContent', {
                 title: 'Parcourir !!!'
             });
         });

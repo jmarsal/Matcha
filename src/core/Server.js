@@ -5,7 +5,7 @@
 const express = require('express');
 const path = require('path');
 const http = require('http');
-const Router = require('./router');
+const Router = require('./Router');
 
 class Server {
     constructor() {

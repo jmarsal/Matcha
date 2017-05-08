@@ -1,0 +1,37 @@
+<script>document.write('<script src="http://'
+|     + (location.host || 'localhost').split(':')[0]
+|     + ':35729/livereload.js?snipver=1"></'
+|     + 'script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+doctype 5
+html(lang='fr')
+    block var
+    head
+        title MATCHA
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+        meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+        link(rel="icon" type="image/png" href="")
+        link(href="https://fonts.googleapis.com/css?family=Cabin+Sketch|Cairo|Indie+Flower" rel="stylesheet")
+        link(href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet")
+        link(rel="stylesheet" href= "../css/app.css")
+    body
+        div(class="site-container")
+            div(class="site-pusher")
+                header(class="header")
+                    a(href="#" class="header__icon" id="header__icon" onclick="showhide()")
+                    a(class="header__logo" href="#") MATCHA
+                    nav(class="menu")
+                        if !noheader
+                            a(href="../browse", "class"=(page == "browse" ? "is-active" : "")) Parcourir
+                            a(href="../search", "class"=(page == "search" ? "is-active" : "")) Rechercher
+                            a(href="../account", "class"=(page == "account" ? "is-active" : "")) Mon Compte
+                            a(href="../accueil", "class"=(page == "accueil" ? "is-active" : "")) Delog
+                        else
+                            a(href="../browse", "class"=(page == "browse" ? "is-active" : "")) se connecter
+                            a(href="../search", "class"=(page == "search" ? "is-active" : "")) crée un compte
+                div(class="post")
+                    div(class="content")
+                        block content
+                div(class="site-cache" id="site-cache" onclick="showhide()")
+                div(class="footer")
+                    p &copy; 2017 - Made by Jmarsal

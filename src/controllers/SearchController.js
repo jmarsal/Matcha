@@ -3,7 +3,7 @@
  */
 exports.recherche = function (response) {
     var pug = require('pug'),
-        recherche = pug.renderFile('./views/accueil/appContent.pug', {
+        recherche = pug.renderFile('./views/accueil/browseContent.pug', {
             title: 'Recherche !!!'})
     ;
 
@@ -30,7 +30,7 @@ class SearchController {
 
     accueilRoute() {
         this.router.get('/search', (req, res) => {
-            res.render('./views/app/appContent', {
+            res.render('./views/search/searchContent', {
                 title: 'Recherche !!!'
             });
         });

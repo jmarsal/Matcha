@@ -22,7 +22,7 @@ class AccountController {
 
     accueilRoute() {
         this.router.get('/account', (req, res) => {
-            res.render('./views/app/appContent', {
+            res.render('./views/account/accountContent', {
                 title: 'Mon compte !!!'
             });
         });

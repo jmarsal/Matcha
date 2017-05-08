@@ -25,9 +25,7 @@ class AccueilController {
             res.redirect('./accueil/');
         });
         this.router.get('/accueil', (req, res) => {
-            res.render('views/accueil/accueilContent', {
-                title: 'Accueil !!!'
-            });
+            res.render('views/accueil/accueilContent');
         });
     }
 }
