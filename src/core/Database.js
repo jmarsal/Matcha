@@ -3,51 +3,40 @@
  */
 const mysql = require('mysql');
 
+var setPort = (process.platform === 'darwin') ? 3307 : 3305;
+
 class Database {
     constructor() {
         this.connection = mysql.createConnection({
             host: 'localhost',
             user: 'root',
             password: 'root',
-            database: 'matchaDb',
-            port: 3305
+            port: setPort
         });
-
         this.connection.connect((err) => {
             if (err) {
-                this.connection = this.createDb();
+                console.log(err);
+                process.exit(1);
+            } else {
+                this.createDb();
+                this.createTables();
             }
-            this.createTables(this.connection);
         });
         return (this.connection);
     }
 
     createDb() {
-        const connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'root',
-            port: 3305
-        });
 
-        connection.connect((err) => {
+        this.connection.query('CREATE DATABASE IF NOT EXISTS '+ nameDb +
+            ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', (err) => {
             if (err) {
-                console.log('Connection impossible avec le serveur MySQL!');
-            } else {
-                connection.query('CREATE DATABASE IF NOT EXISTS matchaDb ' +
-                    'DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', (err) => {
-                    if (err) {
-                        console.log('Impossible de créer la base de donnée!');
-                    }
-                });
-                this.createTables(connection);
+                console.log(err);
             }
         });
-        return connection;
     }
 
-    createTables(connection) {
-        const users = 'CREATE TABLE IF NOT EXISTS matchadb.users' +
+    createTables() {
+        const users = 'CREATE TABLE IF NOT EXISTS '+ nameDb  +'.users' +
             '(' +
             'id INT PRIMARY KEY AUTO_INCREMENT,' +
             'nom VARCHAR(255) DEFAULT NULL,' +
@@ -57,13 +46,14 @@ class Database {
             'passwd VARCHAR(255) DEFAULT NULL,' +
             'cle VARCHAR(255) DEFAULT NULL,' +
             'active BOOLEAN DEFAULT 0' +
-        ')';
-        connection.query(users, (err) => {
+            ')';
+        this.connection.query(users, (err) => {
             if (err) {
-                console.log('MySQL n\'arrive pas à crée la table users');
+                console.log(err);
             }
         });
     }
 
 }
+
 module.exports = Database;

@@ -29,7 +29,7 @@ html {
 
 .header__logo {
   background-color: #E91E63;
-  font-size: 25px;
+  font-size: 1.5vw;
   font-weight: bold;
   float: left;
   padding: 0 25px;
@@ -45,12 +45,11 @@ html {
     padding: 0 35px;
     border-right: 1px solid #E91E63;
     font-family: Indie Flower;
+    font-size: 1.5vw;
     color: #212121; }
     .menu a:hover {
       color: #E91E63; }
     .menu a.is-active {
-      padding-top: 0.5%;
-      padding-bottom: 0.5%;
       color: #F8BBD0; }
 
 .footer {

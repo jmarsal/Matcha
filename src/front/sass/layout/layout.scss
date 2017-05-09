@@ -32,7 +32,7 @@ html {
 
 .header__logo {
     background-color: $primary-color;
-    font-size: 25px;
+    font-size: 1.5vw;
     font-weight: bold;
     float: left;
     padding: 0 25px;
@@ -48,6 +48,7 @@ html {
 //
 .menu {
     float: left;
+    //height: 100%;
     
     a {
         text-decoration: none;
@@ -55,13 +56,14 @@ html {
         padding: 0 35px;
         border-right: 1px solid $primary-color;
         font-family: Indie Flower;
+        font-size: 1.5vw;
         color: $primary-text-color;
         &:hover {
             color: $primary-color;
         }
         &.is-active{
-            padding-top: 0.5%;
-            padding-bottom: 0.5%;
+            //padding-top: 0.5%;
+            //padding-bottom: 0.5%;
             color: $primary-color-light;
         }
     }

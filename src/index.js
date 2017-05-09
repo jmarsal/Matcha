@@ -2,9 +2,12 @@
  * Created by jmarsal on 5/3/17.
  */
 
-const Database = require('./core/Database');
-const Server = require('./core/Server');
+const Database = require('./core/Database'),
+      Server = require('./core/Server')
+;
+global.nameDb = 'matchaDb';
 
-global.connectionDb = new Database();
+new Database();
+global.connection = require('./core/ConnectionDb');
 const server = new Server();
 server.listen();
