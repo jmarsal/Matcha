@@ -27,6 +27,12 @@ class AccueilController {
         this.router.get('/accueil', (req, res) => {
             res.render('views/accueil/accueilContent');
         });
+        this.router.get('/login', (req, res) => {
+            res.render('views/accueil/loginContent');
+        });
+        this.router.get('/logon', (req, res) => {
+            res.render('views/accueil/logonContent');
+        });
     }
 }
 module.exports = AccueilController;

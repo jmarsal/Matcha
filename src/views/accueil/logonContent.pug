@@ -1,3 +1,23 @@
-//
-   Created by jbmar on 09/05/2017.
+extends ../layout/layout
+
+block var
+    - page = "logon";
+    - noheader = true;
+
+block content
+    div(class="containerRegister")
+        form(class="formRegister", method="post")
+            div(class="loginRegisterText") Login
+                input(class="loginRegisterIµnput", autofocus=true, mozactionhint="next", autocomplete="username", minlength="3", maxlength="16")
+            div(class="lastNameRegisterText") Nom
+                input(class="lastNameRegisterInput", mozactionhint="next", autocomplete="family-name")
+            div(class="firstNameRegisterText") Prénom
+                input(class="firstNameRegisterInput", mozactionhint="next", autocomplete="given-name")
+            div(class="emailRegisterText") Email
+                input(class="emailRegisterInput", type="email", mozactionhint="next", autocomplete="email")
+            div(class="passwdRegisterText") Mot de Passe
+                input(class="passwdRegisterInput", type="password", mozactionhint="next", autocomplete="new-password")
+            div(class="submitRegister")
+                input(class="button", type="submit")
+
 
