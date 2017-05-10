@@ -1,5 +1,8 @@
 extends ../layout/layout
 
+block js
+    script(src="../ajax/ajaxLogon.js")
+
 block var
     - page = "logon";
     - noheader = true;
@@ -8,16 +11,15 @@ block content
     div(class="containerRegister")
         form(class="formRegister", method="post")
             div(class="loginRegisterText") Login
-                input(class="loginRegisterIµnput", autofocus=true, mozactionhint="next", autocomplete="username", minlength="3", maxlength="16")
+                input(class="loginRegisterInput", id="loginRegisterText", autofocus=true, mozactionhint="next", autocomplete="username", minlength="3", maxlength="16")
             div(class="lastNameRegisterText") Nom
-                input(class="lastNameRegisterInput", mozactionhint="next", autocomplete="family-name")
+                input(class="lastNameRegisterInput", id="lastNameRegisterText", mozactionhint="next", autocomplete="family-name")
             div(class="firstNameRegisterText") Prénom
-                input(class="firstNameRegisterInput", mozactionhint="next", autocomplete="given-name")
+                input(class="firstNameRegisterInput", id="firstNameRegisterInput", mozactionhint="next", autocomplete="given-name")
             div(class="emailRegisterText") Email
-                input(class="emailRegisterInput", type="email", mozactionhint="next", autocomplete="email")
+                input(class="emailRegisterInput", id="emailRegisterInput", type="email", mozactionhint="next", autocomplete="email")
             div(class="passwdRegisterText") Mot de Passe
-                input(class="passwdRegisterInput", type="password", mozactionhint="next", autocomplete="new-password")
+                input(class="passwdRegisterInput", id="passwdRegisterInput", type="password", mozactionhint="next", autocomplete="new-password")
             div(class="submitRegister")
-                input(class="button", type="submit")
-
+                div(class="button", type="submit") Créer mon compte
 

@@ -4,7 +4,7 @@
 
 const mysql = require('mysql');
 
-var setPort = (process.platform === 'darwin') ? 3307 : 3305;
+var setPort = 3307;
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -15,7 +15,9 @@ const connection = mysql.createConnection({
 });
 connection.connect((err) => {
     if (err) {
-        console.log("la base n'existe pas, creation de la base");
+        console.log(err);
+    } else {
+        global.connection = require('./core/ConnectionDb');
     }
 });
 module.exports = connection;

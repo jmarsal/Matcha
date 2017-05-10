@@ -3,6 +3,7 @@
  */
 
 const express = require('express');
+const bodyParser = require('body-parser');
 
 class AccueilController {
     constructor() {
@@ -31,6 +32,13 @@ class AccueilController {
             res.render('views/accueil/loginContent');
         });
         this.router.get('/logon', (req, res) => {
+            app.use(bodyParser.json(req));
+            app.use(function (req, res) {
+                // console.log(req);
+                res.setHeader('Content-Type', 'application/json')
+                res.write('you posted:\n')
+                res.end(JSON.stringify(req.body, null, 2))
+            })
             res.render('views/accueil/logonContent');
         });
     }

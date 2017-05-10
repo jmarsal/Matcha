@@ -8,6 +8,5 @@ const Database = require('./core/Database'),
 global.nameDb = 'matchaDb';
 
 new Database();
-global.connection = require('./core/ConnectionDb');
 const server = new Server();
 server.listen();
