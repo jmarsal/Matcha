@@ -1,0 +1,19 @@
+.error{
+  display: none;
+  padding: 1% 0 1% 0;
+  text-align: center;
+  font-family: Arial;
+  font-size: 1vw;
+
+  &.red{
+    display: block;
+    background-color: rgba(252, 128, 128, 0.8);
+    color: red;
+  }
+
+  &.green{
+    display: block;
+    background-color: rgba(128, 252, 169, 0.6);
+    color: green;
+  }
+}

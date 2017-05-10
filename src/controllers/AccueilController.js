@@ -3,10 +3,16 @@
  */
 
 const express = require('express');
-const bodyParser = require('body-parser');
+const validator = require('validator');
 
 class AccueilController {
     constructor() {
+        this.login = "";
+        this.lastName = "";
+        this.firstName = "";
+        this.email = "";
+        this.password = "";
+
         if (!app) {
             console.error('Error! Exiting... You must provide the Express instance to controllers.');
             process.exit(1);
@@ -32,15 +38,43 @@ class AccueilController {
             res.render('views/accueil/loginContent');
         });
         this.router.get('/logon', (req, res) => {
-            app.use(bodyParser.json(req));
-            app.use(function (req, res) {
-                // console.log(req);
-                res.setHeader('Content-Type', 'application/json')
-                res.write('you posted:\n')
-                res.end(JSON.stringify(req.body, null, 2))
-            })
             res.render('views/accueil/logonContent');
         });
+        this.router.post('/logon/form', (req, res) => {
+            this.checkFormRegister(req, res);
+        });
+    }
+
+    checkFormRegister(req, res) {
+        console.log(req.body);
+        res.setHeader('Content-Type', 'application/json');
+        var responseForm = "",
+            error = 0
+        ;
+
+        if (validator.isLength(req.body.loginRegisterInput, {min:3, max:16})){
+            this.login = trim(validator.escape(req.body.loginRegisterInput));
+        } else {
+            responseForm = "La taille du login doit etre entre 3 et 16 caractères";
+            error = 1;
+        }
+
+
+        //check email
+        if (validator.isEmail(req.body.emailRegisterInput)){
+            this.email = req.body.emailRegisterInput;
+        } else {
+            responseForm = "Email non valide !";
+            error = 1;
+        }
+
+
+        responseForm = (responseForm === "") ? "Compte enregistré" : responseForm;
+        res.send(JSON.stringify({
+            response: responseForm,
+            isErr: error
+        }, null, 3));
+    //    gerer la validation des champs du form
     }
 }
 module.exports = AccueilController;

@@ -50,6 +50,10 @@ module.exports = function (grunt) {
             templates: {
                 files: ['src/views/**/*'],
                 tasks: []
+            },
+            js: {
+                files: ['public/js/*.js'],
+                task: []
             }
         }
     });

@@ -1,25 +1,26 @@
 extends ../layout/layout
 
 block js
-    script(src="../ajax/ajaxLogon.js")
+    script(src="../js/ajaxLogon.js")
 
 block var
     - page = "logon";
     - noheader = true;
 
 block content
+    div(class="error", id="error")
     div(class="containerRegister")
-        form(class="formRegister", method="post")
+        form(class="formRegister", id="formRegister", method="post")
             div(class="loginRegisterText") Login
-                input(class="loginRegisterInput", id="loginRegisterText", autofocus=true, mozactionhint="next", autocomplete="username", minlength="3", maxlength="16")
+                input(class="loginRegisterInput", name="loginRegisterText", autofocus=true, autocomplete="username", minlength="3", maxlength="16")
             div(class="lastNameRegisterText") Nom
-                input(class="lastNameRegisterInput", id="lastNameRegisterText", mozactionhint="next", autocomplete="family-name")
+                input(class="lastNameRegisterInput", name="lastNameRegisterText", autocomplete="family-name")
             div(class="firstNameRegisterText") Prénom
-                input(class="firstNameRegisterInput", id="firstNameRegisterInput", mozactionhint="next", autocomplete="given-name")
+                input(class="firstNameRegisterInput", name="firstNameRegisterInput", autocomplete="given-name")
             div(class="emailRegisterText") Email
-                input(class="emailRegisterInput", id="emailRegisterInput", type="email", mozactionhint="next", autocomplete="email")
+                input(class="emailRegisterInput", name="emailRegisterInput", type="email", autocomplete="email")
             div(class="passwdRegisterText") Mot de Passe
-                input(class="passwdRegisterInput", id="passwdRegisterInput", type="password", mozactionhint="next", autocomplete="new-password")
+                input(class="passwdRegisterInput", name="passwdRegisterInput", type="password", autocomplete="new-password")
             div(class="submitRegister")
-                div(class="button", type="submit") Créer mon compte
+                input(class="button", type="submit", value="Créer mon compte")
 
