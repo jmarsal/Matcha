@@ -10,6 +10,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
     "body-parser": "^1.17.1",
+    "crypto": "^0.0.3",
     "express": "~4.15.2",
     "global": "^4.3.2",
     "grunt": "^1.0.1",
@@ -21,6 +22,7 @@
     "nodemon": "~1.11.0",
     "pm2": "~2.4.6",
     "pug": "^2.0.0-beta.12",
+    "uniqid": "^4.1.1",
     "validator": "^7.0.0"
   },
   "babel": {

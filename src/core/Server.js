@@ -11,6 +11,7 @@ const bodyParser = require('body-parser');
 class Server {
     constructor() {
         global.app = express();
+        global.nameDb = nameDb;
 
         app.set('httpServer', http.Server(app));
         this.port = 3000;

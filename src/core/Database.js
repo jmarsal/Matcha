@@ -2,11 +2,13 @@
  * Created by jbmar on 07/05/2017.
  */
 
-const mysql = require('mysql');
-var setPort = 3307;
+const mysql = require('mysql')
+    // connection = require('../core/ConnectionDb')
+;
 
 class Database {
     constructor() {
+        this.nameDb = nameDb;
         this.connection = mysql.createConnection({
             host: 'localhost',
             user: 'root',
@@ -15,18 +17,18 @@ class Database {
         });
         this.connection.connect((err) => {
             if (err) {
-                // console.log(err);
+                console.log(err);
+                console.log('La connection avec le serveur MySQL est impossible dans la class Database');
                 process.exit(1);
-            } else {
+            }
                 this.createDb();
                 this.createTables();
-            }
         });
     }
 
     createDb() {
 
-        this.connection.query('CREATE DATABASE IF NOT EXISTS '+ nameDb +
+        this.connection.query('CREATE DATABASE IF NOT EXISTS ' + this.nameDb +
             ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', (err) => {
             if (err) {
                 console.log(err);
@@ -35,7 +37,7 @@ class Database {
     }
 
     createTables() {
-        const users = 'CREATE TABLE IF NOT EXISTS '+ nameDb  +'.users' +
+        const users = 'CREATE TABLE IF NOT EXISTS ' + this.nameDb + '.users' +
             '(' +
             'id INT PRIMARY KEY AUTO_INCREMENT,' +
             'nom VARCHAR(255) DEFAULT NULL,' +
@@ -44,12 +46,13 @@ class Database {
             'email VARCHAR(255) DEFAULT NULL,' +
             'passwd VARCHAR(255) DEFAULT NULL,' +
             'cle VARCHAR(255) DEFAULT NULL,' +
-            'activejdnvjdnvjd BOOLEAN DEFAULT 0' +
+            'active BOOLEAN DEFAULT 0' +
             ')';
         this.connection.query(users, (err) => {
             if (err) {
                 console.log(err);
             }
+            global.connection = require('./ConnectionDb');
         });
     }
 

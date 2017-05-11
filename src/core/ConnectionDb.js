@@ -4,8 +4,6 @@
 
 const mysql = require('mysql');
 
-var setPort = 3307;
-
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -16,8 +14,6 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if (err) {
         console.log(err);
-    } else {
-        global.connection = require('./core/ConnectionDb');
     }
 });
 module.exports = connection;

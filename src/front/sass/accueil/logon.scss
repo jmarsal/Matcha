@@ -1,3 +1,20 @@
+html {
+    background: none;
+    background-color: $accent-color;
+}
+
+.formRegister{
+    width: 60%;
+    margin: 0% auto;
+    margin-top: 5%;
+    background-color: $divider-color;
+    
+    div{
+        position: relative;
+        margin: 0% auto;
+    }
+}
+
 .error{
   display: none;
   padding: 1% 0 1% 0;

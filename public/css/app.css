@@ -89,6 +89,19 @@ html {
     margin-left: 20%;
     margin-top: 5%; }
 
+html {
+  background: none;
+  background-color: #536DFE; }
+
+.formRegister {
+  width: 60%;
+  margin: 0% auto;
+  margin-top: 5%;
+  background-color: #BDBDBD; }
+  .formRegister div {
+    position: relative;
+    margin: 0% auto; }
+
 .error {
   display: none;
   padding: 1% 0 1% 0;

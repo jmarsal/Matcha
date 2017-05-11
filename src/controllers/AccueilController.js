@@ -4,6 +4,9 @@
 
 const express = require('express');
 const validator = require('validator');
+const UserModel = require('../models/UserModel');
+const crypto = require('crypto');
+const uniqid = require('uniqid');
 
 class AccueilController {
     constructor() {
@@ -41,40 +44,114 @@ class AccueilController {
             res.render('views/accueil/logonContent');
         });
         this.router.post('/logon/form', (req, res) => {
-            this.checkFormRegister(req, res);
+            if ((this.checkFormRegister(req, res)) == true){
+                let arrayForm = new Array;
+
+                arrayForm = {
+                    "login": this.login,
+                    "nom": this.lastName,
+                    "prenom": this.firstName,
+                    "email": this.email,
+                    "passwd": this.hashString(this.password, 'sha512'),
+                    "cle": uniqid()
+                }
+                if ((UserModel(arrayForm)) == true){
+                    this.sendResponseToClient("Votre compte est crée !", 0, res);
+                } else {
+                    this.sendResponseToClient("Un compte existe déjà pour cette adresse mail !", 1, res);
+                }
+            }
         });
     }
 
+    /*
+    ** Verifie que tous les champs soit correctement remplis
+     */
     checkFormRegister(req, res) {
-        console.log(req.body);
         res.setHeader('Content-Type', 'application/json');
-        var responseForm = "",
-            error = 0
+
+        if ((this.checkJsonReq(req, res)) == true){
+            // check login
+            if (validator.isLength(req.body.loginRegisterInput, {min:3, max:16})){
+                this.login = validator.escape(req.body.loginRegisterInput).trim();
+            } else {
+                this.sendResponseToClient("La taille du login doit etre entre 3 et 16 caractères", 1, res);
+                return false;
+            }
+            // check lastName
+            if (validator.isLength(req.body.lastNameRegisterInput, {min:1, max:255})){
+                this.lastName = validator.escape(req.body.lastNameRegisterInput).trim();
+            } else {
+                this.sendResponseToClient("Votre nom doit être renseigné !", 1, res);
+                return false;
+            }
+            // check firstName
+            if (validator.isLength(req.body.firstNameRegisterInput, {min:1, max:255})){
+                this.firstName = validator.escape(req.body.firstNameRegisterInput).trim();
+            } else {
+                this.sendResponseToClient("Votre prénom doit être renseigné !", 1, res);
+                return false;
+            }
+            // check email
+            if (validator.isEmail(req.body.emailRegisterInput)){
+                this.email = req.body.emailRegisterInput;
+                console.log(this.email);
+            } else {
+                this.sendResponseToClient("Email non valide !", 1, res);
+                return false;
+            }
+            // check password
+            if (validator.isLength(req.body.passwdRegisterInput, {min:8, max:255}) &&
+                req.body.passwdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)){
+                this.password = req.body.passwdRegisterInput;
+            } else {
+                this.sendResponseToClient("Mot de passe non valide ! Il doit contenir 8 caracteres avec majuscule, minuscule, numerique.", 1, res);
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+    **  Verifie que le JSON de la requete ne soit pas vide.
+     */
+    checkJsonReq(req, res){
+        let countEmptyValues = 0,
+            i = 0,
+            nbElems = 0;
         ;
 
-        if (validator.isLength(req.body.loginRegisterInput, {min:3, max:16})){
-            this.login = trim(validator.escape(req.body.loginRegisterInput));
-        } else {
-            responseForm = "La taille du login doit etre entre 3 et 16 caractères";
-            error = 1;
+        for (i in req.body) {
+            if (req.body[i] === ""){
+                countEmptyValues++;
+            }
+            nbElems++;
         }
-
-
-        //check email
-        if (validator.isEmail(req.body.emailRegisterInput)){
-            this.email = req.body.emailRegisterInput;
-        } else {
-            responseForm = "Email non valide !";
-            error = 1;
+        if (nbElems == countEmptyValues){
+            this.sendResponseToClient("Veuillez renseigner tous les champs!", 1, res);
+            return false;
         }
+        return true;
+    }
 
-
-        responseForm = (responseForm === "") ? "Compte enregistré" : responseForm;
+    /*
+    **  envoie la reponse au client
+     */
+    sendResponseToClient(responseMessage, isError, res){
+        // responseMessage = (responseMessage === "") ? "Compte enregistré" : responseMessage;
         res.send(JSON.stringify({
-            response: responseForm,
-            isErr: error
+            response: responseMessage,
+            isErr: isError
         }, null, 3));
-    //    gerer la validation des champs du form
+    }
+
+    hashString(string, algo){
+        let hash = crypto.createHash(algo),
+            hashPass = hash.update(string, 'utf-8')
+        ;
+        return hashPass.digest('hex');
     }
 }
 module.exports = AccueilController;
