@@ -2,17 +2,33 @@
  * Created by jbmar on 11/05/2017.
  */
 
-module.exports = function newUser(arrayForm) {
-    let sql = "SELECT email FROM users WHERE email = ?";
-    connection.query(sql, [arrayForm.email], function (error, results, fields) {
-        if (error) throw error
-        if (results.length == 0){
-            let sql2 = "INSERT INTO users SET ?";
-            connection.query(sql2, arrayForm, function (error, results, fields) {
-                if (error) throw error;
-                return true;
-            })
-        }
-        return false;
-    } )
-};
+class UserModel {
+    static newUser(dataUser) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT email FROM users WHERE email = ?";
+
+            connection.query(sql, [dataUser.email], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+
+                if (!res.length) {
+                    sql = "INSERT INTO users SET ?";
+
+                    connection.query(sql, dataUser, (err) => {
+                        if (err) {
+                            reject(err);
+                        }
+
+                        resolve(true);
+                    });
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
+}
+module.exports = UserModel;
+
+

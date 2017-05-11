@@ -17,7 +17,7 @@ class Database {
         });
         this.connection.connect((err) => {
             if (err) {
-                console.log(err);
+                console.error(err);
                 console.log('La connection avec le serveur MySQL est impossible dans la class Database');
                 process.exit(1);
             }
@@ -31,7 +31,7 @@ class Database {
         this.connection.query('CREATE DATABASE IF NOT EXISTS ' + this.nameDb +
             ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', (err) => {
             if (err) {
-                console.log(err);
+                console.error(err);
             }
         });
     }
@@ -50,7 +50,7 @@ class Database {
             ')';
         this.connection.query(users, (err) => {
             if (err) {
-                console.log(err);
+                console.error(err);
             }
             global.connection = require('./ConnectionDb');
         });

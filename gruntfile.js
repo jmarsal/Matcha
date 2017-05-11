@@ -29,7 +29,7 @@ module.exports = function (grunt) {
                 }
             },
         },
-        /** Browserify / Sassify Task **/
+        /** Sassify Task **/
         shell: {
             options: {
                 stdout: true
