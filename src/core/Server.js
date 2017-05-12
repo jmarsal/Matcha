@@ -15,15 +15,18 @@ class Server {
 
         app.set('httpServer', http.Server(app));
         this.port = 3000;
-        app.set('views', path.join(__dirname, './src'));
-        app.use(express.static(path.join(__dirname, '../../public')));
-        app.use(bodyParser.json());
-        app.use(bodyParser.urlencoded({ extended: true }));
-
+        // app.set('views', path.join(__dirname, './src'));
+        this.middleware();
         app.disable('x-powered-by');
         this.setupViewEngine();
 
         app.set('router', new Router());
+    }
+
+    middleware(){
+        app.use(express.static(path.join(__dirname, '../../public')));
+        app.use(bodyParser.json());
+        app.use(bodyParser.urlencoded({ extended: true }));
     }
 
     setupViewEngine() {

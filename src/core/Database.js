@@ -2,9 +2,7 @@
  * Created by jbmar on 07/05/2017.
  */
 
-const mysql = require('mysql')
-    // connection = require('../core/ConnectionDb')
-;
+const mysql = require('mysql');
 
 class Database {
     constructor() {
@@ -21,23 +19,36 @@ class Database {
                 console.log('La connection avec le serveur MySQL est impossible dans la class Database');
                 process.exit(1);
             }
-                this.createDb();
-                this.createTables();
+                this.createDb()
+                .then(() => {
+                    this.connectDb()
+                        .then(() => {
+                            this.createTables();
+                        }).catch((err) => {
+                            console.error(err);
+                        });
+                }).catch((err) => {
+                    console.error(err);
+                });
+
         });
     }
 
     createDb() {
-
-        this.connection.query('CREATE DATABASE IF NOT EXISTS ' + this.nameDb +
-            ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', (err) => {
-            if (err) {
-                console.error(err);
-            }
+        return new Promise((resolve, reject) => {
+            this.connection.query('CREATE DATABASE IF NOT EXISTS ' + this.nameDb +
+                ' DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
     }
 
     createTables() {
-        const users = 'CREATE TABLE IF NOT EXISTS ' + this.nameDb + '.users' +
+        const users = 'CREATE TABLE IF NOT EXISTS users' +
             '(' +
             'id INT PRIMARY KEY AUTO_INCREMENT,' +
             'nom VARCHAR(255) DEFAULT NULL,' +
@@ -48,11 +59,31 @@ class Database {
             'cle VARCHAR(255) DEFAULT NULL,' +
             'active BOOLEAN DEFAULT 0' +
             ')';
-        this.connection.query(users, (err) => {
+        connection.query(users, (err) => {
             if (err) {
                 console.error(err);
             }
-            global.connection = require('./ConnectionDb');
+        });
+    }
+
+    connectDb() {
+        return new Promise((resolve,  reject) => {
+            global.connection = mysql.createConnection({
+                host: 'localhost',
+                user: 'root',
+                password: 'root',
+                database: nameDb,
+                port: setPort
+            });
+
+            connection.connect((err) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
         });
     }
 
