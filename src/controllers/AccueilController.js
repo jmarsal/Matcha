@@ -46,7 +46,27 @@ class AccueilController {
 
     loginRoute() {
         this.router.get('/login', (req, res) => {
-            res.render('views/accueil/loginContent');
+            let getDataUrl = "",
+                getLogin = "",
+                getCle = ""
+            ;
+
+            Helpers.parseURLParams(req.url)
+                .then((get) => {
+                    getDataUrl = get;
+                    if ((getLogin = (getDataUrl.log.toString())) !== '') {
+                        res.render('views/accueil/loginContent');
+                        console.log(getLogin);
+                    } else {
+                        console.error("Probleme de data dans l'url");
+                        res.render('views/accueil/loginContent', {
+                            error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
+                        });
+                    }
+                }).catch(() => {
+                console.error("Pas de data dans l'url");
+                res.render('views/accueil/loginContent');
+            })
         });
     }
 
@@ -71,9 +91,8 @@ class AccueilController {
                 UserModel.newUser(dataUser)
                     .then((status) => {
                         if (status) {
-                            mailSender.mailNewUser(this.email, this.login)
+                            mailSender.mailNewUser(dataUser)
                                 .then((message) => {
-                                    console.log(message);
                                     Helpers.sendResponseToClient("Votre compte est créé !", 0, res, true, '../login/');
                                     checkDone = true;
                                 }).catch((err) => {

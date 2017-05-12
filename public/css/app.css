@@ -93,13 +93,17 @@ html {
   background-color: #536DFE; }
 
 .formRegister {
-  width: 60%;
+  position: relative;
+  width: 40%;
   margin: 0% auto;
   margin-top: 5%;
-  background-color: #BDBDBD; }
-  .formRegister div {
-    position: relative;
-    margin: 0% auto; }
+  background-color: rgba(194, 24, 91, 0.8);
+  font-family: Indie Flower;
+  text-align: center; }
+  .formRegister .passwdRegisterText {
+    margin-bottom: 4%; }
+  .formRegister .submitRegister {
+    padding-bottom: 6%; }
 
 .error {
   display: none;
@@ -109,9 +113,9 @@ html {
   font-size: 1vw; }
   .error.red {
     display: block;
-    background-color: rgba(252, 128, 128, 0.8);
+    background-color: rgba(255, 0, 0, 0.4);
     color: red; }
   .error.green {
     display: block;
-    background-color: rgba(128, 252, 169, 0.6);
-    color: green; }
+    background-color: rgba(128, 252, 169, 0.8);
+    color: #80fca9; }
