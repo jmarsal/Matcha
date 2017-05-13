@@ -142,7 +142,7 @@ class AccueilController {
     }
 
     /*
-     **  Verifie que le JSON de la requete ne soit pas vide.
+     **  Verifie que les champs du formulaire ne soit pas vide.
      */
     checkJsonReq(req, res) {
         let countEmptyValues = 0,
