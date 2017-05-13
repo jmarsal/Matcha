@@ -5,3 +5,13 @@ block var
     - noheader = true;
 
 block content
+    div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+    div(class="containerRegister")
+        form(class="formRegister", id="formRegister", method="post")
+            div(class="loginRegisterText") Login
+                div: input(class="loginRegisterInput", name="loginRegisterInput", autofocus=true, autocomplete="username", minlength="3", maxlength="16")
+            div(class="passwdRegisterText") Mot de Passe
+                div: input(class="passwdRegisterInput", name="passwdRegisterInput", type="password", autocomplete="new-password")
+            div(class="submitRegister")
+                input(class="button", type="submit", value="se connecter")
+            div(class="margin-botton-form")
