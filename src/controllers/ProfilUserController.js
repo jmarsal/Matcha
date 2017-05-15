@@ -21,10 +21,15 @@ class ProfilUserController {
     }
 
     accueilRoute() {
-        this.router.get('/profil', (req, res) => {
-            res.render('./views/app/appContent', {
-                title: 'Profil User !!!'
-            });
+        this.router.get('/profils', (req, res) => {
+            if (req.session.start) {
+                res.render('./views/profilUser/userContent', {
+                    title: 'Profil User !!!',
+                    sessionLogin: req.session.user.login
+                });
+            } else {
+                res.redirect('../accueil');
+            }
         });
     }
 }

@@ -22,9 +22,13 @@ class AppController {
 
     accueilRoute() {
         this.router.get('/browse', (req, res) => {
-            res.render('./views/browse/browseContent', {
-                title: 'Parcourir !!!'
-            });
+            if (req.session.start){
+                res.render('./views/browse/browseContent', {
+                    title: 'Parcourir !!!'
+                });
+            } else {
+                res.redirect('../accueil');
+            }
         });
     }
 }

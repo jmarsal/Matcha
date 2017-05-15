@@ -88,6 +88,26 @@ class UserModel {
     }
 
     /*
+     ** Recupere l'id par le login
+     */
+    static getIdbyLogin(login) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT id FROM users WHERE login = ?";
+
+            connection.query(sql,  [login], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                if (res.length) {
+                    resolve(res[0].id);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    /*
      ** Verifie que le couple login / passwd match avec la DB
      */
     static checkEmailForForgetPasswd(email) {

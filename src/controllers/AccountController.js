@@ -22,9 +22,14 @@ class AccountController {
 
     accueilRoute() {
         this.router.get('/account', (req, res) => {
-            res.render('./views/account/accountContent', {
-                title: 'Mon compte !!!'
-            });
+            if (req.session.start) {
+                res.render('./views/account/accountContent', {
+                    title: 'Mon compte !!!',
+                    sessionLogin: req.session.user.login
+                });
+            } else {
+                res.redirect('../accueil');
+            }
         });
     }
 }
