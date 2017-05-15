@@ -9,6 +9,7 @@ const uniqid = require('uniqid');
 const UserModel = require('../models/UserModel');
 const Helpers = require('../core/Helpers');
 const Mails = require('../core/Mails');
+// const this = require('../core/this');
 
 class AccueilController {
     constructor() {
@@ -17,6 +18,7 @@ class AccueilController {
         this.firstName = "";
         this.email = "";
         this.password = "";
+        this.repPassword = "";
 
         if (!app) {
             console.error('Error! Exiting... You must provide the Express instance to controllers.');
@@ -32,6 +34,8 @@ class AccueilController {
         this.accueilRoute();
         this.loginRoute();
         this.logonRoute();
+        this.forgetPasswdRoute();
+        this.reinitPasswdRoute();
     }
 
 
@@ -44,32 +48,81 @@ class AccueilController {
         });
     }
 
+    /*
+    ** page de connection
+     */
     loginRoute() {
         this.router.get('/login', (req, res) => {
             let getDataUrl = "",
                 getLogin = "",
-                getCle = ""
+                getKey = ""
             ;
 
             Helpers.parseURLParams(req.url)
                 .then((get) => {
                     getDataUrl = get;
-                    if ((getLogin = (getDataUrl.log.toString())) !== '') {
-                        res.render('views/accueil/loginContent');
-                        console.log(getLogin);
+                    if ((getLogin = (getDataUrl.log.toString())) !== '' &&
+                        (getKey = (getDataUrl.cle.toString())) !== '') {
+
+                        //Modification de la cle dans la DB
+                        UserModel.changeKey(getLogin, getKey)
+                            .then((status) => {
+                            // Si tout c'est bien passe
+                            if (status){
+                                res.render('views/accueil/loginContent');
+                            } else {
+                                //La cle du mail ne correspond pas a celle du login dans la DB
+                                res.render('views/accueil/loginContent', {
+                                    error: "Votre compte est deja actif !"
+                                });
+                            }
+                        }).catch ((err) => {
+                            //Pb de connection
+                            res.render('views/accueil/loginContent', {
+                                error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
+                            });
+                        });
                     } else {
+                        //Il manque de la data depuis le link du mail
                         console.error("Probleme de data dans l'url");
                         res.render('views/accueil/loginContent', {
                             error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
                         });
                     }
                 }).catch(() => {
-                console.error("Pas de data dans l'url");
+                //Page login sans arriver du mail
                 res.render('views/accueil/loginContent');
-            })
+            });
+        });
+
+        this.router.post('/login/form', (req, res) => {
+            if (this.checkFormLogin(req,  res)) {
+                let dataUser = {
+                    "login": this.login,
+                    "passwd": Helpers.hashString(this.password, 'sha512')
+                }
+
+                UserModel.checkUserForLogin(dataUser)
+                    .then((status) => {
+                        if (status === true){
+                            Helpers.sendResponseToClient(null , null, res, true, '../browse/');
+                        } else if (status === false){
+                            Helpers.sendResponseToClient("Erreur de login et / ou mot de passe!", 1, res);
+                        } else {
+                            Helpers.sendResponseToClient(status, 1, res);
+                        }
+                    }).catch((err) => {
+                    console.error(err);
+                    Helpers.sendResponseToClient("Une erreur s'est produite!!!!", 1, res);
+                });
+                console.log('login = ' + dataUser.login + 'passwd = ' + dataUser.passwd);
+            }
         });
     }
 
+    /*
+    ** Page de creation de compte
+     */
     logonRoute() {
         this.router.get('/logon', (req, res) => {
             res.render('views/accueil/logonContent');
@@ -97,19 +150,130 @@ class AccueilController {
                                     checkDone = true;
                                 }).catch((err) => {
                                 console.error(err);
-                                Helpers.sendResponseToClient("Une erreur s'est produite!!!!", 1, res);
+                                Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                             });
                         } else {
                             Helpers.sendResponseToClient("Un compte existe déjà pour cette adresse mail !", 1, res);
                         }
-                    }).catch((error) => {
-                    console.error(error);
+                    }).catch((err) => {
+                    console.error(err);
                     Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                 });
             }
         });
     }
 
+    /*
+    ** Page d'oublie ou non activation de compte
+     */
+    forgetPasswdRoute() {
+        this.router.get('/forget-passwd', (req, res) => {
+            let getDataUrl = "",
+                getLogin = "",
+                getKey = ""
+            ;
+
+            Helpers.parseURLParams(req.url)
+                .then((get) => {
+                    getDataUrl = get;
+                    if ((getLogin = (getDataUrl.log.toString())) !== '' &&
+                        (getKey = (getDataUrl.cle.toString())) !== '') {
+
+                        //Modification de la cle dans la DB
+                        UserModel.changeKey(getLogin, getKey)
+                            .then((status) => {
+                                // Si tout c'est bien passe
+                                if (status){
+                                    this.login = getLogin;
+                                    res.render('views/accueil/ReinitPasswdContent');
+                                } else {
+                                    //La cle du mail ne correspond pas a celle du login dans la DB
+                                    res.render('views/accueil/loginContent', {
+                                        error: "Votre compte est deja actif !"
+                                    });
+                                }
+                            }).catch ((err) => {
+                            //Pb de connection
+                            res.render('views/accueil/loginContent', {
+                                error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
+                            });
+                        });
+                    } else {
+                        //Il manque de la data depuis le link du mail
+                        console.error("Probleme de data dans l'url");
+                        res.render('views/accueil/loginContent', {
+                            error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
+                        });
+                    }
+                }).catch(() => {
+                //Page login sans arriver du mail
+                res.render('views/accueil/forgetContent');
+            });
+        });
+
+        this.router.post('/forget-passwd/form', (req, res) => {
+            if (this.checkFormForgetPass(req,  res)) {
+                let email = this.email,
+                    login = "",
+                    cle = ""
+                ;
+
+                UserModel.getLoginCleByEmail(email)
+                    .then((status) => {
+                        if (status !== false) {
+                            login = status.login;
+                            cle = status.cle;
+
+                            UserModel.checkEmailForForgetPasswd(email)
+                                .then((status) => {
+                                    if (status) {
+                                        const mailSender = new Mails();
+
+                                        mailSender.mailReinitPasswd(email, login, cle)
+                                            .then((message) => {
+                                                Helpers.sendResponseToClient("Un email vient de vous être envoyé !", 0, res, true, '../login/');
+                                            }).catch((err) => {
+                                            console.error(err);
+                                            Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
+                                        });
+                                    } else
+                                        Helpers.sendResponseToClient("Aucun compte n'est associé à cette adresse email !", 1, res, true, '../logon/');
+                                }).catch((err) => {
+                                console.error(err);
+                                Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
+                            });
+                        } else {
+                            Helpers.sendResponseToClient("Aucun compte n'est associé à cette adresse email !", 1, res, true, '../logon/');
+                        }
+                    }).catch((err) => {
+                    console.error(err);
+                    Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
+                });
+            }
+        });
+    }
+
+    /*
+    ** Reinit du mot de passe
+     */
+    reinitPasswdRoute() {
+        this.router.post('/reinit-passwd/form', (req, res) => {
+            if (this.checkFormReinitPass(req,  res)) {
+                let dataUser = {
+                    "login": this.login,
+                    "passwd": Helpers.hashString(this.password, 'sha512'),
+                }
+
+                UserModel.changePasswd(dataUser)
+                    .then((status) => {
+                        Helpers.sendResponseToClient("Le mot de passe a bien été modifié !", 0, res, true, '../login/');
+                    }).catch((err) => {
+                    console.error(err);
+                    Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
+                });
+            }
+        });
+    }
 
     /*
      ** Verifie que tous les champs soit correctement remplis
@@ -161,6 +325,77 @@ class AccueilController {
     }
 
     /*
+     ** Verifie que les champs du formulaire ne soit pas vide.
+     */
+    checkFormLogin(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+
+        if ((this.checkJsonReq(req, res)) == true) {
+            if (validator.isLength(req.body.loginRegisterInput, {min: 3, max: 16})) {
+                this.login = validator.escape(req.body.loginRegisterInput).trim();
+            } else {
+                Helpers.sendResponseToClient("La taille du login doit etre entre 3 et 16 caractères", 1, res);
+                return false;
+            }
+            if (validator.isLength(req.body.passwdRegisterInput, {min: 8, max: 255}) &&
+                req.body.passwdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
+                this.password = req.body.passwdRegisterInput;
+            } else {
+                Helpers.sendResponseToClient("Mot de passe non valide ! Il doit contenir 8 caracteres avec majuscule, minuscule, numerique.", 1, res);
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     ** Verifie que les champs du formulaire ne soit pas vide.
+     */
+    checkFormForgetPass(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+
+        if ((this.checkJsonReq(req, res)) == true) {
+            // check email
+            if (validator.isEmail(req.body.emailRegisterInput)) {
+                this.email = req.body.emailRegisterInput;
+                return true;
+            } else {
+                Helpers.sendResponseToClient("Email non valide !", 1, res);
+                return false;
+            }
+        }
+    }
+
+    checkFormReinitPass(req, res) {
+        res.setHeader('Content-Type', 'application/json');
+
+        if ((this.checkJsonReq(req, res)) == true) {
+            if (validator.isLength(req.body.passwdRegisterInput, {min: 8, max: 255}) &&
+                req.body.passwdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
+                this.password = req.body.passwdRegisterInput;
+            } else {
+                Helpers.sendResponseToClient("Mot de passe non valide ! Il doit contenir 8 caracteres avec majuscule, minuscule, numerique.", 1, res);
+                return false;
+            }
+            if (validator.isLength(req.body.repPasswdRegisterInput, {min: 8, max: 255}) &&
+                req.body.repPasswdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)) {
+                this.repPassword = req.body.repPasswdRegisterInput;
+            } else {
+                Helpers.sendResponseToClient("La vérification du mot de passe est non valide ! Il doit contenir 8 caracteres avec majuscule, minuscule, numerique.", 1, res);
+                return false;
+            }
+            if (this.password === this.repPassword) {
+                return true;
+            } else {
+                Helpers.sendResponseToClient("Les deux mots de passe ne sont pas identiques !", 1, res);
+                return false;
+            }
+        }
+    }
+
+    /*
      **  Verifie que les champs du formulaire ne soit pas vide.
      */
     checkJsonReq(req, res) {
@@ -175,13 +410,14 @@ class AccueilController {
             }
             nbElems++;
         }
-        if (nbElems == countEmptyValues) {
+        if (nbElems === countEmptyValues && countEmptyValues > 1) {
             Helpers.sendResponseToClient("Veuillez renseigner tous les champs!", 1, res);
+            return false;
+        } else if (nbElems === countEmptyValues && countEmptyValues === 1) {
+            Helpers.sendResponseToClient("Veuillez renseigner un email!", 1, res);
             return false;
         }
         return true;
     }
-
-
 }
 module.exports = AccueilController;

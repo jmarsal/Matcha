@@ -1,5 +1,8 @@
 extends ../layout/layout
 
+block js
+    script(src="../js/ajaxLogin.js")
+
 block var
     - page = "login";
     - noheader = true;
@@ -12,6 +15,9 @@ block content
                 div: input(class="loginRegisterInput", name="loginRegisterInput", autofocus=true, autocomplete="username", minlength="3", maxlength="16")
             div(class="passwdRegisterText") Mot de Passe
                 div: input(class="passwdRegisterInput", name="passwdRegisterInput", type="password", autocomplete="new-password")
-            div(class="submitRegister")
+            div(class="submitLogin")
                 input(class="button", type="submit", value="se connecter")
             div(class="margin-botton-form")
+            hr(class="hr-login")
+            div(class="forget-passwd")
+                div(class="button forget", id="forget-button") Mot de passe oublié ou compte non activé ?

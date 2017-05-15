@@ -1,42 +1,58 @@
 html {
-  //background: none;
-  background-color: $accent-color;
+    //background: none;
+    background-color: $accent-color;
 }
 
-.formRegister {
-  position: relative;
-  width: 40%;
-  margin: 0% auto;
-  margin-top: 5%;
-  background-color: rgba($primary-color-dark, 0.8);
-  font-family: Indie Flower;
-  text-align: center;
-
-  .passwdRegisterText{
-    margin-bottom: 4%;
-  }
-
-  .submitRegister {
-    padding-bottom: 6%;
-  }
+.formRegister, .button {
+    position: relative;
+    width: 25%;
+    margin: 0% auto;
+    margin-top: 5%;
+    background-color: rgba($primary-color-dark, 0.8);
+    font-family: Indie Flower;
+    text-align: center;
+    font-size: 1.5vw;
+    padding-top: 1%;
+    
+    .passwdRegisterText {
+        margin-bottom: 4%;
+    }
+    
+    .submitRegister {
+        padding-bottom: 6%;
+    }
+    
+    input {
+        margin: 2% 0 2%;
+    }
+    
+    .button {
+        width: auto;
+        background: $primary-color;
+        margin: 0% auto;
+        
+        &:hover, &.active {
+            background: $primary-color-dark;
+        }
+    }
 }
 
 .error {
-  display: none;
-  padding: 1% 0 1% 0;
-  text-align: center;
-  font-family: Arial;
-  font-size: 1vw;
-
-  &.red {
-    display: block;
-    background-color: $mess-error-color-rgba;
-    color: $mess-error-color;
-  }
-
-  &.green {
-    display: block;
-    background-color: $mess-accept-color-rgba;
-    color: $mess-accept-color;
-  }
+    display: none;
+    padding: 1% 0 1% 0;
+    text-align: center;
+    font-family: Arial;
+    font-size: 1vw;
+    
+    &.red {
+        display: block;
+        background-color: $mess-error-color-rgba;
+        color: $mess-error-color;
+    }
+    
+    &.green {
+        display: block;
+        background-color: $mess-accept-color-rgba;
+        color: $mess-accept-color;
+    }
 }
