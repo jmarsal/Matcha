@@ -16,7 +16,7 @@ class Database {
         this.connection.connect((err) => {
             if (err) {
                 console.error(err);
-                console.log('La connection avec le serveur MySQL est impossible dans la class Database');
+                console.error('La connection avec le serveur MySQL est impossible dans la class Database');
                 process.exit(1);
             }
                 this.createDb()

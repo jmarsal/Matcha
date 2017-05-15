@@ -7,6 +7,7 @@ const path = require('path');
 const http = require('http');
 const Router = require('./Router');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 class Server {
     constructor() {
@@ -27,6 +28,7 @@ class Server {
         app.use(express.static(path.join(__dirname, '../../public')));
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: true }));
+        app.use(session({secret: 'matcha', resave: false, saveUninitialized: true, cookie: {maxAge: 3600000}}))
     }
 
     setupViewEngine() {

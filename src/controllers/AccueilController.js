@@ -9,7 +9,6 @@ const uniqid = require('uniqid');
 const UserModel = require('../models/UserModel');
 const Helpers = require('../core/Helpers');
 const Mails = require('../core/Mails');
-// const this = require('../core/this');
 
 class AccueilController {
     constructor() {
@@ -31,6 +30,7 @@ class AccueilController {
     }
 
     registerRoutes() {
+
         this.accueilRoute();
         this.loginRoute();
         this.logonRoute();
@@ -38,65 +38,77 @@ class AccueilController {
         this.reinitPasswdRoute();
     }
 
-
     accueilRoute() {
         this.router.get('/', (req, res) => {
-            res.redirect('./accueil/');
+            if (!req.session.start) {
+                res.redirect('./accueil/');
+            } else {
+                res.redirect('./browse');
+            }
         });
         this.router.get('/accueil', (req, res) => {
+            if (req.session.start) {
+                req.session.destroy(function(err) {
+                    console.error(err);
+                });
+            }
             res.render('views/accueil/accueilContent');
         });
     }
 
     /*
-    ** page de connection
+     ** page de connection
      */
     loginRoute() {
         this.router.get('/login', (req, res) => {
-            let getDataUrl = "",
-                getLogin = "",
-                getKey = ""
-            ;
+            if (!req.session.start) {
+                let getDataUrl = "",
+                    getLogin = "",
+                    getKey = ""
+                ;
 
-            Helpers.parseURLParams(req.url)
-                .then((get) => {
-                    getDataUrl = get;
-                    if ((getLogin = (getDataUrl.log.toString())) !== '' &&
-                        (getKey = (getDataUrl.cle.toString())) !== '') {
+                Helpers.parseURLParams(req.url)
+                    .then((get) => {
+                        getDataUrl = get;
+                        if ((getLogin = (getDataUrl.log.toString())) !== '' &&
+                            (getKey = (getDataUrl.cle.toString())) !== '') {
 
-                        //Modification de la cle dans la DB
-                        UserModel.changeKey(getLogin, getKey)
-                            .then((status) => {
-                            // Si tout c'est bien passe
-                            if (status){
-                                res.render('views/accueil/loginContent');
-                            } else {
-                                //La cle du mail ne correspond pas a celle du login dans la DB
+                            //Modification de la cle dans la DB
+                            UserModel.changeKey(getLogin, getKey)
+                                .then((status) => {
+                                    // Si tout c'est bien passe
+                                    if (status) {
+                                        res.render('views/accueil/loginContent');
+                                    } else {
+                                        //La cle du mail ne correspond pas a celle du login dans la DB
+                                        res.render('views/accueil/loginContent', {
+                                            error: "Votre compte est deja actif !"
+                                        });
+                                    }
+                                }).catch((err) => {
+                                //Pb de connection
                                 res.render('views/accueil/loginContent', {
-                                    error: "Votre compte est deja actif !"
+                                    error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
                                 });
-                            }
-                        }).catch ((err) => {
-                            //Pb de connection
+                            });
+                        } else {
+                            //Il manque de la data depuis le link du mail
+                            console.error("Probleme de data dans l'url");
                             res.render('views/accueil/loginContent', {
                                 error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
                             });
-                        });
-                    } else {
-                        //Il manque de la data depuis le link du mail
-                        console.error("Probleme de data dans l'url");
-                        res.render('views/accueil/loginContent', {
-                            error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
-                        });
-                    }
-                }).catch(() => {
-                //Page login sans arriver du mail
-                res.render('views/accueil/loginContent');
-            });
+                        }
+                    }).catch(() => {
+                    //Page login sans arriver du mail
+                    res.render('views/accueil/loginContent');
+                });
+            } else {
+                res.redirect('./browse');
+            }
         });
 
         this.router.post('/login/form', (req, res) => {
-            if (this.checkFormLogin(req,  res)) {
+            if (this.checkFormLogin(req, res)) {
                 let dataUser = {
                     "login": this.login,
                     "passwd": Helpers.hashString(this.password, 'sha512')
@@ -104,28 +116,44 @@ class AccueilController {
 
                 UserModel.checkUserForLogin(dataUser)
                     .then((status) => {
-                        if (status === true){
-                            Helpers.sendResponseToClient(null , null, res, true, '../browse/');
-                        } else if (status === false){
+                        if (status === true) {
+                            req.session.start = 1;
+                            UserModel.getIdbyLogin(this.login)
+                                .then((status) => {
+                                    if (status !== false) {
+                                        req.session.user = {login: this.login, id: status};
+                                        Helpers.sendResponseToClient(null, null, res, true, '../account/');
+                                    } else {
+                                        Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
+                                    }
+                                }).catch((err) => {
+                               if (err) {
+                                   console.error(err);
+                               }
+                            });
+                        } else if (status === false) {
                             Helpers.sendResponseToClient("Erreur de login et / ou mot de passe!", 1, res);
                         } else {
                             Helpers.sendResponseToClient(status, 1, res);
                         }
                     }).catch((err) => {
                     console.error(err);
-                    Helpers.sendResponseToClient("Une erreur s'est produite!!!!", 1, res);
+                    Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                 });
-                console.log('login = ' + dataUser.login + 'passwd = ' + dataUser.passwd);
             }
         });
     }
 
     /*
-    ** Page de creation de compte
+     ** Page de creation de compte
      */
     logonRoute() {
         this.router.get('/logon', (req, res) => {
-            res.render('views/accueil/logonContent');
+            if (!req.session.start) {
+                res.render('views/accueil/logonContent');
+            } else {
+                res.redirect('./browse');
+            }
         });
         this.router.post('/logon/form', (req, res) => {
             const mailSender = new Mails();
@@ -164,55 +192,59 @@ class AccueilController {
     }
 
     /*
-    ** Page d'oublie ou non activation de compte
+     ** Page d'oublie ou non activation de compte
      */
     forgetPasswdRoute() {
         this.router.get('/forget-passwd', (req, res) => {
-            let getDataUrl = "",
-                getLogin = "",
-                getKey = ""
-            ;
+            if (!req.session.start) {
+                let getDataUrl = "",
+                    getLogin = "",
+                    getKey = ""
+                ;
 
-            Helpers.parseURLParams(req.url)
-                .then((get) => {
-                    getDataUrl = get;
-                    if ((getLogin = (getDataUrl.log.toString())) !== '' &&
-                        (getKey = (getDataUrl.cle.toString())) !== '') {
+                Helpers.parseURLParams(req.url)
+                    .then((get) => {
+                        getDataUrl = get;
+                        if ((getLogin = (getDataUrl.log.toString())) !== '' &&
+                            (getKey = (getDataUrl.cle.toString())) !== '') {
 
-                        //Modification de la cle dans la DB
-                        UserModel.changeKey(getLogin, getKey)
-                            .then((status) => {
-                                // Si tout c'est bien passe
-                                if (status){
-                                    this.login = getLogin;
-                                    res.render('views/accueil/ReinitPasswdContent');
-                                } else {
-                                    //La cle du mail ne correspond pas a celle du login dans la DB
-                                    res.render('views/accueil/loginContent', {
-                                        error: "Votre compte est deja actif !"
-                                    });
-                                }
-                            }).catch ((err) => {
-                            //Pb de connection
+                            //Modification de la cle dans la DB
+                            UserModel.changeKey(getLogin, getKey)
+                                .then((status) => {
+                                    // Si tout c'est bien passe
+                                    if (status) {
+                                        this.login = getLogin;
+                                        res.render('views/accueil/ReinitPasswdContent');
+                                    } else {
+                                        //La cle du mail ne correspond pas a celle du login dans la DB
+                                        res.render('views/accueil/loginContent', {
+                                            error: "Votre compte est deja actif !"
+                                        });
+                                    }
+                                }).catch((err) => {
+                                //Pb de connection
+                                res.render('views/accueil/loginContent', {
+                                    error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
+                                });
+                            });
+                        } else {
+                            //Il manque de la data depuis le link du mail
+                            console.error("Probleme de data dans l'url");
                             res.render('views/accueil/loginContent', {
                                 error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
                             });
-                        });
-                    } else {
-                        //Il manque de la data depuis le link du mail
-                        console.error("Probleme de data dans l'url");
-                        res.render('views/accueil/loginContent', {
-                            error: "Une erreur s'est produite! Vous n'avez pas pu activer votre compte..."
-                        });
-                    }
-                }).catch(() => {
-                //Page login sans arriver du mail
-                res.render('views/accueil/forgetContent');
-            });
+                        }
+                    }).catch(() => {
+                    //Page login sans arriver du mail
+                    res.render('views/accueil/forgetContent');
+                });
+            } else {
+                res.redirect('./browse');
+            }
         });
 
         this.router.post('/forget-passwd/form', (req, res) => {
-            if (this.checkFormForgetPass(req,  res)) {
+            if (this.checkFormForgetPass(req, res)) {
                 let email = this.email,
                     login = "",
                     cle = ""
@@ -254,23 +286,27 @@ class AccueilController {
     }
 
     /*
-    ** Reinit du mot de passe
+     ** Reinit du mot de passe
      */
     reinitPasswdRoute() {
         this.router.post('/reinit-passwd/form', (req, res) => {
-            if (this.checkFormReinitPass(req,  res)) {
-                let dataUser = {
-                    "login": this.login,
-                    "passwd": Helpers.hashString(this.password, 'sha512'),
-                }
+            if (!req.session.start) {
+                if (this.checkFormReinitPass(req, res)) {
+                    let dataUser = {
+                        "login": this.login,
+                        "passwd": Helpers.hashString(this.password, 'sha512'),
+                    }
 
-                UserModel.changePasswd(dataUser)
-                    .then((status) => {
-                        Helpers.sendResponseToClient("Le mot de passe a bien été modifié !", 0, res, true, '../login/');
-                    }).catch((err) => {
-                    console.error(err);
-                    Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
-                });
+                    UserModel.changePasswd(dataUser)
+                        .then((status) => {
+                            Helpers.sendResponseToClient("Le mot de passe a bien été modifié !", 0, res, true, '../login/');
+                        }).catch((err) => {
+                        console.error(err);
+                        Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
+                    });
+                }
+            } else {
+                res.redirect('./browse');
             }
         });
     }
