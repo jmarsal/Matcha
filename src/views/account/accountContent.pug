@@ -14,7 +14,7 @@ block content
                 | Afin d'avoir accèes à toutes les fonctionnalités, merci de completer ton profil !
             hr(class="hr-login")
             div(class="select-photo-profil-text-account") Upload et choisi une photo pour ton profil (5 max)
-            div(class="photos-user-account")
+            div(class="photos-user-account", id="photos-user-account")
                 if locals.photosUsers
                     for photo in photosUsers
                         img(class="photos-user", src=photo)
