@@ -5,6 +5,42 @@
 }
 
 .content-account-user {
+  margin: 0% auto;
+  font-family: Indie Flower;
   background-color: rgba($primary-color-dark, 0.6);
   text-align: center;
+  width: 60%;
+}
+
+.photos-user-account {
+  position: relative;
+  
+  .upload {
+    display: none;
+    left: 5%;
+  }
+  
+  .input-file-trigger {
+    cursor: pointer;
+    //width: 4%;
+  }
+}
+
+.containeur-checkbox {
+  width: 75%;
+  display: inline-flex;
+  position: relative;
+  
+  .sex-user, .orientation-user{
+    width: 100%;
+    display: inline-block;
+    position: relative;
+  }
+  .checkbox-account {
+    display: inline-block;
+    position: relative;
+    margin: 0% auto;
+    width: 6%;
+    margin-left: 8%;
+  }
 }

@@ -51,6 +51,11 @@ html {
       color: #E91E63; }
     .menu a.is-active {
       color: #F8BBD0; }
+  .menu .default-img-user {
+    position: relative;
+    width: 5%;
+    left: 2%;
+    margin-bottom: -1%; }
 
 .footer {
   color: #212121; }
@@ -213,5 +218,31 @@ html {
   margin: 0% auto; }
 
 .content-account-user {
+  margin: 0% auto;
+  font-family: Indie Flower;
   background-color: rgba(194, 24, 91, 0.6);
-  text-align: center; }
+  text-align: center;
+  width: 60%; }
+
+.photos-user-account {
+  position: relative; }
+  .photos-user-account .upload {
+    display: none;
+    left: 5%; }
+  .photos-user-account .input-file-trigger {
+    cursor: pointer; }
+
+.containeur-checkbox {
+  width: 75%;
+  display: inline-flex;
+  position: relative; }
+  .containeur-checkbox .sex-user, .containeur-checkbox .orientation-user {
+    width: 100%;
+    display: inline-block;
+    position: relative; }
+  .containeur-checkbox .checkbox-account {
+    display: inline-block;
+    position: relative;
+    margin: 0% auto;
+    width: 6%;
+    margin-left: 8%; }
