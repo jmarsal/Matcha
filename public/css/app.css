@@ -231,6 +231,9 @@ html {
     left: 5%; }
   .photos-user-account .input-file-trigger {
     cursor: pointer; }
+  .photos-user-account .photos-user {
+    width: 11%;
+    border-radius: 50%; }
 
 .containeur-checkbox {
   width: 75%;

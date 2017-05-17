@@ -103,7 +103,7 @@ class AccueilController {
                     res.render('views/accueil/loginContent');
                 });
             } else {
-                res.redirect('./browse');
+                res.redirect('./account');
             }
         });
 
@@ -239,7 +239,7 @@ class AccueilController {
                     res.render('views/accueil/forgetContent');
                 });
             } else {
-                res.redirect('./browse');
+                res.redirect('./account');
             }
         });
 
@@ -306,7 +306,7 @@ class AccueilController {
                     });
                 }
             } else {
-                res.redirect('./browse');
+                res.redirect('./account');
             }
         });
     }
