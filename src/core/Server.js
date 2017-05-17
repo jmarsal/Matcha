@@ -28,7 +28,8 @@ class Server {
         app.use(express.static(path.join(__dirname, '../../public')));
         app.use(bodyParser.json({ limit: '50mb'}));
         app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-        app.use(session({secret: 'matcha', resave: false, saveUninitialized: true, cookie: {maxAge: 3600000}}))
+        app.use(session({secret: 'vjbJfljLvdsfv515151', resave: false, saveUninitialized: true, cookie: {maxAge: 3600000}}))
+        app.use(require('./middleware/req-session'));
     }
 
     setupViewEngine() {

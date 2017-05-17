@@ -9,7 +9,7 @@ block var
 block content
     div(class="container-account-user")
         div(class="content-account-user")
-            div(class="welcome-account") Bienvenue #{sessionLogin}
+            div(class="welcome-account") Bienvenue #{session.user.login}
             div(class="text1-account")
                 | Afin d'avoir accèes à toutes les fonctionnalités, merci de completer ton profil !
             hr(class="hr-login")
@@ -22,7 +22,7 @@ block content
                     img(class="input-file-trigger", src="/images/upload/upload-female.png")
                     div(class="upload-app", id="upload-app")
                         form(id="frmUploader", enctype="multipart/form-data", action="./Upload/", method="post")
-                            input(type="file", name="imgUploader", multiple)
+                            input(type="file", name="photos-profil", multiple)
                             //label(for="my-file")
                             input(class="button", type="submit", name="submit", id="btnSubmit", value="Upload")
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
