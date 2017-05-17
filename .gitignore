@@ -110,3 +110,4 @@ fabric.properties
 /.idea/vcs.xml
 /.idea/workspace.xml
 /.sass-cache/*
+\.DS_Store
