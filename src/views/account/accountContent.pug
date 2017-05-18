@@ -1,5 +1,7 @@
 extends ../layout/layout
 
+
+
 block js
     script(src="../js/ajaxAccount.js")
 
@@ -21,10 +23,11 @@ block content
                 else if locals.photosUser && locals.photosUser.length <= 5 || !locals.photosUser
                     img(class="input-file-trigger", src="/images/upload/upload-female.png")
                     div(class="upload-app", id="upload-app")
-                        form(id="frmUploader", enctype="multipart/form-data", action="./Upload/", method="post")
-                            input(type="file", name="photos-profil", multiple)
-                            //label(for="my-file")
-                            input(class="button", type="submit", name="submit", id="btnSubmit", value="Upload")
+                        form(id="frmUploader", enctype="multipart/form-data", action="/account/Upload", method="post")
+                            input(type="file", name="photos-profil")
+                            input(class="button", type="submit", name="submit", value="Upload", accept="image/*")
+                        //input(class="button input upload", id="my-file", type="file", accept="image/*", value="", onchange="getUploadPhotoUser()")
+                        //label(for="my-file")
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
             form(class="formAccount", id="formAccount")
                 hr(class="hr-login")
