@@ -7,25 +7,29 @@ block js
 
 block var
     - page = "account";
+    - countElems = 0;
 
 block content
     div(class="container-account-user")
         div(class="content-account-user")
             div(class="welcome-account") Bienvenue #{session.user.login}
             div(class="text1-account")
-                | Afin d'avoir accèes à toutes les fonctionnalités, merci de completer ton profil !
+                | Afin d'avoir accès à toutes les fonctionnalités, merci de compléter ton profil !
             hr(class="hr-login")
-            div(class="select-photo-profil-text-account") Upload et choisi une photo pour ton profil (5 max)
+            div(class="select-photo-profil-text-account") Upload et choisis une photo pour ton profil (5 max)
             div(class="photos-user-account", id="photos-user-account")
-                if locals.photosUsers
-                    for photo in photosUsers
-                        img(class="photos-user", src=photo)
-                else if locals.photosUser && locals.photosUser.length <= 5 || !locals.photosUser
+
+                if session.photosUsers
+                    for photo in session.photosUsers
+                        div(class="div-photo-user", id=photo.id, style="background-image: url(" + photo.src_photo + ")")
+                        - countElems++;
+
+                if session.photosUsers && countElems < 5 || !session.photosUsers
                     img(class="input-file-trigger", src="/images/upload/upload-female.png")
                     div(class="upload-app", id="upload-app")
-                        form(id="frmUploader", enctype="multipart/form-data", action="/account/Upload", method="post")
+                        form(id="frmUploader", enctype="multipart/form-data", action="/account/Upload", method="post", accept="image/*")
                             input(type="file", name="photos-profil")
-                            input(class="button", type="submit", name="submit", value="Upload", accept="image/*")
+                            input(class="button", type="submit", name="submit", value="Upload")
                         //input(class="button input upload", id="my-file", type="file", accept="image/*", value="", onchange="getUploadPhotoUser()")
                         //label(for="my-file")
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}

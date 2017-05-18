@@ -167,6 +167,44 @@ class UserModel {
             });
         });
     }
+
+    /*
+    ** Ajoute id_user, src de la photo, photo_profil dans la db
+     */
+    static addPhotoProfil(data) {
+        return new Promise((resolve, reject) => {
+            const sql = "INSERT INTO users_photos_profils SET ?";
+
+            connection.query(sql, data, (err) => {
+                if (err) {
+                    reject(err);
+                }
+
+                resolve(true);
+            });
+        })
+    }
+
+    /*
+    ** Recupere drc_photos, photo_profil dans la db
+     */
+
+    static getPhotoProfil(id_user) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT id, src_photo, photo_profil FROM users_photos_profils WHERE id_user = ? ORDER BY id ASC";
+
+            connection.query(sql,  [id_user], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                if (res.length) {
+                    resolve(res);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
 }
 module.exports = UserModel;
 

@@ -59,7 +59,19 @@ class Database {
             'cle VARCHAR(255) DEFAULT NULL,' +
             'active BOOLEAN DEFAULT 0' +
             ')';
+        const userPhotos = 'CREATE TABLE IF NOT EXISTS users_photos_profils' +
+            '(' +
+            'id INT PRIMARY KEY AUTO_INCREMENT,' +
+            'id_user INT NOT NULL,' +
+            'src_photo VARCHAR(255) NOT NULL,' +
+            'photo_profil BOOLEAN DEFAULT 0' +
+            ')';
         connection.query(users, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+        connection.query(userPhotos, (err) => {
             if (err) {
                 console.error(err);
             }

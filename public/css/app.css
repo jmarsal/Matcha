@@ -230,7 +230,19 @@ html {
     display: none;
     left: 5%; }
   .photos-user-account .input-file-trigger {
-    cursor: pointer; }
+    cursor: pointer;
+    width: 100px; }
+  .photos-user-account .div-photo-user {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-position: center;
+    /* Make the background image cover the area of the <div>, and clip the excess */
+    background-size: cover;
+    border: 1px solid #ddd;
+    /* Gray border */
+    border-radius: 50%;
+    /* Rounded border */ }
 
 .containeur-checkbox {
   width: 75%;
@@ -246,17 +258,3 @@ html {
     margin: 0% auto;
     width: 6%;
     margin-left: 8%; }
-
-    cursor: pointer;
-    width: 100px; }
-  .photos-user-account .div-photo-user {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-    background-position: center;
-    /* Make the background image cover the area of the <div>, and clip the excess */
-    background-size: cover;
-    border: 1px solid #ddd;
-    /* Gray border */
-    border-radius: 50%;
-    /* Rounded border */ }
