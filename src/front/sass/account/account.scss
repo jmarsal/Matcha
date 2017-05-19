@@ -21,6 +21,7 @@
   }
   
   .input-file-trigger {
+    display: inline-block;
     cursor: pointer;
     width: 100px;
     //width: 4%;
@@ -28,21 +29,22 @@
 
   .div-photo-user {
     display: inline-block;
-    width: 100px;
-    height: 100px;
+    width: 99px;
+    height: 99px;
     background-position: center;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
     border: 1px solid #ddd; /* Gray border */
     border-radius: 50%;  /* Rounded border */
-    
   }
-  .photos-user {
-    
-    //padding: 5px; /* Some padding */
-    //width: 60px; /* Set a small width */
-    //height: 60px;
-  }
+}
+
+.get-img {
+    display: inline-block;
+}
+
+#my-file {
+    display: none;
 }
 
 .containeur-checkbox {

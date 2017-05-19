@@ -230,12 +230,13 @@ html {
     display: none;
     left: 5%; }
   .photos-user-account .input-file-trigger {
+    display: inline-block;
     cursor: pointer;
     width: 100px; }
   .photos-user-account .div-photo-user {
     display: inline-block;
-    width: 100px;
-    height: 100px;
+    width: 99px;
+    height: 99px;
     background-position: center;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
@@ -243,6 +244,12 @@ html {
     /* Gray border */
     border-radius: 50%;
     /* Rounded border */ }
+
+.get-img {
+  display: inline-block; }
+
+#my-file {
+  display: none; }
 
 .containeur-checkbox {
   width: 75%;
