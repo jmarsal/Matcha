@@ -230,29 +230,56 @@ html {
     display: none;
     left: 5%; }
   .photos-user-account .input-file-trigger {
+    display: inline-block;
     cursor: pointer;
     width: 100px; }
-  .photos-user-account .div-photo-user {
+  .photos-user-account .container-photos .div-photo-user {
     display: inline-block;
-    width: 100px;
-    height: 100px;
+    width: 99px;
+    height: 99px;
     background-position: center;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
-    border: 1px solid #ddd;
+    border: 2px solid #ddd;
     /* Gray border */
     border-radius: 50%;
-    /* Rounded border */ }
+    /* Rounded border */
+    cursor: pointer;
+    margin: 0 auto auto -3%; }
+    .photos-user-account .container-photos .div-photo-user:hover {
+      border: 2px solid #ddba00; }
+  .photos-user-account .container-photos .div-container-interact {
+    position: relative; }
+    .photos-user-account .container-photos .div-container-interact .interact-photo {
+      position: relative; }
+      .photos-user-account .container-photos .div-container-interact .interact-photo .button, .photos-user-account .container-photos .div-container-interact .interact-photo .del {
+        display: inline-block;
+        position: relative;
+        width: auto;
+        top: 75px;
+        right: 83px; }
+      .photos-user-account .container-photos .div-container-interact .interact-photo .button, .photos-user-account .container-photos .div-container-interact .interact-photo .profil {
+        display: inline-block;
+        position: relative;
+        width: auto;
+        top: 75px;
+        right: 83px; }
 
-.containeur-checkbox {
+.get-img {
+  display: inline-block; }
+
+#my-file {
+  display: none; }
+
+.container-checkbox {
   width: 75%;
   display: inline-flex;
   position: relative; }
-  .containeur-checkbox .sex-user, .containeur-checkbox .orientation-user {
+  .container-checkbox .sex-user, .container-checkbox .orientation-user {
     width: 100%;
     display: inline-block;
     position: relative; }
-  .containeur-checkbox .checkbox-account {
+  .container-checkbox .checkbox-account {
     display: inline-block;
     position: relative;
     margin: 0% auto;

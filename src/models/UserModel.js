@@ -205,6 +205,23 @@ class UserModel {
             });
         });
     }
+
+    static getIdPhotoProfil(src_photo) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT id FROM users_photos_profils WHERE src_photo = ?";
+
+            connection.query(sql,  [src_photo], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                if (res.length) {
+                    resolve(res);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
 }
 module.exports = UserModel;
 
