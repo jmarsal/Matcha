@@ -1,6 +1,5 @@
 $("#formRegister").submit(function (e) {
     e.preventDefault();
-    console.log($(e.target).serialize());
 
     $.post('/logon/form', $(e.target).serialize(), function (data, textStatus, jqXHR) {
         var dataRes = JSON.parse(jqXHR.responseText),

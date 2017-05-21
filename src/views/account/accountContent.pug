@@ -23,7 +23,7 @@ block content
                             class="div-photo-user" id=photo.id
                             style='background-image: url("' + photo.src_photo + '")'
                             onclick="interactPhoto("+ photo.id +")"
-                            onblur="closeInteract()"
+                            onblur="closeInteract();"
                         )
                         - countElems++;
                 if session.photosUsers && countElems < 5 || !session.photosUsers
@@ -33,8 +33,8 @@ block content
                         form(id="frmUploader", enctype="multipart/form-data", action="/account/Upload", method="post", accept="image/*")
                             input(type="file", id="my-file", name="photos-profil", accept="image/*", onchange="submitForm()")
                 div(class="interact-photos" id="interact-photos")
-                    button(class="button del") supprimer ?
-                    button(class="button profil") photo de profil ?
+                    button(class="button del" id="button-del-account") supprimer ?
+                    button(class="button profil" id="button-profil-account") photo de profil ?
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
             form(class="formAccount", id="formAccount")
                 hr(class="hr-login")

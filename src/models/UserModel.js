@@ -222,6 +222,20 @@ class UserModel {
             });
         });
     }
+
+    static removePhotoById(idPhoto) {
+        return new Promise((resolve, reject) => {
+            let sql = "DELETE FROM users_photos_profils WHERE id = ?";
+
+            connection.query(sql,  [idPhoto], (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 }
 module.exports = UserModel;
 

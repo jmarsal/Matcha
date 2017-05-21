@@ -54,8 +54,8 @@
         border: 2px solid #ddd; /* Gray border */
         border-radius: 50%;  /* Rounded border */
         cursor: pointer;
-        -webkit-transition: width 2s, height 2s, background-color 2s, -webkit-transform 2s;
-        transition: width 2s, height 2s, background-color 2s, transform 2s;
+        -webkit-transition: width 1s, height 1s, background-color 1s, -webkit-transform 1s;
+        transition: width 1s, height 1s, background-color 1s, transform 1s;
         
         &:hover {
             border: 2px solid #ddd900;
@@ -74,12 +74,12 @@
 .interact-photos{
     //display: none;
     height: 0;
-    -webkit-transition: width 2s, height 2s, -webkit-transform 2s;
-    transition: width 2s, height 2s, transform 2s;
+    -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
+    transition: width 1s, height 1s, transform 1s;
     
     button {
-        -webkit-transition: width 2s, height 5s, opacity 2s, -webkit-transform 2s;
-        transition: width 2s, height 5s, opacity 2s, transform 2s;
+        -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
+        transition: width 1s, height 1s, opacity 1s, transform 1s;
         height: 0;
         opacity: 0;
     }
