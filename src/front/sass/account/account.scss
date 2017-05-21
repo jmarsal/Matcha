@@ -1,0 +1,113 @@
+@import "../variables/paletteColors";
+
+.container-account-user {
+    margin: 0% auto;
+}
+
+.content-account-user {
+    margin: 0% auto;
+    font-family: Indie Flower;
+    background-color: rgba($primary-color-dark, 0.6);
+    text-align: center;
+    width: 60%;
+}
+
+.photos-user-account {
+    position: relative;
+    
+    .upload {
+        display: none;
+        left: 5%;
+    }
+    
+    .input-file-trigger {
+        display: inline-block;
+        cursor: pointer;
+        width: 100px;
+        //width: 4%;
+    }
+    
+    .div-photo-user {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        background-position: center;
+        /* Make the background image cover the area of the <div>, and clip the excess */
+        background-size: cover;
+        border: 2px solid #ddd; /* Gray border */
+        border-radius: 50%;  /* Rounded border */
+        cursor: pointer;
+        -webkit-transition: width 2s, height 2s, background-color 2s, -webkit-transform 2s;
+        transition: width 2s, height 2s, background-color 2s, transform 2s;
+        
+        &:hover {
+            border: 2px solid #ddd900;
+        }
+    
+        &.profil {
+            border: 2px solid #ddd900;
+            width: 200px;
+            height: 200px;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
+}
+
+.interact-photos{
+    //display: none;
+    height: 0;
+    -webkit-transition: width 2s, height 2s, -webkit-transform 2s;
+    transition: width 2s, height 2s, transform 2s;
+    
+    button {
+        -webkit-transition: width 2s, height 5s, opacity 2s, -webkit-transform 2s;
+        transition: width 2s, height 5s, opacity 2s, transform 2s;
+        height: 0;
+        font-size: 0;
+        opacity: 0;
+        //display: none;
+    }
+    
+    &.devellop {
+        //display: block;
+        height: auto;
+        
+        button {
+            display: inline-block;
+            height: auto;
+            width: auto;
+            font-size: inherit;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+            opacity: 1;
+        }
+    }
+}
+
+.get-img {
+    display: inline-block;
+}
+
+#my-file {
+    display: none;
+}
+
+.containeur-checkbox {
+    width: 75%;
+    display: inline-flex;
+    position: relative;
+    
+    .sex-user, .orientation-user{
+        width: 100%;
+        display: inline-block;
+        position: relative;
+    }
+    .checkbox-account {
+        display: inline-block;
+        position: relative;
+        margin: 0% auto;
+        width: 6%;
+        margin-left: 8%;
+    }
+}

@@ -242,10 +242,10 @@ html {
     display: inline-block;
     cursor: pointer;
     width: 100px; }
-  .photos-user-account .container-photos .div-photo-user {
+  .photos-user-account .div-photo-user {
     display: inline-block;
-    width: 99px;
-    height: 99px;
+    width: 100px;
+    height: 100px;
     background-position: center;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
@@ -254,60 +254,37 @@ html {
     border-radius: 50%;
     /* Rounded border */
     cursor: pointer;
-<<<<<<< HEAD
-    margin: 0 auto auto -3%;
-    text-decoration: none;
     -webkit-transition: width 2s, height 2s, background-color 2s, -webkit-transform 2s;
-    transition: width 2s, height 2s, background-color 2s, transform 2s, filter 2s; }
-    .photos-user-account .container-photos .div-photo-user:hover {
+    transition: width 2s, height 2s, background-color 2s, transform 2s; }
+    .photos-user-account .div-photo-user:hover {
+      border: 2px solid #ddd900; }
+    .photos-user-account .div-photo-user.profil {
+      border: 2px solid #ddd900;
       width: 200px;
       height: 200px;
-      border: 2px solid #ddba00;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg); }
+
+.interact-photos {
+  height: 0;
+  -webkit-transition: width 2s, height 2s, -webkit-transform 2s;
+  transition: width 2s, height 2s, transform 2s; }
+  .interact-photos button {
+    -webkit-transition: width 2s, height 5s, opacity 2s, -webkit-transform 2s;
+    transition: width 2s, height 5s, opacity 2s, transform 2s;
+    height: 0;
+    font-size: 0;
+    opacity: 0; }
+  .interact-photos.devellop {
+    height: auto; }
+    .interact-photos.devellop button {
+      display: inline-block;
+      height: auto;
+      width: auto;
+      font-size: inherit;
       -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
-      filter: invert(100%);
-      filter: hue-rotate(360deg);
-      transition-duration: 2s; }
-    .photos-user-account .container-photos .div-photo-user.profil {
-      border: 2px solid #ddba00; }
-  .photos-user-account .container-photos .div-container-interact {
-    position: relative; }
-
-.interact-photo {
-  position: relative;
-  display: inline-flex;
-  width: 50%;
-  top: -7px;
-  margin: 0% auto auto; }
-  .interact-photo .button, .interact-photo .del {
-    margin-top: -70px;
-    margin-bottom: 96px; }
-  .interact-photo .button, .interact-photo .profil {
-    display: inline-block;
-    position: relative;
-    width: auto;
-    top: 83px; }
-=======
-    margin: 0 auto auto -3%; }
-    .photos-user-account .container-photos .div-photo-user:hover {
-      border: 2px solid #ddba00; }
-  .photos-user-account .container-photos .div-container-interact {
-    position: relative; }
-    .photos-user-account .container-photos .div-container-interact .interact-photo {
-      position: relative; }
-      .photos-user-account .container-photos .div-container-interact .interact-photo .button, .photos-user-account .container-photos .div-container-interact .interact-photo .del {
-        display: inline-block;
-        position: relative;
-        width: auto;
-        top: 75px;
-        right: 83px; }
-      .photos-user-account .container-photos .div-container-interact .interact-photo .button, .photos-user-account .container-photos .div-container-interact .interact-photo .profil {
-        display: inline-block;
-        position: relative;
-        width: auto;
-        top: 75px;
-        right: 83px; }
->>>>>>> account
+      opacity: 1; }
 
 .get-img {
   display: inline-block; }
@@ -315,15 +292,15 @@ html {
 #my-file {
   display: none; }
 
-.container-checkbox {
+.containeur-checkbox {
   width: 75%;
   display: inline-flex;
   position: relative; }
-  .container-checkbox .sex-user, .container-checkbox .orientation-user {
+  .containeur-checkbox .sex-user, .containeur-checkbox .orientation-user {
     width: 100%;
     display: inline-block;
     position: relative; }
-  .container-checkbox .checkbox-account {
+  .containeur-checkbox .checkbox-account {
     display: inline-block;
     position: relative;
     margin: 0% auto;
