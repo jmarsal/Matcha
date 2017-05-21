@@ -12,6 +12,11 @@
     width: 60%;
 }
 
+.welcome-text-account{
+    background-color: rgba($primary-color-dark, 0.8);
+    margin-bottom: -2%;
+}
+
 .photos-user-account {
     position: relative;
     
@@ -21,9 +26,20 @@
     }
     
     .input-file-trigger {
+        position: relative;
         display: inline-block;
         cursor: pointer;
         width: 100px;
+        height: 100px;
+        top: 10px;
+        
+        &:hover {
+            filter: invert(100%);
+            transition-duration: 5s;
+            filter: hue-rotate(360deg);
+        }
+        //border: 2px solid #ddd; /* Gray border */
+        //border-radius: 50%;
         //width: 4%;
     }
     
@@ -32,6 +48,7 @@
         width: 100px;
         height: 100px;
         background-position: center;
+        margin-right: 4%;
         /* Make the background image cover the area of the <div>, and clip the excess */
         background-size: cover;
         border: 2px solid #ddd; /* Gray border */
@@ -64,13 +81,10 @@
         -webkit-transition: width 2s, height 5s, opacity 2s, -webkit-transform 2s;
         transition: width 2s, height 5s, opacity 2s, transform 2s;
         height: 0;
-        font-size: 0;
         opacity: 0;
-        //display: none;
     }
     
     &.devellop {
-        //display: block;
         height: auto;
         
         button {
@@ -81,6 +95,7 @@
             -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
             opacity: 1;
+            margin-right: 4%;
         }
     }
 }

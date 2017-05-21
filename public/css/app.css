@@ -4,6 +4,22 @@ button, button:focus, button:active,
   outline: none;
   outline: 0; }
 
+@font-face {
+  font-family: "Indie Flower";
+  src: url("../fonts/Indie_Flower/IndieFlower.ttf"); }
+
+@font-face {
+  font-family: "Raleway";
+  src: url("../fonts/Raleway/Raleway-black.ttf"); }
+
+@font-face {
+  font-family: "Kurale";
+  src: url("../fonts/Kurale/Kurale-Regular.ttf"); }
+
+@font-face {
+  font-family: "Lato-regular";
+  src: url("../fonts/lato/Lato-Regular.ttf"); }
+
 input::-moz-focus-inner {
   border: 0; }
 
@@ -233,20 +249,32 @@ html {
   text-align: center;
   width: 60%; }
 
+.welcome-text-account {
+  background-color: rgba(194, 24, 91, 0.8);
+  margin-bottom: -2%; }
+
 .photos-user-account {
   position: relative; }
   .photos-user-account .upload {
     display: none;
     left: 5%; }
   .photos-user-account .input-file-trigger {
+    position: relative;
     display: inline-block;
     cursor: pointer;
-    width: 100px; }
+    width: 100px;
+    height: 100px;
+    top: 10px; }
+    .photos-user-account .input-file-trigger:hover {
+      filter: invert(100%);
+      transition-duration: 5s;
+      filter: hue-rotate(360deg); }
   .photos-user-account .div-photo-user {
     display: inline-block;
     width: 100px;
     height: 100px;
     background-position: center;
+    margin-right: 4%;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
     border: 2px solid #ddd;
@@ -273,7 +301,6 @@ html {
     -webkit-transition: width 2s, height 5s, opacity 2s, -webkit-transform 2s;
     transition: width 2s, height 5s, opacity 2s, transform 2s;
     height: 0;
-    font-size: 0;
     opacity: 0; }
   .interact-photos.devellop {
     height: auto; }
@@ -284,7 +311,8 @@ html {
       font-size: inherit;
       -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
-      opacity: 1; }
+      opacity: 1;
+      margin-right: 4%; }
 
 .get-img {
   display: inline-block; }
