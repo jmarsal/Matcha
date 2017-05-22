@@ -236,6 +236,37 @@ class UserModel {
             });
         });
     }
+
+    static updateFavoritePhotoById(idPhoto) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT photo_profil FROM users_photos_profils WHERE id = ?"
+            ;
+
+            connection.query(sql,  [idPhoto], (err,  res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    let fav = (res[0].photo_profil === 0) ? 1 : 0;
+                    sql = "UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?";
+                    connection.query(sql,  [fav, idPhoto], (err,  res) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            console.log('id = ' + idPhoto + 'fav = '+fav);
+                            resolve(fav);
+                        }
+                    });
+                }
+            });
+            // connection.query(sql,  [idPhoto], (err, res) => {
+            //     if (err) {
+            //         reject(err);
+            //     } else {
+            //         resolve();
+            //     }
+            // });
+        });
+    }
 }
 module.exports = UserModel;
 
