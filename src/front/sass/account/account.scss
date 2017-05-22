@@ -1,200 +1,166 @@
 @import "../variables/paletteColors";
 
 .container-account-user {
-  margin: 0% auto;
+    margin: 0% auto;
 }
 
 .content-account-user {
-  margin: 0% auto;
-  font-family: Indie Flower;
-  background-color: rgba($primary-color-dark, 0.6);
-  text-align: center;
-  width: 60%;
+    margin: 0% auto;
+    font-family: Indie Flower;
+    background-color: rgba($primary-color-dark, 0.6);
+    text-align: center;
+    width: 60%;
 }
 
 .welcome-text-account {
-  background-color: rgba($primary-color-dark, 0.8);
-  margin-bottom: -2%;
+    background-color: rgba($primary-color-dark, 0.8);
+    margin-bottom: -2%;
 }
 
 .photos-user-account {
-  position: relative;
-
-  .upload {
-    display: none;
-    left: 5%;
-  }
-
-  .input-file-trigger {
     position: relative;
-    display: inline-block;
-    cursor: pointer;
-    width: 100px;
-    height: 100px;
-    top: 10px;
-
-    &:hover {
-      filter: invert(100%);
-      transition-duration: 5s;
-      filter: hue-rotate(360deg);
+    
+    .upload {
+        display: none;
+        left: 5%;
     }
-    //border: 2px solid #ddd; /* Gray border */
-    //border-radius: 50%;
-    //width: 4%;
-  }
-
-  .div-photo-user {
-    display: inline-block;
-    position: relative;
-    width: 100px;
-    height: 100px;
-    background-position: center;
-    margin-right: 4%;
-    /* Make the background image cover the area of the <div>, and clip the excess */
-    background-size: cover;
-    border: 2px solid #ddd; /* Gray border */
-    border-radius: 50%; /* Rounded border */
-    cursor: pointer;
-    -webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
-    transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
-
-    &:hover {
-      border: 2px solid #ddd900;
+    
+    .input-file-trigger {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        width: 100px;
+        height: 100px;
+        top: 10px;
+        
+        &:hover {
+            filter: invert(100%);
+            transition-duration: 5s;
+            filter: hue-rotate(360deg);
+        }
+        //border: 2px solid #ddd; /* Gray border */
+        //border-radius: 50%;
+        //width: 4%;
     }
-
-    &.profil {
-      border: 2px solid #ddd900;
-      width: 200px;
-      height: 200px;
-      border-radius: 0;
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
+    
+    .div-photo-user {
+        display: inline-block;
+        position: relative;
+        width: 100px;
+        height: 100px;
+        background-position: center;
+        margin-right: 4%;
+        /* Make the background image cover the area of the <div>, and clip the excess */
+        background-size: cover;
+        border: 2px solid #ddd; /* Gray border */
+        border-radius: 50%; /* Rounded border */
+        cursor: pointer;
+        -webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
+        transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
+        z-index: 0;
+        
+        &:hover {
+            border: 2px solid #ddd900;
+        }
+        
+        &.profil {
+            border: 2px solid #ddd900;
+            width: 200px;
+            height: 200px;
+            border-radius: 0;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+            z-index: 1;
+        }
+        
+        &.star {
+            left: 40px;
+            margin-left: -40px;
+            //top: -32px;
+        }
+        
+        &.profil.star {
+            //top: -50px;
+        }
     }
-
-    &.star {
-      top: -32px;
-    }
-
-    &.profil.star {
-      top: -50px;
-    }
-  }
 }
 
 .imgStar {
-  width: 30%;
-  position: relative;
-  top: -15px;
-  left: -30px;
+    width: 5%;
+    position: relative;
+    left: -15px;
+    z-index: 0;
+    
+    &.profilStar {
+        z-index: 2;
+    }
 }
 
 .interact-photos {
-  //display: none;
-  height: 0;
-  -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
-  transition: width 1s, height 1s, transform 1s;
-
-  .button {
-    -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
-    transition: width 1s, height 1s, opacity 1s, transform 1s;
+    display: none;
     height: 0;
-    opacity: 0;
-  }
-
-  &.expand {
-    height: auto;
-
+    -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
+    transition: width 1s, height 1s, transform 1s;
+    
     .button {
-      display: inline-block;
-      height: auto;
-      width: auto;
-      font-size: inherit;
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-      opacity: 1;
-      margin-right: 4%;
+        -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
+        transition: width 1s, height 1s, opacity 1s, transform 1s;
+        height: 0;
+        opacity: 0;
     }
-  }
+    
+    &.expand {
+        height: auto;
+        
+        .button {
+            display: inline-block;
+            height: auto;
+            width: auto;
+            font-size: inherit;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+            opacity: 1;
+            margin-right: 4%;
+        }
+    }
 }
 
 .get-img {
-  display: inline-block;
+    display: inline-block;
 }
 
 #my-file {
-  display: none;
+    display: none;
 }
 
 .containeur-checkbox {
-  width: 75%;
-  display: inline-flex;
-  position: relative;
-
-  .sex-user, .orientation-user {
-    width: 100%;
-    display: inline-block;
+    width: 75%;
+    display: inline-flex;
     position: relative;
-  }
-  .checkbox-account {
-    display: inline-block;
-    position: relative;
-    margin: 0% auto;
-    width: 6%;
-    margin-left: 8%;
-  }
+    
+    .sex-user, .orientation-user {
+        width: 100%;
+        display: inline-block;
+        position: relative;
+    }
+    .checkbox-account {
+        display: inline-block;
+        position: relative;
+        margin: 0% auto;
+        width: 6%;
+        margin-left: 8%;
+    }
 }
 
 .content-account-user {
-  margin: 0% auto;
-  font-family: Indie Flower;
-  background-color: rgba($primary-color-dark, 0.6);
-  text-align: center;
-  width: 60%;
+    margin: 0% auto;
+    font-family: Indie Flower;
+    background-color: rgba($primary-color-dark, 0.6);
+    text-align: center;
+    width: 60%;
 }
 
-.photos-user-account {
-  position: relative;
-
-  .upload {
-    display: none;
-    left: 5%;
-  }
-
-  .input-file-trigger {
-    cursor: pointer;
-    width: 100px;
-    //width: 4%;
-  }
-
-  //.div-photo-user {
-  //  position: relative;
-  //  display: inline-block;
-  //  width: 100px;
-  //  height: 100px;
-  //  background-position: center;
-  //  /* Make the background image cover the area of the <div>, and clip the excess */
-  //  background-size: cover;
-  //  border: 1px solid #ddd; /* Gray border */
-  //  border-radius: 50%;  /* Rounded border */
-  //
-  //}
+.footer {
+    position: relative;
+    bottom: -225px;
 }
-
-//.containeur-checkbox {
-//  width: 75%;
-//  display: inline-flex;
-//  position: relative;
-//
-//  .sex-user, .orientation-user{
-//    width: 100%;
-//    display: inline-block;
-//    position: relative;
-//  }
-//  .checkbox-account {
-//    display: inline-block;
-//    position: relative;
-//    margin: 0% auto;
-//    width: 6%;
-//    margin-left: 8%;
-//  }
-//}

@@ -284,7 +284,8 @@ html {
     /* Rounded border */
     cursor: pointer;
     -webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
-    transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s; }
+    transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
+    z-index: 0; }
     .photos-user-account .div-photo-user:hover {
       border: 2px solid #ddd900; }
     .photos-user-account .div-photo-user.profil {
@@ -293,19 +294,22 @@ html {
       height: 200px;
       border-radius: 0;
       -webkit-transform: rotate(360deg);
-      transform: rotate(360deg); }
+      transform: rotate(360deg);
+      z-index: 1; }
     .photos-user-account .div-photo-user.star {
-      top: -32px; }
-    .photos-user-account .div-photo-user.profil.star {
-      top: -50px; }
+      left: 40px;
+      margin-left: -40px; }
 
 .imgStar {
-  width: 30%;
+  width: 5%;
   position: relative;
-  top: -15px;
-  left: -30px; }
+  left: -15px;
+  z-index: 0; }
+  .imgStar.profilStar {
+    z-index: 2; }
 
 .interact-photos {
+  display: none;
   height: 0;
   -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
   transition: width 1s, height 1s, transform 1s; }
@@ -354,11 +358,6 @@ html {
   text-align: center;
   width: 60%; }
 
-.photos-user-account {
-  position: relative; }
-  .photos-user-account .upload {
-    display: none;
-    left: 5%; }
-  .photos-user-account .input-file-trigger {
-    cursor: pointer;
-    width: 100px; }
+.footer {
+  position: relative;
+  bottom: -225px; }

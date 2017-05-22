@@ -6,6 +6,7 @@ block js
 block var
     - page = "account";
     - countElems = 0;
+    - photo;
 
 block content
     div(class="container-account-user")
@@ -17,15 +18,21 @@ block content
             hr(class="hr-login")
             div(class="select-photo-profil-text-account") Upload et choisis une photo pour ton profil (5 max)
             div(class="photos-user-account", id="photos-user-account")
-                if session.photosUsers
-                    for photo in session.photosUsers
+                if photosUsers
+                    for photo in photosUsers
                         div(
-                            class="div-photo-user" id=photo.id
+                            class=((photo.photo_profil == 1) ? "div-photo-user star " : "div-photo-user")
+                            id=photo.id
                             style='background-image: url("' + photo.src_photo + '")'
                             onclick="interactPhoto("+ photo.id +")"
                         )
+                        if photo.photo_profil
+                            img(
+                                class="imgStar" id="imgStar"
+                                src="/images/tools/star.png"
+                            )
                         - countElems++;
-                if session.photosUsers && countElems < 5 || !session.photosUsers
+                if photosUsers && countElems < 5 || !photosUsers
                     label(for="my-file")
                         img(class="input-file-trigger", src="/images/upload/upload-female.png")
                     div(class="upload-app", id="upload-app")
@@ -36,6 +43,31 @@ block content
                     button(class="button profil" id="button-profil-account") photo de profil ?
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
             form(class="formAccount", id="formAccount")
+                hr(class="hr-login")
+                div(class="emailRegisterText") Mon adresse Email
+                    div: input(
+                            class="emailRegisterInput" name="emailRegisterInput"
+                            type="email"
+                            autofocus=true
+                            autocomplete="email"
+                            value=locals.email
+                        )
+                div(class="loginRegisterText") Mon Login
+                    div: input(
+                            class="loginRegisterInput" name="loginRegisterInput"
+                            minlength="3" maxlength="16"
+                            value=locals.login
+                        )
+                div(class="lastNameRegisterText") Mon Nom
+                    div: input(
+                            class="lastNameRegisterInput" name="lastNameRegisterInput"
+                            value=locals.name
+                        )
+                div(class="firstNameRegisterText") Mon Prénom
+                    div: input(
+                            class="firstNameRegisterInput" name="firstNameRegisterInput"
+                            value=locals.firstName
+                        )
                 hr(class="hr-login")
                 div(class="sex-user") tu es :
                     div(class="container-checkbox")

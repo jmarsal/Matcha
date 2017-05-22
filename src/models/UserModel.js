@@ -191,7 +191,7 @@ class UserModel {
 
     static getPhotoProfil(id_user) {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT id, src_photo, photo_profil FROM users_photos_profils WHERE id_user = ? ORDER BY id ASC";
+            let sql = "SELECT id, src_photo, photo_profil FROM users_photos_profils WHERE id_user = ? ORDER BY id DESC";
 
             connection.query(sql,  [id_user], (err, res) => {
                 if (err) {
@@ -237,33 +237,54 @@ class UserModel {
         });
     }
 
-    static updateFavoritePhotoById(idPhoto) {
+    static updateFavoritePhotoById(idPhoto, id_user) {
         return new Promise((resolve, reject) => {
             let sql = "SELECT photo_profil FROM users_photos_profils WHERE id = ?"
             ;
 
-            connection.query(sql,  [idPhoto], (err,  res) => {
+            connection.query(sql,  [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
                     let fav = (res[0].photo_profil === 0) ? 1 : 0;
-                    sql = "UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?";
-                    connection.query(sql,  [fav, idPhoto], (err,  res) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(fav);
-                        }
-                    });
+
+                    if (fav === 1) {
+                        sql = "UPDATE `users_photos_profils` SET `photo_profil` = 0 WHERE id_user = ? && `photo_profil` = 1"
+                        connection.query(sql, [id_user], (err) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                sql = "UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?";
+                                connection.query(sql,  [fav, idPhoto], (err) => {
+                                    if (err) {
+                                        reject(err);
+                                    } else {
+                                        resolve(fav);
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
             });
-            // connection.query(sql,  [idPhoto], (err, res) => {
-            //     if (err) {
-            //         reject(err);
-            //     } else {
-            //         resolve();
-            //     }
-            // });
+        });
+    }
+
+    static getInfoProfil(userId){
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT * FROM users WHERE id = ?";
+
+            connection.query(sql,  [userId], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                if (res.length) {
+                    let infos = res[0];
+                    resolve(infos);
+                } else {
+                    resolve(false);
+                }
+            });
         });
     }
 }
