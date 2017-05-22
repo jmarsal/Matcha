@@ -12,8 +12,6 @@ html(lang='fr')
         meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
         meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
         link(rel="icon" type="image/png" href="")
-        link(href="https://fonts.googleapis.com/css?family=Cabin+Sketch|Cairo|Indie+Flower" rel="stylesheet")
-        link(href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet")
         link(rel="stylesheet" href= "../css/app.css")
     body
         div(class="site-container")
@@ -25,14 +23,14 @@ html(lang='fr')
                         if !noheader
                             a(href="../browse", "class"=(page == "browse" ? "is-active" : "")) Parcourir
                             a(href="../search", "class"=(page == "search" ? "is-active" : "")) Rechercher
-                            a(href="../account", "class"=(page == "account" ? "is-active" : "")) Mon Compte
+                            a(href="../account", "class"=(page == "account.scss" ? "is-active" : "")) Mon Compte
                                 img(class="default-img-user", src="/images/upload/default-user.png")
                             a(href="../accueil", "class"=(page == "accueil" ? "is-active" : "")) Delog
                         else
                             a(href="../login", "class"=(page == "login" ? "is-active" : "")) se connecter
                             a(href="../logon", "class"=(page == "logon" ? "is-active" : "")) créer un compte
                 div(class="post")
-                    div(class="content")
+                    div(class="content" id="app")
                         block content
                 div(class="site-cache" id="site-cache" onclick="showhide()")
                 div(class="footer")

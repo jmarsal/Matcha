@@ -1,3 +1,28 @@
+a, a:active, a:focus,
+button, button:focus, button:active,
+.btn, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn.focus:active, .btn.active.focus {
+  outline: none;
+  outline: 0; }
+
+@font-face {
+  font-family: "Indie Flower";
+  src: url("../fonts/Indie_Flower/IndieFlower.ttf"); }
+
+@font-face {
+  font-family: "Raleway";
+  src: url("../fonts/Raleway/Raleway-black.ttf"); }
+
+@font-face {
+  font-family: "Kurale";
+  src: url("../fonts/Kurale/Kurale-Regular.ttf"); }
+
+@font-face {
+  font-family: "Lato-regular";
+  src: url("../fonts/lato/Lato-Regular.ttf"); }
+
+input::-moz-focus-inner {
+  border: 0; }
+
 /*
     Layout
  */
@@ -224,20 +249,33 @@ html {
   text-align: center;
   width: 60%; }
 
+.welcome-text-account {
+  background-color: rgba(194, 24, 91, 0.8);
+  margin-bottom: -2%; }
+
 .photos-user-account {
   position: relative; }
   .photos-user-account .upload {
     display: none;
     left: 5%; }
   .photos-user-account .input-file-trigger {
+    position: relative;
     display: inline-block;
     cursor: pointer;
-    width: 100px; }
-  .photos-user-account .container-photos .div-photo-user {
+    width: 100px;
+    height: 100px;
+    top: 10px; }
+    .photos-user-account .input-file-trigger:hover {
+      filter: invert(100%);
+      transition-duration: 5s;
+      filter: hue-rotate(360deg); }
+  .photos-user-account .div-photo-user {
     display: inline-block;
-    width: 99px;
-    height: 99px;
+    position: relative;
+    width: 100px;
+    height: 100px;
     background-position: center;
+    margin-right: 4%;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
     border: 2px solid #ddd;
@@ -245,25 +283,48 @@ html {
     border-radius: 50%;
     /* Rounded border */
     cursor: pointer;
-    margin: 0 auto auto -3%; }
-    .photos-user-account .container-photos .div-photo-user:hover {
-      border: 2px solid #ddba00; }
-  .photos-user-account .container-photos .div-container-interact {
-    position: relative; }
-    .photos-user-account .container-photos .div-container-interact .interact-photo {
-      position: relative; }
-      .photos-user-account .container-photos .div-container-interact .interact-photo .button, .photos-user-account .container-photos .div-container-interact .interact-photo .del {
-        display: inline-block;
-        position: relative;
-        width: auto;
-        top: 75px;
-        right: 83px; }
-      .photos-user-account .container-photos .div-container-interact .interact-photo .button, .photos-user-account .container-photos .div-container-interact .interact-photo .profil {
-        display: inline-block;
-        position: relative;
-        width: auto;
-        top: 75px;
-        right: 83px; }
+    -webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
+    transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s; }
+    .photos-user-account .div-photo-user:hover {
+      border: 2px solid #ddd900; }
+    .photos-user-account .div-photo-user.profil {
+      border: 2px solid #ddd900;
+      width: 200px;
+      height: 200px;
+      border-radius: 0;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg); }
+    .photos-user-account .div-photo-user.star {
+      top: -32px; }
+    .photos-user-account .div-photo-user.profil.star {
+      top: -50px; }
+
+.imgStar {
+  width: 30%;
+  position: relative;
+  top: -50px;
+  left: -30px; }
+
+.interact-photos {
+  height: 0;
+  -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
+  transition: width 1s, height 1s, transform 1s; }
+  .interact-photos button {
+    -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
+    transition: width 1s, height 1s, opacity 1s, transform 1s;
+    height: 0;
+    opacity: 0; }
+  .interact-photos.devellop {
+    height: auto; }
+    .interact-photos.devellop button {
+      display: inline-block;
+      height: auto;
+      width: auto;
+      font-size: inherit;
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+      opacity: 1;
+      margin-right: 4%; }
 
 .get-img {
   display: inline-block; }
@@ -271,17 +332,33 @@ html {
 #my-file {
   display: none; }
 
-.container-checkbox {
+.containeur-checkbox {
   width: 75%;
   display: inline-flex;
   position: relative; }
-  .container-checkbox .sex-user, .container-checkbox .orientation-user {
+  .containeur-checkbox .sex-user, .containeur-checkbox .orientation-user {
     width: 100%;
     display: inline-block;
     position: relative; }
-  .container-checkbox .checkbox-account {
+  .containeur-checkbox .checkbox-account {
     display: inline-block;
     position: relative;
     margin: 0% auto;
     width: 6%;
     margin-left: 8%; }
+
+.content-account-user {
+  margin: 0% auto;
+  font-family: Indie Flower;
+  background-color: rgba(194, 24, 91, 0.6);
+  text-align: center;
+  width: 60%; }
+
+.photos-user-account {
+  position: relative; }
+  .photos-user-account .upload {
+    display: none;
+    left: 5%; }
+  .photos-user-account .input-file-trigger {
+    cursor: pointer;
+    width: 100px; }
