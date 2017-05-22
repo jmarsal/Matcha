@@ -84,7 +84,7 @@
 .imgStar {
   width: 30%;
   position: relative;
-  top: -50px;
+  top: -15px;
   left: -30px;
 }
 
@@ -94,17 +94,17 @@
   -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
   transition: width 1s, height 1s, transform 1s;
 
-  button {
+  .button {
     -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
     transition: width 1s, height 1s, opacity 1s, transform 1s;
     height: 0;
     opacity: 0;
   }
 
-  &.devellop {
+  &.expand {
     height: auto;
 
-    button {
+    .button {
       display: inline-block;
       height: auto;
       width: auto;

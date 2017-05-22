@@ -302,21 +302,21 @@ html {
 .imgStar {
   width: 30%;
   position: relative;
-  top: -50px;
+  top: -15px;
   left: -30px; }
 
 .interact-photos {
   height: 0;
   -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
   transition: width 1s, height 1s, transform 1s; }
-  .interact-photos button {
+  .interact-photos .button {
     -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
     transition: width 1s, height 1s, opacity 1s, transform 1s;
     height: 0;
     opacity: 0; }
-  .interact-photos.devellop {
+  .interact-photos.expand {
     height: auto; }
-    .interact-photos.devellop button {
+    .interact-photos.expand .button {
       display: inline-block;
       height: auto;
       width: auto;

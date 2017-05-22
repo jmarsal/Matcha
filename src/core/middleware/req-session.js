@@ -3,6 +3,6 @@
  */
 
 module.exports = function (req, res, next) {
-    global.session = req.session;
+    res.locals.session = req.session;
     next();
 }

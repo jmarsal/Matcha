@@ -117,11 +117,11 @@ class AccueilController {
                 UserModel.checkUserForLogin(dataUser)
                     .then((status) => {
                         if (status === true) {
-                            session.start = 1;
+                            req.session.start = 1;
                             UserModel.getIdbyLogin(this.login)
                                 .then((status) => {
                                     if (status !== false) {
-                                        session.user = {login: this.login, id: status};
+                                        req.session.user = {login: this.login, id: status};
                                         Helpers.sendResponseToClient(null, null, res, true, '../account/');
                                     } else {
                                         Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
