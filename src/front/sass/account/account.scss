@@ -160,7 +160,21 @@
     width: 60%;
 }
 
+.firstNameRegisterInput {
+    margin-bottom: 3%;
+}
+
 .footer {
     position: relative;
-    bottom: -225px;
+    bottom: -63%;
+}
+
+.modify-account {
+    &.red {
+        background-color: $mess-error-color-rgba;
+    }
+
+    &.green {
+        background-color: $mess-accept-color-rgba;
+    }
 }

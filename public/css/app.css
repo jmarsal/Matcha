@@ -225,6 +225,9 @@ html {
   color: white;
   font-size: 1vw; }
 
+.button.forget {
+  width: 80%; }
+
 .reinit-text {
   margin-top: -5%;
   margin-bottom: -21%;
@@ -358,6 +361,15 @@ html {
   text-align: center;
   width: 60%; }
 
+.firstNameRegisterInput {
+  margin-bottom: 3%; }
+
 .footer {
   position: relative;
-  bottom: -225px; }
+  bottom: -63%; }
+
+.modify-account.red {
+  background-color: rgba(255, 0, 0, 0.6); }
+
+.modify-account.green {
+  background-color: rgba(128, 252, 169, 0.8); }

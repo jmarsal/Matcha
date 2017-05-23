@@ -12,7 +12,7 @@ block content
     div(class="container-account-user")
         div(class="content-account-user")
             div(class="welcome-text-account")
-                div(class="welcome-account") Bienvenue #{session.user.login}
+                div(class="welcome-account" id="welcome-account") Bienvenue #{login}
                 div(class="text1-account")
                     | Afin d'avoir accès à toutes les fonctionnalités, merci de compléter ton profil !
             hr(class="hr-login")
@@ -32,48 +32,84 @@ block content
                                 src="/images/tools/star.png"
                             )
                         - countElems++;
-                if photosUsers && countElems < 5 || !photosUsers
+                if photosUsers && countElems < 5 ||!photosUsers
                     label(for="my-file")
-                        img(class="input-file-trigger", src="/images/upload/upload-female.png")
-                    div(class="upload-app", id="upload-app")
-                        form(id="frmUploader", enctype="multipart/form-data", action="/account/Upload", method="post", accept="image/*")
-                            input(type="file", id="my-file", name="photos-profil", accept="image/*", onchange="submitForm()")
+                        img(
+                            class="input-file-trigger"
+                            src="/images/upload/upload-female.png"
+                        )
+                    div(class="upload-app" id="upload-app")
+                        form(
+                            id="frmUploader" enctype="multipart/form-data"
+                            action="/account/Upload" method="post"
+                            )
+                            input(
+                                type="file" id="my-file"
+                                name="photos-profil" accept="image/*"
+                                onchange="submitPhoto()"
+                            )
                 div(class="interact-photos" id="interact-photos")
                     button(class="button del" id="button-del-account") supprimer ?
                     button(class="button profil" id="button-profil-account") photo de profil ?
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
             form(class="formAccount", id="formAccount")
                 hr(class="hr-login")
+                p Modifier mes infos ?
                 div(class="emailRegisterText") Mon adresse Email
                     div: input(
-                            class="emailRegisterInput" id="emailAccountInput"
+                            class="modify-account emailRegisterInput" id="emailAccountInput"
                             name="emailRegisterInput"
                             type="email"
-                            value=locals.email
+                            value= email
                             onblur="submitForm('email')"
                         )
                     div: input(
                     class="hiddenEmailRegisterInput" id="hiddenEmailAccountInput"
                     name="hiddenEmailRegisterInput"
                     type="hidden"
-                    value=locals.email
+                    value=email
                     )
                 div(class="loginRegisterText") Mon Login
                     div: input(
-                            class="loginRegisterInput" name="loginRegisterInput"
+                            class="modify-account loginRegisterInput" id="loginAccountInput"
+                            name="loginRegisterInput"
                             minlength="3" maxlength="16"
-                            value=locals.login
+                            value=login
+                            onblur="submitForm('login')"
                         )
+                    div: input(
+                    class="hiddenloginRegisterInput" id="hiddenloginAccountInput"
+                    name="hiddenloginRegisterInput"
+                    type="hidden"
+                    value=login
+                    )
                 div(class="lastNameRegisterText") Mon Nom
                     div: input(
-                            class="lastNameRegisterInput" name="lastNameRegisterInput"
-                            value=locals.name
+                            class="modify-account lastNameRegisterInput" id="lastNameAccountInput"
+                            name="lastNameRegisterInput"
+                            value=name
+                            onblur="submitForm('name')"
                         )
+                    div: input(
+                    class="hiddenNameRegisterInput" id="hiddenNameAccountInput"
+                    name="hiddenNameRegisterInput"
+                    type="hidden"
+                    value=name
+                    )
                 div(class="firstNameRegisterText") Mon Prénom
                     div: input(
-                            class="firstNameRegisterInput" name="firstNameRegisterInput"
-                            value=locals.firstName
-                        )
+                            class="modify-account firstNameRegisterInput" id="firstNameAccountInput"
+                            name="firstNameRegisterInput"
+                            value=firstName
+                            onblur="submitForm('firstName')"
+                    )
+                    div: input(
+                    class="hiddenFirstNameRegisterInput" id="hiddenFirstNameAccountInput"
+                    name="hiddenFirstNameRegisterInput"
+                    type="hidden"
+                    value=firstName
+                    )
+                div(class=( locals.error2 ? "error red" : "error"), id="errorInfoProfil") #{error2}
                 hr(class="hr-login")
                 div(class="sex-user") tu es :
                     div(class="container-checkbox")

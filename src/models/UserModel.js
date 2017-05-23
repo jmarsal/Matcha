@@ -225,13 +225,23 @@ class UserModel {
 
     static removePhotoById(idPhoto) {
         return new Promise((resolve, reject) => {
-            let sql = "DELETE FROM users_photos_profils WHERE id = ?";
+            let sql = "SELECT src_photo FROM users_photos_profils WHERE id = ?",
+                srcToRemove = ""
+            ;
 
             connection.query(sql,  [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve();
+                    srcToRemove = res[0];
+                    sql = "DELETE FROM users_photos_profils WHERE id = ?";
+                    connection.query(sql,  [idPhoto], (err, res) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(srcToRemove);
+                        }
+                    });
                 }
             });
         });
@@ -239,23 +249,26 @@ class UserModel {
 
     static updateFavoritePhotoById(idPhoto, id_user) {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT photo_profil FROM users_photos_profils WHERE id = ?"
+            let sql = "SELECT photo_profil, src_photo FROM users_photos_profils WHERE id = ?"
             ;
 
             connection.query(sql,  [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    let fav = (res[0].photo_profil === 0) ? 1 : 0;
+                    let fav = {
+                        favorite: (res[0].photo_profil === 0) ? 1 : 0,
+                        src: res[0].src_photo
+                    }
 
-                    if (fav === 1) {
+                    if (fav.favorite === 1) {
                         sql = "UPDATE `users_photos_profils` SET `photo_profil` = 0 WHERE id_user = ? && `photo_profil` = 1"
                         connection.query(sql, [id_user], (err) => {
                             if (err) {
                                 reject(err);
                             } else {
                                 sql = "UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?";
-                                connection.query(sql,  [fav, idPhoto], (err) => {
+                                connection.query(sql,  [fav.favorite, idPhoto], (err) => {
                                     if (err) {
                                         reject(err);
                                     } else {
@@ -283,6 +296,34 @@ class UserModel {
                     resolve(infos);
                 } else {
                     resolve(false);
+                }
+            });
+        });
+    }
+
+    static modifyEmailByUserId(userId, email) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET email = ? WHERE id = ?";
+
+            connection.query(sql,  [email, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    static modifyLoginByUserId(userId, login) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET login = ? WHERE id = ?";
+
+            connection.query(sql,  [login, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
                 }
             });
         });
