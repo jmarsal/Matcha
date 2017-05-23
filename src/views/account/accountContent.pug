@@ -46,12 +46,18 @@ block content
                 hr(class="hr-login")
                 div(class="emailRegisterText") Mon adresse Email
                     div: input(
-                            class="emailRegisterInput" name="emailRegisterInput"
+                            class="emailRegisterInput" id="emailAccountInput"
+                            name="emailRegisterInput"
                             type="email"
-                            autofocus=true
-                            autocomplete="email"
                             value=locals.email
+                            onblur="submitForm('email')"
                         )
+                    div: input(
+                    class="hiddenEmailRegisterInput" id="hiddenEmailAccountInput"
+                    name="hiddenEmailRegisterInput"
+                    type="hidden"
+                    value=locals.email
+                    )
                 div(class="loginRegisterText") Mon Login
                     div: input(
                             class="loginRegisterInput" name="loginRegisterInput"
