@@ -63,7 +63,7 @@ html {
   border-right: 1px solid #E91E63; }
 
 .menu {
-  float: left; }
+  width: 100%; }
   .menu a {
     text-decoration: none;
     color: inherit;
@@ -77,10 +77,20 @@ html {
     .menu a.is-active {
       color: #F8BBD0; }
   .menu .default-img-user {
+    display: inline-block;
     position: relative;
-    width: 5%;
-    left: 2%;
-    margin-bottom: -1%; }
+    background-position: center;
+    background-size: cover;
+    width: 35px;
+    height: 32px;
+    margin-bottom: -0.5%;
+    left: 15px; }
+    .menu .default-img-user.fav {
+      border: 2px solid #ddd;
+      /* Gray border */
+      border-radius: 50%;
+      /* Rounded border */
+      top: 5px; }
 
 .footer {
   color: #212121; }

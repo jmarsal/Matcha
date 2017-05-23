@@ -198,7 +198,25 @@ class UserModel {
                     reject(err);
                 }
                 if (res.length) {
-                    resolve(res);
+                    const photosProfil = res;
+                    sql = "SELECT src_photo FROM users_photos_profils WHERE id_user = ? && photo_profil = 1";
+                    connection.query(sql,  [id_user], (err, res) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        if (res.length) {
+                            const data = {
+                                photosProfil: res[0].src_photo,
+                                photos: photosProfil
+                            }
+                            resolve(data);
+                        } else {
+                            const data = {
+                                photos: photosProfil
+                            }
+                            resolve(data);
+                        }
+                    });
                 } else {
                     resolve(false);
                 }
@@ -320,6 +338,34 @@ class UserModel {
             const sql = "UPDATE users SET login = ? WHERE id = ?";
 
             connection.query(sql,  [login, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    static modifyFirstNameByUserId(userId, FirstName) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET nom = ? WHERE id = ?";
+
+            connection.query(sql,  [FirstName, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    static modifyLastNameByUserId(userId, lastName) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET prenom = ? WHERE id = ?";
+
+            connection.query(sql,  [lastName, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {

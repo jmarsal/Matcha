@@ -47,7 +47,8 @@ html {
 //            }
 //
 .menu {
-    float: left;
+    width: 100%;
+    //float: left;
     //height: 100%;
     
     a {
@@ -62,17 +63,26 @@ html {
             color: $primary-color;
         }
         &.is-active{
-            //padding-top: 0.5%;
-            //padding-bottom: 0.5%;
             color: $primary-color-light;
         }
     }
     
     .default-img-user {
+        display: inline-block;
         position: relative;
-        width: 5%;
-        left: 2%;
-        margin-bottom: -1%;
+        background-position: center;
+        background-size: cover;
+        width: 35px;
+        height: 32px;
+        margin-bottom: -0.5%;
+        left: 15px;
+        
+        &.fav {
+            border: 2px solid #ddd; /* Gray border */
+            border-radius: 50%; /* Rounded border */
+            top: 5px;
+            //margin-bottom: 0;
+        }
     }
 }
 
