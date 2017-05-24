@@ -349,15 +349,16 @@ html {
 #my-file {
   display: none; }
 
-.containeur-checkbox {
+.container-checkbox {
   width: 75%;
   display: inline-flex;
   position: relative; }
-  .containeur-checkbox .sex-user, .containeur-checkbox .orientation-user {
+  .container-checkbox .sex-user-input, .container-checkbox .orientation-user-input {
+    font-size: inherit;
     width: 100%;
     display: inline-block;
     position: relative; }
-  .containeur-checkbox .checkbox-account {
+  .container-checkbox .checkbox-account {
     display: inline-block;
     position: relative;
     margin: 0% auto;

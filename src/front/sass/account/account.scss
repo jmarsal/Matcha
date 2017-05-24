@@ -133,12 +133,13 @@
     display: none;
 }
 
-.containeur-checkbox {
+.container-checkbox {
     width: 75%;
     display: inline-flex;
     position: relative;
     
-    .sex-user, .orientation-user {
+    .sex-user-input, .orientation-user-input {
+        font-size: inherit;
         width: 100%;
         display: inline-block;
         position: relative;

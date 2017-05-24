@@ -113,20 +113,44 @@ block content
                 hr(class="hr-login")
                 div(class="sex-user") tu es :
                     div(class="container-checkbox")
-                        div(class="sex-user") un homme
-                            input(class="input-sex-user-male checkbox-account", type="checkbox", name="input-sex-user1", value="1")
-                        div(class="sex-user") une femme
-                            input(class="input-sex-user-female checkbox-account", type="checkbox", name="input-sex-user2", value="2")
+                        div(class="sex-user-input") un homme
+                            input(
+                                class="input-sex-user-male checkbox-account"
+                                type="radio" name="input-sex-user"
+                                checked=(sex == 1 ? true : false)
+                            )
+                        div(class="sex-user-input") une femme
+                            input(
+                                class="input-sex-user-female checkbox-account"
+                                type="radio" name="input-sex-user"
+                                checked=(sex == 2 ? true : false)
+                            )
                 div(class="orientation-user") tu recherches :
                     div(class="container-checkbox")
-                        div(class="orientation-user") un homme
-                            input(class="input-orientation-user checkbox-account", type="checkbox", name="input-orientation-user1", value="1")
-                        div(class="orientation-user") une femme
-                            input(class="input-orientation-user checkbox-account", type="checkbox", name="input-orientation-user2", value="2")
-                        div(class="orientation-user") les deux
-                            input(class="input-orientation-user checkbox-account", type="checkbox", name="input-orientation-user3", value="3")
+                        div(class="orientation-user-input") un homme
+                            input(
+                                class="input-orientation-user checkbox-account"
+                                type="radio" name="input-orientation-user"
+                                checked=(orientation == 1 ? true : false)
+                            )
+                        div(class="orientation-user-input") une femme
+                            input(
+                                class="input-orientation-user checkbox-account"
+                                type="radio" name="input-orientation-user"
+                                checked=(orientation == 2 ? true : false)
+                            )
+                        div(class="orientation-user-input") les deux
+                            input(
+                                class="input-orientation-user checkbox-account"
+                                type="radio" name="input-orientation-user"
+                                checked=(orientation == 3 ? true : false)
+                            )
                 div(class="biographie-account") A propos de toi :
-                    input(class="bio-account", type="text", name="bio-account")
+                    input(
+                        class="bio-account" type="text"
+                        name="bio-account"
+                        value=bio
+                    )
                 div(class="tags-account") Tags d'interets :
                     input(class="tags-input-account", type="text", name="tags-input-account")
                     div(class="button account") ajouter ce tag !

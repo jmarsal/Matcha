@@ -57,7 +57,10 @@ class Database {
             'email VARCHAR(255) DEFAULT NULL,' +
             'passwd VARCHAR(255) DEFAULT NULL,' +
             'cle VARCHAR(255) DEFAULT NULL,' +
-            'active BOOLEAN DEFAULT 0' +
+            'active BOOLEAN DEFAULT 0,' +
+            'sex SMALLINT DEFAULT NULL,' +
+            'orientation SMALLINT DEFAULT 3,' +
+            'bio TEXT DEFAULT NULL' +
             ')';
         const userPhotos = 'CREATE TABLE IF NOT EXISTS users_photos_profils' +
             '(' +
