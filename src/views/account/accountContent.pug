@@ -7,6 +7,7 @@ block var
     - page = "account";
     - countElems = 0;
     - photo;
+    - tag;
 
 block content
     div(class="container-account-user")
@@ -115,16 +116,21 @@ block content
                     div(class="container-checkbox")
                         div(class="sex-user-input") un homme
                             input(
-                                class="input-sex-user-male checkbox-account"
-                                type="radio" name="input-sex-user"
-                                checked=(sex == 1 ? true : false)
+                            class="input-sex-user-male checkbox-account"
+                            type="radio" name="input-sex-user"
+                            checked=(sex == 1 ? true : false)
+                            value="1"
+                            onclick="submitForm('sex')"
                             )
                         div(class="sex-user-input") une femme
                             input(
-                                class="input-sex-user-female checkbox-account"
-                                type="radio" name="input-sex-user"
-                                checked=(sex == 2 ? true : false)
+                            class="input-sex-user-female checkbox-account"
+                            type="radio" name="input-sex-user"
+                            checked=(sex == 2 ? true : false)
+                            value="2"
+                            onclick="submitForm('sex')"
                             )
+                div(class=( locals.error3 ? "error red" : "error"), id="errorInfoSex") #{error3}
                 div(class="orientation-user") tu recherches :
                     div(class="container-checkbox")
                         div(class="orientation-user-input") un homme
@@ -132,25 +138,43 @@ block content
                                 class="input-orientation-user checkbox-account"
                                 type="radio" name="input-orientation-user"
                                 checked=(orientation == 1 ? true : false)
+                                value="1"
+                                onclick="submitForm('orientation')"
                             )
                         div(class="orientation-user-input") une femme
                             input(
                                 class="input-orientation-user checkbox-account"
                                 type="radio" name="input-orientation-user"
                                 checked=(orientation == 2 ? true : false)
+                                value="2"
+                                onclick="submitForm('orientation')"
                             )
                         div(class="orientation-user-input") les deux
                             input(
                                 class="input-orientation-user checkbox-account"
                                 type="radio" name="input-orientation-user"
                                 checked=(orientation == 3 ? true : false)
+                                value="3"
+                                onclick="submitForm('orientation')"
                             )
+                div(class=( locals.error4 ? "error red" : "error"), id="errorInfoOrientation") #{error4}
                 div(class="biographie-account") A propos de toi :
-                    input(
-                        class="bio-account" type="text"
-                        name="bio-account"
-                        value=bio
-                    )
+                    div: textarea(
+                        class="bio-account" id="bioAccount"
+                        type="text"
+                        name="bioAccount"
+                        onblur="submitForm('bio')"
+                    ) #{bio}
+                div(class=( locals.error5 ? "error red" : "error"), id="errorInfoBio") #{error5}
                 div(class="tags-account") Tags d'interets :
+                    div(class=( locals.error6 ? "error red" : "error"), id="errorTag") #{error6}
+                    div(class="container-tags" id="container-tags")
+                        if tags
+                            for tag in tags
+                                div(
+                                class="tags button"
+                                id=tag.id
+                                onclick="addTag(" + tag.id + ")"
+                                ) ##{tag.tag}
                     input(class="tags-input-account", type="text", name="tags-input-account")
                     div(class="button account") ajouter ce tag !

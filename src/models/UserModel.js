@@ -374,6 +374,75 @@ class UserModel {
             });
         });
     }
+
+    static modifySexByUserId(userId, sex) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET sex = ? WHERE id = ?";
+
+            connection.query(sql,  [sex, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+    static getSexByUserId(userId, sex) {
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT sex FROM users WHERE id = ?";
+
+            connection.query(sql,  [userId], (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res[0].sex);
+                }
+            });
+        });
+    }
+
+    static modifyOrientationByUserId(userId, orientation) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET orientation = ? WHERE id = ?";
+
+            connection.query(sql,  [orientation, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    static modifyBioByUserId(userId, bio) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET bio = ? WHERE id = ?";
+
+            connection.query(sql,  [bio, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    static getTagsInDb() {
+        return new Promise((resolve, reject) => {
+            const sql = "SELECT * FROM tags";
+
+            connection.query(sql, (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(res);
+                }
+            });
+        });
+    }
 }
 module.exports = UserModel;
 

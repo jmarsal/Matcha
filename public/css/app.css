@@ -159,7 +159,7 @@ html {
     margin-left: 20%;
     margin-top: 5%; }
 
-form input {
+form input, textarea {
   color: #212121;
   text-align: center;
   width: 75%;
@@ -384,3 +384,21 @@ html {
 
 .modify-account.green {
   background-color: rgba(128, 252, 169, 0.8); }
+
+.biographie-account {
+  display: block;
+  margin: 0% auto;
+  position: relative; }
+  .biographie-account .bio-account {
+    position: relative;
+    margin: 0px 22% 0px 0px;
+    width: 66%;
+    height: 20%;
+    display: block;
+    margin: 0% auto;
+    padding-top: 2%; }
+
+.tags-account {
+  display: block; }
+  .tags-account .tags-input-account {
+    display: block; }

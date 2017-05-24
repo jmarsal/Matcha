@@ -58,7 +58,7 @@ class Database {
             'passwd VARCHAR(255) DEFAULT NULL,' +
             'cle VARCHAR(255) DEFAULT NULL,' +
             'active BOOLEAN DEFAULT 0,' +
-            'sex SMALLINT DEFAULT NULL,' +
+            'sex SMALLINT DEFAULT 2,' +
             'orientation SMALLINT DEFAULT 3,' +
             'bio TEXT DEFAULT NULL' +
             ')';
@@ -69,12 +69,23 @@ class Database {
             'src_photo VARCHAR(255) NOT NULL,' +
             'photo_profil BOOLEAN DEFAULT 0' +
             ')';
+        const tags = 'CREATE TABLE IF NOT EXISTS tags' +
+            '(' +
+            'id INT PRIMARY KEY AUTO_INCREMENT,' +
+            'id_user INT NOT NULL,' +
+            'tag VARCHAR(150) NOT NULL' +
+            ')';
         connection.query(users, (err) => {
             if (err) {
                 console.error(err);
             }
         });
         connection.query(userPhotos, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+        connection.query(tags, (err) => {
             if (err) {
                 console.error(err);
             }
