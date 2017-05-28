@@ -60,7 +60,10 @@ class Database {
             'active BOOLEAN DEFAULT 0,' +
             'sex SMALLINT DEFAULT 2,' +
             'orientation SMALLINT DEFAULT 3,' +
-            'bio TEXT DEFAULT NULL' +
+            'bio TEXT DEFAULT NULL,' +
+            'adress VARCHAR(255) DEFAULT NULL,' +
+            'lat FLOAT(10, 6) DEFAULT NULL,' +
+            'lng FLOAT(10, 6) DEFAULT NULL' +
             ')';
         const userPhotos = 'CREATE TABLE IF NOT EXISTS users_photos_profils' +
             '(' +
@@ -69,10 +72,15 @@ class Database {
             'src_photo VARCHAR(255) NOT NULL,' +
             'photo_profil BOOLEAN DEFAULT 0' +
             ')';
-        const tags = 'CREATE TABLE IF NOT EXISTS tags' +
+        const tagsUser = 'CREATE TABLE IF NOT EXISTS tags_user' +
             '(' +
             'id INT PRIMARY KEY AUTO_INCREMENT,' +
             'id_user INT NOT NULL,' +
+            'tag VARCHAR(150) NOT NULL' +
+            ')';
+        const tags = 'CREATE TABLE IF NOT EXISTS tags' +
+            '(' +
+            'id INT PRIMARY KEY AUTO_INCREMENT,' +
             'tag VARCHAR(150) NOT NULL' +
             ')';
         connection.query(users, (err) => {
@@ -81,6 +89,11 @@ class Database {
             }
         });
         connection.query(userPhotos, (err) => {
+            if (err) {
+                console.error(err);
+            }
+        });
+        connection.query(tagsUser, (err) => {
             if (err) {
                 console.error(err);
             }

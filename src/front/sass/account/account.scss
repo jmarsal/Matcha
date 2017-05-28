@@ -1,205 +1,387 @@
 @import "../variables/paletteColors";
 
 .container-account-user {
-  margin: 0% auto;
+    margin: 0% auto;
 }
 
 .content-account-user {
-  margin: 0% auto;
-  font-family: Indie Flower;
-  background-color: rgba($primary-color-dark, 0.6);
-  text-align: center;
-  width: 60%;
+    margin: 0% auto;
+    font-family: Indie Flower;
+    background-color: rgba($primary-color-dark, 0.6);
+    text-align: center;
+    width: 60%;
 }
 
 .welcome-text-account {
-  background-color: rgba($primary-color-dark, 0.8);
-  margin-bottom: -2%;
+    background-color: rgba($primary-color-dark, 0.8);
+    margin-bottom: -2%;
 }
 
 .photos-user-account {
-  position: relative;
-
-  .upload {
-    display: none;
-    left: 5%;
-  }
-
-  .input-file-trigger {
     position: relative;
-    display: inline-block;
-    cursor: pointer;
-    width: 100px;
-    height: 100px;
-    top: 10px;
-
-    &:hover {
-      filter: invert(100%);
-      transition-duration: 5s;
-      filter: hue-rotate(360deg);
+    
+    .upload {
+        display: none;
+        left: 5%;
     }
-    //border: 2px solid #ddd; /* Gray border */
-    //border-radius: 50%;
-    //width: 4%;
-  }
+    
+    .input-file-trigger {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        -webkit-transition: width 1s, height 1s, filter 1s, transform 1s;
+        transition: width 1s, height 1s, filter 1s, transform 1s;
+        
+        &:hover {
+            filter: invert(100%);
+            filter: hue-rotate(360deg);
+            transform: rotate(360deg);
+            width: 10%;
+            height: 10%;
+            bottom: 0;
+        }
+        //border: 2px solid #ddd; /* Gray border */
+        //border-radius: 50%;
+        //width: 4%;
+    }
+    
+    .div-photo-user {
+        display: inline-block;
+        position: relative;
+        width: 100px;
+        height: 100px;
+        background-position: center;
+        margin-right: 4%;
+        /* Make the background image cover the area of the <div>, and clip the excess */
+        background-size: cover;
+        border: 2px solid #ddd; /* Gray border */
+        border-radius: 50%; /* Rounded border */
+        cursor: pointer;
+        -webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
+        transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
+        z-index: 0;
+        
+        &:hover {
+            border: 2px solid #ddd900;
+        }
+        
+        &.profil {
+            border: 2px solid #ddd900;
+            width: 200px;
+            height: 200px;
+            border-radius: 0;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+            z-index: 1;
+        }
+        
+        &.star {
+            left: 40px;
+            margin-left: -40px;
+            //top: -32px;
+        }
+        
+        &.profil.star {
+            //top: -50px;
+        }
+    }
+}
 
-  .div-photo-user {
-    display: inline-block;
+.imgStar {
+    width: 25px;
     position: relative;
-    width: 100px;
-    height: 100px;
+    left: -15px;
+    z-index: 0;
+    
+    &.profilStar {
+        z-index: 2;
+    }
+}
+
+.interact-photos {
+    //display: none;
+    height: 0;
+    margin: 0px auto;
+    padding: 0px;
+    -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
+    transition: width 1s, height 1s, transform 1s;
+    
+    .button {
+        display: inline-block;
+        -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
+        transition: width 1s, height 1s, opacity 1s, transform 1s;
+        opacity: 0;
+        cursor: none;
+        margin: 0 auto;
+        padding: 0;
+        height: 0;
+    }
+    
+    &.expand {
+        height: auto;
+        
+        .button {
+            display: inline-block;
+            height: auto;
+            width: auto;
+            font-size: inherit;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+            opacity: 1;
+            margin-right: 4%;
+            cursor: pointer;
+            padding: 7.5px;
+        }
+    }
+}
+
+.get-img {
+    display: inline-block;
+}
+
+#my-file {
+    display: none;
+}
+
+.container-checkbox {
+    width: 75%;
+    display: inline-flex;
+    position: relative;
+    
+    .sex-user-input, .orientation-user-input {
+        font-size: inherit;
+        width: 100%;
+        display: inline-block;
+        position: relative;
+    }
+    .checkbox-account {
+        display: inline-block;
+        position: relative;
+        margin: 0% auto;
+        width: 6%;
+        margin-left: 8%;
+    }
+}
+
+.content-account-user {
+    margin: 0% auto;
+    font-family: Indie Flower;
+    background-color: rgba($primary-color-dark, 0.6);
+    text-align: center;
+    width: 60%;
+}
+
+.footer {
+    position: relative;
+    bottom: -63%;
+}
+
+.modify-account {
+    &.red {
+        background-color: $mess-error-color-rgba;
+    }
+    
+    &.green {
+        background-color: $mess-accept-color-rgba;
+    }
+}
+
+.biographie-account {
+    display: block;
+    margin: 0% auto;
+    position: relative;
+    
+    .bio-account {
+        font-family: "Indie Flower";
+        position: relative;
+        margin: 0px 22% 0px 0px;
+        width: 66%;
+        height: 20%;
+        display: block;
+        margin: 0% auto;
+        padding-top: 2%;
+    }
+}
+
+.tags-account {
+    display: inline-block;
+    margin-top: 10px;
+    
+    .tags {
+        display: inline-block;
+        background-color: #919191;
+        margin-right: 5px;
+        -webkit-transition: -webkit-transform 1s;
+        transition: transform 1s;
+        width: auto;
+        
+        &:hover {
+            background-color: $primary-color;
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+        
+        &.check {
+            background-color: $primary-color;
+            border: 1px solid whitesmoke;
+            
+            &:hover {
+                background-color: #919191;
+            }
+        }
+    }
+    
+    .new-tag {
+        display: block;
+    }
+    
+    .tags-input-account-p {
+        position: relative;
+        display: inline-block;
+        margin-left: 3%;
+    }
+    
+    .tags-input-account {
+        text-align: left;
+        display: inline-block;
+        position: relative;
+        margin: 0% auto;
+        width: 42%;
+    }
+}
+
+#errorTag {
+    margin-top: 10px;
+}
+
+.location-button {
+    margin: 0px auto;
+    background-image: url("/images/location/google-maps.png");
+    position: relative;
+    width: 50px;
+    height: 50px;
     background-position: center;
-    margin-right: 4%;
+    //margin-right: 4%;
     /* Make the background image cover the area of the <div>, and clip the excess */
     background-size: cover;
     border: 2px solid #ddd; /* Gray border */
     border-radius: 50%; /* Rounded border */
     cursor: pointer;
-    -webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
-    transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
-    z-index: 0;
-
-    &:hover {
-      border: 2px solid #ddd900;
-    }
-
-    &.profil {
-      border: 2px solid #ddd900;
-      width: 200px;
-      height: 200px;
-      border-radius: 0;
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-      z-index: 1;
-    }
-
-    &.star {
-      left: 40px;
-      margin-left: -40px;
-      //top: -32px;
-    }
-
-    &.profil.star {
-      //top: -50px;
-    }
-  }
 }
 
-.imgStar {
-  width: 5%;
-  position: relative;
-  left: -15px;
-  z-index: 0;
-
-  &.profilStar {
-    z-index: 2;
-  }
+.map_canvas {
+    width: 90%;
+    height: 50%;
+    margin: 0px auto;
 }
 
-.interact-photos {
-  display: none;
-  height: 0;
-  -webkit-transition: width 1s, height 1s, -webkit-transform 1s;
-  transition: width 1s, height 1s, transform 1s;
-
-  .button {
-    -webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
-    transition: width 1s, height 1s, opacity 1s, transform 1s;
-    height: 0;
-    opacity: 0;
-  }
-
-  &.expand {
-    height: auto;
-
-    .button {
-      display: inline-block;
-      height: auto;
-      width: auto;
-      font-size: inherit;
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg);
-      opacity: 1;
-      margin-right: 4%;
-    }
-  }
+.account {
+    margin-top: -15px;
+    margin-bottom: 25px;
 }
 
-.get-img {
-  display: inline-block;
-}
-
-#my-file {
-  display: none;
-}
-
-.container-checkbox {
-  width: 75%;
-  display: inline-flex;
-  position: relative;
-
-  .sex-user-input, .orientation-user-input {
-    font-size: inherit;
-    width: 100%;
-    display: inline-block;
-    position: relative;
-  }
-  .checkbox-account {
-    display: inline-block;
-    position: relative;
-    margin: 0% auto;
-    width: 6%;
-    margin-left: 8%;
-  }
-}
-
-.content-account-user {
-  margin: 0% auto;
-  font-family: Indie Flower;
-  background-color: rgba($primary-color-dark, 0.6);
-  text-align: center;
-  width: 60%;
-}
-
-.firstNameRegisterInput {
-  margin-bottom: 3%;
-}
-
-.footer {
-  position: relative;
-  bottom: -63%;
-}
-
-.modify-account {
-  &.red {
-    background-color: $mess-error-color-rgba;
-  }
-
-  &.green {
-    background-color: $mess-accept-color-rgba;
-  }
-}
-
-.biographie-account {
-  display: block;
-  margin: 0% auto;
-  position: relative;
-
-  .bio-account {
-    position: relative;
-    margin: 0px 22% 0px 0px;
-    width: 66%;
-    height: 20%;
+.location-auto {
     display: block;
-    margin: 0% auto;
-    padding-top: 2%;
-  }
+    margin-bottom: 10px;
+    
+    img {
+        //display: block;
+        //margin: 0px auto;
+        width: 5%;
+        margin: 10px 0 0 15px;
+        position: relative;
+        top: 10px;
+        cursor: pointer;
+        transition: transform 1s;
+
+        &:hover {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
+    }
 }
 
-.tags-account {
-  display: block;
-
-  .tags-input-account {
+.tag-slider {
     display: block;
-  }
+}
+
+.slider-before {
+    display: inline-block;
+    margin-right: 2%;
+}
+
+.slider-after {
+    margin-left: 2%;
+    display: inline-block;
+}
+
+.container-tags{
+    border: 2px solid $primary-color;
+    max-height: 20%;
+    overflow-y: auto;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    margin: 0px auto;
+    width: 60px;
+    height: 34px;
+    margin-top: 2%;
+    top: 2%;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: $primary-color;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px $primary-color;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }

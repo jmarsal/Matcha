@@ -4,16 +4,19 @@
 |     + 'script>')</script>
 <script src="../js/jquery-3.2.1.min.js"></script>
 <script src="../js/jquery.form.min.js"></script>
+<script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.css">
 doctype 5
 html(lang='fr')
     block var
     head
         title MATCHA
-        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+        //meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
         meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
         link(rel="icon" type="image/png" href="")
         link(rel="stylesheet" href= "../css/app.css")
-    body
+    body(onload= (page == "account" ? "initialize("+lat+","+lng+")" : ""))
         div(class="site-container")
             div(class="site-pusher")
                 header(class="header")
@@ -23,11 +26,11 @@ html(lang='fr')
                         if !noheader
                             a(href="../browse", "class"=(page == "browse" ? "is-active" : "")) Parcourir
                             a(href="../search", "class"=(page == "search" ? "is-active" : "")) Rechercher
-                            a(href="../account", "class"=(page == "account.scss" ? "is-active" : "")) Mon Compte
+                            a(href="../account", "class"=(page == "account" ? "is-active" : "")) Mon Compte
                                 if (locals.photoFav)
                                     div(
                                         class="fav default-img-user" id="default-img-user"
-                                        style='background-image: url("' + locals.photoFav + '")'
+                                        style='background-image: url("' + photoFav + '")'
                                         )
                                 else
                                     div(
@@ -41,7 +44,7 @@ html(lang='fr')
                 div(class="post")
                     div(class="content" id="app")
                         block content
+                        div(class="footer")
+                            p(class="footer") &copy; 2017 - Made by Jmarsal
                 div(class="site-cache" id="site-cache" onclick="showhide()")
-        div(class="footer")
-            p &copy; 2017 - Made by Jmarsal
         block js

@@ -39,6 +39,7 @@ html {
     text-decoration: none;
     color: $divider-color;
     border-right: 1px solid $primary-color;
+    cursor: default;
 }
 
 //                img {
@@ -86,8 +87,19 @@ html {
     }
 }
 
-.footer {
+.footer{
+    position: relative;
+    bottom: 0px;
+    //height: 100%;
+    width: 100%;
     color: $primary-text-color;
+    
+    p {
+        position: relative;
+        padding: 0;
+        //bottom: -650px;
+        //margin-bottom: -50px;
+    }
 }
 
 //

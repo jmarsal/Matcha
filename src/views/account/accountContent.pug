@@ -2,6 +2,8 @@ extends ../layout/layout
 
 block js
     script(src="../js/ajaxAccount.js")
+    script(src="http://maps.google.com/maps/api/js?key=AIzaSyC-QpPQdgESP_iKFtbuIchUgp-NjZBqCFA&libraries=places&callback=initAutocomplete"
+            async defer)
 
 block var
     - page = "account";
@@ -15,7 +17,9 @@ block content
             div(class="welcome-text-account")
                 div(class="welcome-account" id="welcome-account") Bienvenue #{login}
                 div(class="text1-account")
-                    | Afin d'avoir accès à toutes les fonctionnalités, merci de compléter ton profil !
+                    | Afin d'avoir accès à toutes les fonctionnalités,
+                    br
+                    | merci de compléter ton profil !
             hr(class="hr-login")
             div(class="select-photo-profil-text-account") Upload et choisis une photo pour ton profil (5 max)
             div(class="photos-user-account", id="photos-user-account")
@@ -56,6 +60,7 @@ block content
             form(class="formAccount", id="formAccount")
                 hr(class="hr-login")
                 p Modifier mes infos ?
+                div(class=( locals.error2 ? "error red" : "error"), id="errorInfoProfil") #{error2}
                 div(class="emailRegisterText") Mon adresse Email
                     div: input(
                             class="modify-account emailRegisterInput" id="emailAccountInput"
@@ -110,7 +115,24 @@ block content
                     type="hidden"
                     value=firstName
                     )
-                div(class=( locals.error2 ? "error red" : "error"), id="errorInfoProfil") #{error2}
+                div(class="location-container")
+                    div(class="location-town") Mon Adresse
+                        div: input(
+                                id="autocomplete"
+                                placeholder="Enter your address"
+                                value=adress
+                                onFocus="geolocate()"
+                                type="text"
+                            )
+                    div(class=( locals.error7 ? "error red" : "error"), id="errorLocation") #{error7}
+                    div(class="location-auto") Google Map
+                        img(
+                        class="google-button"
+                        src="/images/location/google-maps.png"
+                        title="Me geolocalisé ?"
+                        onclick="initialize()"
+                        )
+                    div(id="map_canvas" class="map_canvas")
                 hr(class="hr-login")
                 div(class="sex-user") tu es :
                     div(class="container-checkbox")
@@ -163,18 +185,46 @@ block content
                         class="bio-account" id="bioAccount"
                         type="text"
                         name="bioAccount"
+                        maxlength="21844"
                         onblur="submitForm('bio')"
                     ) #{bio}
                 div(class=( locals.error5 ? "error red" : "error"), id="errorInfoBio") #{error5}
                 div(class="tags-account") Tags d'interets :
-                    div(class=( locals.error6 ? "error red" : "error"), id="errorTag") #{error6}
+                    div(class="tag-slider")
+                        div(class="slider-before") Tous les tags
+                        label(class="switch")
+                            input(
+                            class="switch-input"
+                            name="switch-input"
+                            type="checkbox"
+                            checked=false
+                            value="0"
+                            onclick="changeTagsDisplay()"
+                            )
+                            div(class="slider round")
+                        div(class="slider-after") Mes tags
                     div(class="container-tags" id="container-tags")
                         if tags
+                            - countElems = 0;
                             for tag in tags
                                 div(
-                                class="tags button"
-                                id=tag.id
-                                onclick="addTag(" + tag.id + ")"
+                                class=(check[countElems].idTag == tag.id && check[countElems].check ? "tags button check" : "tags button")
+                                id=tag.tag
+                                onclick="modifyTagUser("+tag.tag+")"
                                 ) ##{tag.tag}
-                    input(class="tags-input-account", type="text", name="tags-input-account")
-                    div(class="button account") ajouter ce tag !
+                                - countElems++;
+                    div(class=( locals.error6 ? "error red" : "error"), id="errorTag") #{error6}
+                    div(class="new-tag" id="new-tag") Rechercher ou créer un nouveau Tag ?
+                        div(class="container-input-search-tag")
+                            p(class="tags-input-account-p") #
+                            input(
+                                class="tags-input-account"
+                                id="tagsInputAccount"
+                                type="text"
+                                name="tags-input-account"
+                                minlength="2" maxlength="150"
+                                )
+                        div(
+                            class="button account"
+                            onclick="addTagToDb()"
+                        ) ajouter ce tag !

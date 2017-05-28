@@ -41,41 +41,41 @@ class UserModel {
         return new Promise((resolve, reject) => {
             let sql = "SELECT login, cle FROM users WHERE cle = ?";
 
-            connection.query(sql,  [key], (err, res) => {
-               if (err) {
-                   reject(err);
-               }
-               if (!res.length || res[0].login !== login) {
-                   resolve(false);
-               } else {
-                   const cle = uniqid();
-                   sql = "UPDATE users SET cle = ?, active = ? WHERE login = ?";
+            connection.query(sql, [key], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                if (!res.length || res[0].login !== login) {
+                    resolve(false);
+                } else {
+                    const cle = uniqid();
+                    sql = "UPDATE users SET cle = ?, active = ? WHERE login = ?";
 
-                   connection.query(sql,  [cle, 1, login], (err,  res) => {
-                      if (err) {
-                          reject (err);
-                      } else {
-                          resolve(true);
-                      }
-                   });
-               }
+                    connection.query(sql, [cle, 1, login], (err, res) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(true);
+                        }
+                    });
+                }
             });
         });
     }
 
     /*
-    ** Verifie que le couple login / passwd match avec la DB
+     ** Verifie que le couple login / passwd match avec la DB
      */
     static checkUserForLogin(dataUser) {
         return new Promise((resolve, reject) => {
             let sql = "SELECT login, passwd, active FROM users WHERE login = ? && passwd = ?";
 
-            connection.query(sql,  [dataUser.login,  dataUser.passwd], (err, res) => {
+            connection.query(sql, [dataUser.login, dataUser.passwd], (err, res) => {
                 if (err) {
                     reject(err);
                 }
                 if (res.length) {
-                    if (res[0].active){
+                    if (res[0].active) {
                         resolve(true);
                     } else {
                         resolve("Le compte n'est pas actif!");
@@ -94,7 +94,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             let sql = "SELECT id FROM users WHERE login = ?";
 
-            connection.query(sql,  [login], (err, res) => {
+            connection.query(sql, [login], (err, res) => {
                 if (err) {
                     reject(err);
                 }
@@ -114,7 +114,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             let sql = "SELECT email FROM users WHERE email = ?";
 
-            connection.query(sql,  [email], (err, res) => {
+            connection.query(sql, [email], (err, res) => {
                 if (err) {
                     reject(err);
                 }
@@ -134,7 +134,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             let sql = "SELECT login, cle FROM users WHERE email = ?";
 
-            connection.query(sql,  [email], (err, res) => {
+            connection.query(sql, [email], (err, res) => {
                 if (err) {
                     reject(err);
                 }
@@ -152,13 +152,13 @@ class UserModel {
     }
 
     /*
-    ** Change le mot de passe User
+     ** Change le mot de passe User
      */
     static changePasswd(dataUser) {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET passwd = ? WHERE login = ?";
 
-            connection.query(sql,  [dataUser.passwd, dataUser.login], (err) => {
+            connection.query(sql, [dataUser.passwd, dataUser.login], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -169,7 +169,7 @@ class UserModel {
     }
 
     /*
-    ** Ajoute id_user, src de la photo, photo_profil dans la db
+     ** Ajoute id_user, src de la photo, photo_profil dans la db
      */
     static addPhotoProfil(data) {
         return new Promise((resolve, reject) => {
@@ -186,21 +186,21 @@ class UserModel {
     }
 
     /*
-    ** Recupere drc_photos, photo_profil dans la db
+     ** Recupere drc_photos, photo_profil dans la db
      */
 
     static getPhotoProfil(id_user) {
         return new Promise((resolve, reject) => {
             let sql = "SELECT id, src_photo, photo_profil FROM users_photos_profils WHERE id_user = ? ORDER BY id DESC";
 
-            connection.query(sql,  [id_user], (err, res) => {
+            connection.query(sql, [id_user], (err, res) => {
                 if (err) {
                     reject(err);
                 }
                 if (res.length) {
                     const photosProfil = res;
                     sql = "SELECT src_photo FROM users_photos_profils WHERE id_user = ? && photo_profil = 1";
-                    connection.query(sql,  [id_user], (err, res) => {
+                    connection.query(sql, [id_user], (err, res) => {
                         if (err) {
                             reject(err);
                         }
@@ -228,7 +228,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             let sql = "SELECT id FROM users_photos_profils WHERE src_photo = ?";
 
-            connection.query(sql,  [src_photo], (err, res) => {
+            connection.query(sql, [src_photo], (err, res) => {
                 if (err) {
                     reject(err);
                 }
@@ -247,13 +247,13 @@ class UserModel {
                 srcToRemove = ""
             ;
 
-            connection.query(sql,  [idPhoto], (err, res) => {
+            connection.query(sql, [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
                     srcToRemove = res[0];
                     sql = "DELETE FROM users_photos_profils WHERE id = ?";
-                    connection.query(sql,  [idPhoto], (err, res) => {
+                    connection.query(sql, [idPhoto], (err, res) => {
                         if (err) {
                             reject(err);
                         } else {
@@ -270,7 +270,7 @@ class UserModel {
             let sql = "SELECT photo_profil, src_photo FROM users_photos_profils WHERE id = ?"
             ;
 
-            connection.query(sql,  [idPhoto], (err, res) => {
+            connection.query(sql, [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -286,7 +286,7 @@ class UserModel {
                                 reject(err);
                             } else {
                                 sql = "UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?";
-                                connection.query(sql,  [fav.favorite, idPhoto], (err) => {
+                                connection.query(sql, [fav.favorite, idPhoto], (err) => {
                                     if (err) {
                                         reject(err);
                                     } else {
@@ -301,11 +301,11 @@ class UserModel {
         });
     }
 
-    static getInfoProfil(userId){
+    static getInfoProfil(userId) {
         return new Promise((resolve, reject) => {
             let sql = "SELECT * FROM users WHERE id = ?";
 
-            connection.query(sql,  [userId], (err, res) => {
+            connection.query(sql, [userId], (err, res) => {
                 if (err) {
                     reject(err);
                 }
@@ -323,7 +323,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET email = ? WHERE id = ?";
 
-            connection.query(sql,  [email, userId], (err) => {
+            connection.query(sql, [email, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -337,7 +337,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET login = ? WHERE id = ?";
 
-            connection.query(sql,  [login, userId], (err) => {
+            connection.query(sql, [login, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -351,7 +351,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET nom = ? WHERE id = ?";
 
-            connection.query(sql,  [FirstName, userId], (err) => {
+            connection.query(sql, [FirstName, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -365,7 +365,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET prenom = ? WHERE id = ?";
 
-            connection.query(sql,  [lastName, userId], (err) => {
+            connection.query(sql, [lastName, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -379,7 +379,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET sex = ? WHERE id = ?";
 
-            connection.query(sql,  [sex, userId], (err) => {
+            connection.query(sql, [sex, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -388,11 +388,12 @@ class UserModel {
             });
         });
     }
+
     static getSexByUserId(userId, sex) {
         return new Promise((resolve, reject) => {
             const sql = "SELECT sex FROM users WHERE id = ?";
 
-            connection.query(sql,  [userId], (err, res) => {
+            connection.query(sql, [userId], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -406,7 +407,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET orientation = ? WHERE id = ?";
 
-            connection.query(sql,  [orientation, userId], (err) => {
+            connection.query(sql, [orientation, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -420,7 +421,7 @@ class UserModel {
         return new Promise((resolve, reject) => {
             const sql = "UPDATE users SET bio = ? WHERE id = ?";
 
-            connection.query(sql,  [bio, userId], (err) => {
+            connection.query(sql, [bio, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -432,16 +433,121 @@ class UserModel {
 
     static getTagsInDb() {
         return new Promise((resolve, reject) => {
-            const sql = "SELECT * FROM tags";
+            let sql = "SELECT * FROM tags",
+                result = {
+                    tags: "",
+                    tags_user: "",
+                    check: [{
+                        idTag: "",
+                        check: false
+                    }]
+                };
 
             connection.query(sql, (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(res);
+                    sql = "SELECT * FROM tags_user";
+                    result.tags = res;
+                    for (let i = 0; i < res.length; i++){
+                        result.check[i] = new Object();
+                    }
+                    connection.query(sql, (err, res) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        result.tags_user = res;
+                        resolve(result);
+                    });
                 }
             });
         });
+    }
+
+    static addNewTag(idUser, tag) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT tag FROM tags WHERE tag = ?";
+
+            connection.query(sql, [tag], (err, res) => {
+                if (err) {
+                    reject(err);
+                }
+                if (!res.length) {
+                    sql = "INSERT INTO tags SET ?";
+
+                    connection.query(sql, [{"tag": tag}], (err) => {
+                        if (err) {
+                            reject(err);
+                        }
+                        sql = "INSERT INTO tags_user SET ?";
+
+                        connection.query(sql, [{"tag": tag, "id_user": idUser}], (err) => {
+                            if (err) {
+                                reject(err);
+                            }
+
+                            sql = "SELECT id FROM tags WHERE tag = ?";
+
+                            connection.query(sql, [tag], (err, res) => {
+                                if (err) {
+                                    reject(err);
+                                }
+                                resolve(res[0]);
+                            });
+                        });
+                    });
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    static modifyTagUserByTag(userId, tag) {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT tag FROM tags_user WHERE tag = ?";
+
+            connection.query(sql, [tag], (err, res) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    if (res.length){
+                        sql = "DELETE FROM tags_user WHERE tag = ?";
+
+                        connection.query(sql, [tag], (err, res) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(true);
+                            }
+                        });
+                    } else {
+                        sql = "INSERT INTO tags_user SET ?";
+
+                        connection.query(sql, [{"tag": tag, "id_user": userId}], (err, res) => {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                resolve(false);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    }
+
+    static addLocationProfil(resData, id_user) {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE users SET ? WHERE id = ?";
+
+            connection.query(sql, [resData, id_user], (err) => {
+                if (err) {
+                    reject(err);
+                }
+                resolve();
+            });
+        })
     }
 }
 module.exports = UserModel;
