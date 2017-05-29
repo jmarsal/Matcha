@@ -433,7 +433,7 @@ class UserModel {
 
     static getTagsInDb() {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT * FROM tags",
+            let sql = "SELECT * FROM tags ORDER BY tag ASC",
                 result = {
                     tags: "",
                     tags_user: "",
@@ -447,7 +447,7 @@ class UserModel {
                 if (err) {
                     reject(err);
                 } else {
-                    sql = "SELECT * FROM tags_user";
+                    sql = "SELECT * FROM tags_user ORDER BY tag ASC";
                     result.tags = res;
                     for (let i = 0; i < res.length; i++){
                         result.check[i] = new Object();

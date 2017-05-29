@@ -3,9 +3,13 @@
  */
 
 const mysql = require('mysql');
+const makeDir = require('make-dir');
+
+const CreateSeedAccount = require('../models/SeedAccount.js');
 
 class Database {
     constructor() {
+
         this.nameDb = nameDb;
         this.connection = mysql.createConnection({
             host: 'localhost',
@@ -19,17 +23,17 @@ class Database {
                 console.error('La connection avec le serveur MySQL est impossible dans la class Database');
                 process.exit(1);
             }
-                this.createDb()
+            this.createDb()
                 .then(() => {
                     this.connectDb()
                         .then(() => {
                             this.createTables();
                         }).catch((err) => {
-                            console.error(err);
-                        });
+                        console.error(err);
+                    });
                 }).catch((err) => {
-                    console.error(err);
-                });
+                console.error(err);
+            });
 
         });
     }
@@ -103,10 +107,36 @@ class Database {
                 console.error(err);
             }
         });
+        let SeedAccount = new CreateSeedAccount();
+        SeedAccount.addTags()
+            .then(() => {
+            console.log('resolve addTags');
+                SeedAccount.addUsers()
+                    .then(() => {
+                        console.log('resolve addUsers');
+                        SeedAccount.addPhotos()
+                            .then(() => {
+                                console.log('resolve addPhotos');
+                                SeedAccount.addTagsToUser()
+                                    .then((res) => {
+                                        console.log('resolve addTagsToUser');
+                                        console.log(res);
+                                    }).catch((err) => {
+                                        console.error(err);
+                                    });
+                            }).catch((err) => {
+                                console.error(err);
+                            });
+                    }).catch((err) => {
+                    console.error(err);
+                });
+            }).catch((err) => {
+            console.error(err);
+        });
     }
 
     connectDb() {
-        return new Promise((resolve,  reject) => {
+        return new Promise((resolve, reject) => {
             global.connection = mysql.createConnection({
                 host: 'localhost',
                 user: 'root',
