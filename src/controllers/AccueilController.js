@@ -10,6 +10,7 @@ const UserModel = require('../models/UserModel');
 const Helpers = require('../core/Helpers');
 const Mails = require('../core/Mails');
 
+
 class AccueilController {
     constructor() {
         this.login = "";
@@ -48,7 +49,7 @@ class AccueilController {
         });
         this.router.get('/accueil', (req, res) => {
             if (req.session.start) {
-                req.session.destroy(function(err) {
+                req.session.destroy(function (err) {
                     console.error(err);
                 });
             }
@@ -127,9 +128,9 @@ class AccueilController {
                                         Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                                     }
                                 }).catch((err) => {
-                               if (err) {
-                                   console.error(err);
-                               }
+                                if (err) {
+                                    console.error(err);
+                                }
                             });
                         } else if (status === false) {
                             Helpers.sendResponseToClient("Erreur de login et / ou mot de passe!", 1, res);

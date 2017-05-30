@@ -2,38 +2,22 @@
  * Created by jmarsal on 5/29/17.
  */
 
-const UserModel = require('../models/UserModel.js');
+const UserModel = require('../models/UserModel');
+const Database = require('../core/Database');
+const Helper = require('../core/Helpers');
 
-const uniqueRandomArray = require('unique-random-array');
+// const uniqueRandomArray = require('unique-random-array');
+const makeDir = require('make-dir');
 
 class SeedAccount {
     constructor() {
-        this.basicTags = [
-            "love",
-            "lover",
-            "matchaLove",
-            "football",
-            "jupiter",
-            "astronomie",
-            "programation",
-            "computer",
-            "42",
-            "soleil",
-            "vacances",
-            "amour",
-            "bateau",
-            "mer",
-            "plage",
-            "montagne",
-            "sableBlanc",
-            "nounours",
-            "calins",
-            "musique",
-            "bobMarley",
-            "ganja",
-            "rasta",
-            "enfants",
-            "pleinAir"
+        this.nbUsers = "";
+        this.basicTags = ["love", "lover", "matchaLove", "football", "jupiter",
+            "astronomie", "programation", "computer", "42", "soleil", "vacances",
+            "amour", "bateau", "mer", "plage", "montagne", "sableBlanc", "nounours",
+            "calins", "musique", "bobMarley", "ganja", "rasta", "enfants", "pleinAir",
+            "chat", "chiens", "saxo", "cirque", "velo", "moto", "superman", "hulk",
+            "supernova", "pasteque", "häagenDazs"
         ];
         this.basicUsers = [
             {
@@ -124,6 +108,7 @@ class SeedAccount {
                 "bio": "Aime ce qu'il fait !"
             }
         ];
+        this.countUsers = this.basicUsers.length;
         this.basicPhotos = [
             {
                 'id_user': 1,
@@ -146,6 +131,27 @@ class SeedAccount {
                 'src_photo': "/profils/1/angel-gif.gif"
             }
         ];
+        Promise.all([
+            this.addUsers(),
+            this.makefoldersPhoto()
+        ]).then(() => {
+            Promise.all([
+                this.addTags(),
+                this.addPhotos()
+            ]).then((value) => {
+                this.selectIdFromUsers() // pour test mais a supprimer
+                // console.log(value);
+                // this.addTagsToUser()
+                //     .then((res) => {
+                //         console.log('resolve addTagsToUser');
+                //         console.log(res);
+                //     }).catch((err) => {
+                //     console.error(err);
+                // });
+            }).catch((err) => {
+                console.error(err);
+            });
+        });
     }
 
     addTags() {
@@ -164,27 +170,31 @@ class SeedAccount {
                             if (err) {
                                 reject(err);
                             }
-                            if (i === this.basicTags.length -1) {
-                                resolve();
-                            }
                         });
                     }
                 });
+                if (i + 1 === this.basicTags.length) {
+                    resolve();
+                }
             }
         })
     }
 
     addUsers() {
         return new Promise((resolve, reject) => {
+            let allUser = [];
+
             for (let i = 0; i < this.basicUsers.length; i++) {
-                UserModel.newUser(this.basicUsers[i])
-                    .catch((err) => {
-                        reject(err);
-                    })
-                if (i === this.basicUsers.length - 1) {
-                    resolve();
-                }
+                allUser[i] = UserModel.newUser(this.basicUsers[i]);
             }
+            Promise.all([
+                allUser
+            ]).then((value) => {
+                console.log(value)
+                resolve();
+            }).catch((err) => {
+                reject(err);
+            })
         });
     }
 
@@ -201,7 +211,7 @@ class SeedAccount {
                         UserModel.addPhotoProfil(this.basicPhotos[i]);
                     }
                 });
-                if (i === this.basicPhotos.length - 1) {
+                if (i + 1 === this.basicPhotos.length) {
                     resolve();
                 }
             }
@@ -210,51 +220,148 @@ class SeedAccount {
 
     addTagsToUser() {
         return new Promise((resolve, reject) => {
-           let sql = "SELECT id FROM users",
-               nbUsers = "",
-               tagUser = [],
-               idUser = []
-           ;
+            this.selectIdFromUsers()
+                .then((rowUsers) => {
+                    if (rowUsers !== false) {
+                        this.nbUsers = rowUsers;
+                        this.checkIfTagsUsersAndCreateIt()
+                            .then(() => {
+                                console.log('tous les tags sont inseres dans la db!');
+                            }).catch((err) => {
+                            console.error(err);
+                        })
+                    } else {
+                        console.error("Probleme pour recuperer le nb d'users dans la db!");
+                    }
+                }).catch((err) => {
+                console.error(err);
+            });
+        });
+    }
+
+    checkIfTagsUsersAndCreateIt() {
+        return new Promise((resolve, reject) => {
+            let finish = 0,
+                i = 1
+            ;
+
+            while (i < this.nbUsers) {
+                let randomTags = [{
+                        "id_user": "",
+                        "tag": ""
+                    }],
+                    sql = "SELECT tag FROM tags_user WHERE id_user = ?";
+
+                connection.query(sql, [i], (err, res) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        if (!res.length) {
+                            this.getRandomTagsForUsers(randomTags, i)
+                                .then((resRand) => {
+                                    if (resRand !== false) {
+                                        randomTags = resRand;
+                                        this.insertRandomTagsToDb(randomTags, res.length, i)
+                                            .then(() => {
+                                                i++;
+                                            }).catch((err) => {
+                                            console.error(err);
+                                        });
+                                    } else {
+                                        console.error('Probleme avec le random des tags Users!');
+                                    }
+                                }).catch((err) => {
+                                console.error(err);
+                            })
+
+                        }
+                    }
+                });
+                finish = i;
+            }
+            if (finish + 1 == this.nbUsers) {
+                resolve();
+            }
+        });
+    }
+
+    insertRandomTagsToDb(randomTags) {
+        return new Promise((resolve, reject) => {
+            let j = 0;
+
+            while (j < randomTags.length) {
+                let sql = "INSERT INTO tags_user SET ?";
+
+                connection.query(sql, [{
+                    "id_user": randomTags[j].id_user,
+                    "tag": randomTags[j].tag
+                }], (err) => {
+                    if (err) {
+                        reject(err);
+                    }
+                    else {
+                        j++;
+                    }
+                });
+            }
+            if (j + 1 == randomTags.tag.length) {
+                resolve();
+            }
+        });
+    }
+
+    getRandomTagsForUsers(randomTags, i) {
+        return new Promise((resolve) => {
+
+            for (let nbTags = 0; nbTags < 6; nbTags++) {
+                randomTags[nbTags].tag = this.basicTags[Math.floor(Math.random() * this.basicTags.length)];
+                while (randomTags[nbTags].tag === "undefined") {
+                    randomTags[nbTags].tag = this.basicTags[Math.floor(Math.random() * this.basicTags.length)];
+                }
+                randomTags[nbTags].id_user = i;
+            }
+            if (randomTags.length == 5) {
+                resolve(randomTags);
+            } else {
+                resolve(false);
+            }
+        })
+    }
+
+    selectIdFromUsers() {
+        return new Promise((resolve, reject) => {
+            let sql = "SELECT id FROM users";
 
             connection.query(sql, (err, res) => {
                 if (err) {
                     reject(err);
                 }
+                console.log(res.length);
                 if (res.length) {
-                    nbUsers = res.length;
-                    //console.log(nbUsers);
-                    for (let i = 1; i < nbUsers; i++) {
-                        tagUser = [];
-                        idUser = [];
-                        // faire un select tags_user i=id_user voir si vide ou pas
-                        for (let nbTags = 0; nbTags < 5; nbTags++) {
-                            tagUser[nbTags] = this.basicTags[Math.floor(Math.random()*this.basicTags.length)];
-                            idUser[nbTags] = i;
-                        }
-                        let dataTags = {
-                            "id_user" : idUser,
-                            "tag": tagUser
-                        }
-                        console.log(dataTags.tag[0]);
-                        for (let j = 0; j < tagUser.length; j++) {
-                            sql = "INSERT INTO tags_user SET ?";
-
-                            connection.query(sql, [{
-                                "id_user": dataTags.id_user[j],
-                                "tag": dataTags.tag[j]
-                            }], (err) => {
-                                if (err) {
-                                    reject(err);
-                                }
-                            });
-                        }
-                        if (i === nbUsers - 1) {
-                            resolve();
-                        }
-                    }
+                    resolve(res.length);
+                } else {
+                    resolve(false);
                 }
             });
-        });
+        })
+    }
+
+    makefoldersPhoto() {
+        return new Promise((resolve, reject) => {
+            let makeFolders = [];
+
+            for (let i = 1; i <= this.countUsers; i++) {
+                makeFolders[i] = makeDir('./public/profils/' + i);
+            }
+
+            Promise.all([
+                makeFolders
+            ]).then(() => {
+                resolve();
+            }).catch((err) => {
+                console.error(err);
+            })
+        })
     }
 }
 module.exports = SeedAccount;

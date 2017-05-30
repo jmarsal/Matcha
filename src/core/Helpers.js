@@ -28,7 +28,7 @@ class Helpers {
     static parseURLParams(url) {
         return new Promise((resolve, reject) => {
             var queryStart = url.indexOf("?") + 1,
-                queryEnd   = url.indexOf("#") + 1 || url.length + 1,
+                queryEnd = url.indexOf("#") + 1 || url.length + 1,
                 query = url.slice(queryStart, queryEnd - 1),
                 pairs = query.replace(/\+/g, " ").split("&"),
                 parms = {}, i, n, v, nv;
@@ -45,6 +45,15 @@ class Helpers {
             }
             resolve(parms);
         });
-}
+    }
+
+    static reflect(promise) {
+        return promise.then(function (v) {
+                return {v: v, status: "resolved"}
+            },
+            function (e) {
+                return {e: e, status: "rejected"}
+            });
+    }
 }
 module.exports = Helpers;
