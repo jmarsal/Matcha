@@ -4,4 +4,28 @@ block var
     - page = "browse";
 
 block content
-    p #{title}
+    div(class="container-account-user")
+        div(class="content-account-user")
+            div(class="welcome-text-account")
+                div(class="welcome-account" id="welcome-account")
+                div(class="text1-account"): p #{title}
+                    br
+            hr(class="hr-login")
+            div(class="container-profils-browse")
+                if profils
+                    for profil in profils
+                        div(class="separator-profil")
+                        div(
+                            class="profil-browse"
+                            id=profil.id
+                            onclick="("+ profil.id +")"
+                        )
+                            div(
+                                class="photo-profil-browse"
+                                style='background-image: url("' + profil.photo + '")'
+                            )
+                            div(class='infos-profil-browse')
+                                div(class='login-profil-browse') Mon surnom :
+                                div(class='about-me') A propos de moi :
+                                div(class='looking-for') Je recherche :
+                                dic(class='localite') Je suis de :

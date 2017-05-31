@@ -8,7 +8,7 @@ const express = require('express');
 const AccueilController = require('../controllers/AccueilController');
 const Error404 =  require('../controllers/404_Controller');
 const AccountController =  require('../controllers/AccountController');
-const AppController =  require('../controllers/AppController');
+const BrowseController =  require('../controllers/BrowseController');
 const ProfilUserController =  require('../controllers/ProfilUserController');
 const SearchController =  require('../controllers/SearchController');
 
@@ -26,7 +26,7 @@ class Router {
         // APP
         new AccueilController();
         new AccountController();
-        new AppController();
+        new BrowseController();
         new ProfilUserController();
         new SearchController();
         new Error404();

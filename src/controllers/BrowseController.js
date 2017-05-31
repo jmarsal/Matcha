@@ -4,7 +4,7 @@
 
 const express = require('express');
 
-class AppController {
+class BrowseController {
     constructor() {
         if (!app) {
             console.error('Error! Exiting... You must provide the Express instance to controllers.');
@@ -17,14 +17,15 @@ class AppController {
     }
 
     registerRoutes() {
-        this.accueilRoute();
+        this.browseRoute();
     }
 
-    accueilRoute() {
+    browseRoute() {
         this.router.get('/browse', (req, res) => {
             if (req.session.start){
+                let profils = [];
                 res.render('./views/browse/browseContent', {
-                    title: 'Parcourir !!!'
+                    title: "Voici quelques profils qui pourrait te convenir ..."
                 });
             } else {
                 res.redirect('../accueil');
@@ -32,4 +33,4 @@ class AppController {
         });
     }
 }
-module.exports = AppController;
+module.exports = BrowseController;
