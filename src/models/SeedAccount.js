@@ -33,7 +33,9 @@ class SeedAccount {
                 "bio": "Cherche acteur plein de fric pour penser à autre chose que Brad...",
                 "adress": "9200 Sunset Blvd.Suite 550 West Hollywood, CA 90069",
                 "lat": 34.0898242,
-                "lng": -118.39271339999999
+                "lng": -118.39271339999999,
+                "city": "West Hollywood",
+                "country": "États-Unis"
             },
             {
                 "nom": "Alba",
@@ -48,7 +50,9 @@ class SeedAccount {
                 "bio": "Envie de me detendre apres un tournage...",
                 "adress": "3 Arts Entertainment 9460 Wilshire Blvd. 7th Floor Beverly Hills, CA 90212",
                 "lat": 34.066745,
-                "lng": -118.3993524
+                "lng": -118.3993524,
+                "city": "Beverly Hills",
+                "country": "États-Unis"
             },
             {
                 "nom": "Ciccone",
@@ -60,10 +64,12 @@ class SeedAccount {
                 "active": 1,
                 "sex": 2,
                 "orientation": 1,
-                "bio": "Trump est president, alors je me met au travail...",
+                "bio": "Si vous votez pour Hillary Clinton, je vous ferai une fellation. Je le jure devant Dieu. Je prends mon temps, je regarde. Oui ? Et au fait, j’avale",
                 "adress": "Untitled Entertainment 350 S. Beverly Dr. Suite 200 Beverly Hills, CA 90212 USA",
                 "lat": 34.0604857,
-                "lng": -118.39866840000002
+                "lng": -118.39866840000002,
+                "city": "Beverly Hills",
+                "country": "États-Unis"
             },
             {
                 "nom": "Peichert",
@@ -78,7 +84,9 @@ class SeedAccount {
                 "bio": "Besoin d'experiences !",
                 "adress": "Villa Mederic Louane 3 rue des pyramides 75001 Paris",
                 "lat": 48.8643211,
-                "lng": 2.3323676999999634
+                "lng": 2.3323676999999634,
+                "city": "Paris",
+                "country": "France"
             },
             {
                 "nom": "Dujardin",
@@ -93,7 +101,9 @@ class SeedAccount {
                 "bio": "Alex tu me manque T_T, besoin de reconfort !",
                 "adress": "R & D - Société d'Avocats 28 avenue de Messine 75008 Paris France",
                 "lat": 48.8771133,
-                "lng": 2.3120758000000023
+                "lng": 2.3120758000000023,
+                "city": "Paris",
+                "country": "France"
             },
             {
                 "nom": "Marsal",

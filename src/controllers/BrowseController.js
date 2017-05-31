@@ -4,6 +4,8 @@
 
 const express = require('express');
 
+const BrowseModel = require('../models/BrowseModel');
+
 class BrowseController {
     constructor() {
         if (!app) {
@@ -24,9 +26,23 @@ class BrowseController {
         this.router.get('/browse', (req, res) => {
             if (req.session.start){
                 let profils = [];
-                res.render('./views/browse/browseContent', {
-                    title: "Voici quelques profils qui pourrait te convenir ..."
-                });
+
+                BrowseModel.getInfosAllProfils(req.session.user.id)
+                    .then((infos) => {
+                        profils.infos = infos;
+                        return BrowseModel.getAllPhotosProfils(req.session.user.id)
+                    })
+                    .then((photos) => {
+                        profils.photos = photos;
+                        res.render('./views/browse/browseContent', {
+                            title: "Voici quelques profils qui pourrait te convenir ...",
+                            profils: profils.infos,
+                            photos: profils.photos
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
             } else {
                 res.redirect('../accueil');
             }

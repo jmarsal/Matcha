@@ -3,28 +3,31 @@
  */
 
 class BrowseModel {
-    static getAllProfilsWihtoutMe(idUserSession) {
+
+    static getInfosAllProfils(idUserSession) {
         return new Promise((resolve, reject) => {
-        //    Modifier la db pour avoir un champ ville et un pays
-        //    Modifier a l'enregistrement de la geolocalisation ou
-        //    enregistrement manuel
+            let sql = "SELECT id, login, orientation, bio, city, country FROM users WHERE id != ?";
 
-        //    recuperer infos profils :
-        //    id: id_user
-        //    login: login_user
-        //    bio: login:bio
-        //    orientation: if (1 = "un homme", 2 = "une femme", 3 = "un homme ou une femme")
-        //    localite: ville / code Postal ou les deux + Pays
-        //    photo: photo de profil
-
-            let infos = [];
-
-            this.getInfosAllProfils(idUserSession);
+            connection.query(sql, [idUserSession], (err, res) => {
+                resolve(res);
+                if (err) {
+                    reject(err);
+                }
+            });
         });
     }
 
-    getInfosAllProfils(idUserSession){
-        let sql = "SELECT id, login, orientation, bio, ville, pays FROM users WHERE id != ?";
+    static getAllPhotosProfils(idUserSession) {
+        return new Promise((resolve, reject) => {
+           let sql = "SELECT id_user, src_photo FROM users_photos_profils WHERE id_user != ? && photo_profil = 1";
+
+            connection.query(sql, [idUserSession], (err, res) => {
+                resolve(res);
+                if (err) {
+                    reject(err);
+                }
+            });
+        });
     }
-}
-module.exports = BrowseModel;
+
+} module.exports = BrowseModel;
