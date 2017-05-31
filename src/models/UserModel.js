@@ -270,10 +270,12 @@ class UserModel {
             let sql = "SELECT photo_profil, src_photo FROM users_photos_profils WHERE id = ?"
             ;
 
+            console.log(idPhoto);
             connection.query(sql, [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log(res[0]);
                     let fav = {
                         favorite: (res[0].photo_profil === 0) ? 1 : 0,
                         src: res[0].src_photo
@@ -431,7 +433,7 @@ class UserModel {
         });
     }
 
-    static getTagsInDb() {
+    static getTagsInDb(idUser) {
         return new Promise((resolve, reject) => {
             let sql = "SELECT * FROM tags ORDER BY tag ASC",
                 result = {
@@ -447,12 +449,12 @@ class UserModel {
                 if (err) {
                     reject(err);
                 } else {
-                    sql = "SELECT * FROM tags_user ORDER BY tag ASC";
+                    sql = "SELECT * FROM tags_user WHERE id_user = ? ORDER BY tag ASC";
                     result.tags = res;
                     for (let i = 0; i < res.length; i++){
                         result.check[i] = new Object();
                     }
-                    connection.query(sql, (err, res) => {
+                    connection.query(sql, [idUser],(err, res) => {
                         if (err) {
                             reject(err);
                         }

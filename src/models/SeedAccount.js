@@ -4,7 +4,7 @@
 
 const UserModel = require('../models/UserModel');
 const Database = require('../core/Database');
-const Helper = require('../core/Helpers');
+const fs = require('fs-extra')
 
 // const uniqueRandomArray = require('unique-random-array');
 const makeDir = require('make-dir');
@@ -60,7 +60,7 @@ class SeedAccount {
                 "active": 1,
                 "sex": 2,
                 "orientation": 1,
-                "bio": "Trup est president, alors je me met au travail...",
+                "bio": "Trump est president, alors je me met au travail...",
                 "adress": "Untitled Entertainment 350 S. Beverly Dr. Suite 200 Beverly Hills, CA 90212 USA",
                 "lat": 34.0604857,
                 "lng": -118.39866840000002
@@ -75,7 +75,7 @@ class SeedAccount {
                 "active": 1,
                 "sex": 2,
                 "orientation": 1,
-                "bio": "Besoin d'experience !",
+                "bio": "Besoin d'experiences !",
                 "adress": "Villa Mederic Louane 3 rue des pyramides 75001 Paris",
                 "lat": 48.8643211,
                 "lng": 2.3323676999999634
@@ -129,6 +129,86 @@ class SeedAccount {
             {
                 'id_user': 1,
                 'src_photo': "/profils/1/angel-gif.gif"
+            },
+            {
+                'id_user': 2,
+                'src_photo': "/profils/2/jalba1.jpg"
+            },
+            {
+                'id_user': 2,
+                'src_photo': "/profils/2/jalba2.jpg"
+            },
+            {
+                'id_user': 2,
+                'src_photo': "/profils/2/jalba3.jpg"
+            },
+            {
+                'id_user': 2,
+                'src_photo': "/profils/2/jalba4.jpg"
+            },
+            {
+                'id_user': 2,
+                'src_photo': "/profils/2/jalba5.gif"
+            },
+            {
+                'id_user': 3,
+                'src_photo': "/profils/3/madonna1.jpg"
+            },
+            {
+                'id_user': 3,
+                'src_photo': "/profils/3/madonna2.jpg"
+            },
+            {
+                'id_user': 3,
+                'src_photo': "/profils/3/madonna3.jpg"
+            },
+            {
+                'id_user': 3,
+                'src_photo': "/profils/3/madonna4.jpg"
+            },
+            {
+                'id_user': 3,
+                'src_photo': "/profils/3/madonna5.gif"
+            },
+            {
+                'id_user': 4,
+                'src_photo': "/profils/4/louane1.jpg"
+            },
+            {
+                'id_user': 4,
+                'src_photo': "/profils/4/louane2.jpg"
+            },
+            {
+                'id_user': 4,
+                'src_photo': "/profils/4/louane3.png"
+            },
+            {
+                'id_user': 4,
+                'src_photo': "/profils/4/louane4.jpg"
+            },
+            {
+                'id_user': 4,
+                'src_photo': "/profils/4/louane5.gif"
+            },
+            {
+                'id_user': 5,
+                'src_photo': "/profils/5/jdujardin1.jpg"
+            },
+            {
+                'id_user': 5,
+                'src_photo': "/profils/5/jdujardin2.jpg"
+            },
+            {
+                'id_user': 5,
+                'src_photo': "/profils/5/jdujardin3.jpg"
+            },
+            {
+                'id_user': 5,
+                'src_photo': "/profils/5/jdujardin4.jpg"
+            },
+            {
+                'id_user': 5,
+                'src_photo': "/profils/5/jdujardin5.gif"
             }
         ];
     }
@@ -155,8 +235,6 @@ class SeedAccount {
             .catch((err) => {
                 if (err.message !== "E_INSERTED") {
                     throw (err);
-                } else {
-                    console.log('Users Already In The DataBase !');
                 }
             });
     }
@@ -302,6 +380,118 @@ class SeedAccount {
                 console.error(err);
             })
         })
+    }
+
+    addPhotosToFolderUsers() {
+        const src = "./public/images/images-seeders/",
+            dst = "./public/profils/",
+            array = [
+                {
+                    source: src + 'Angel/angel.jpg',
+                    dest: dst + '1/angel.jpg'
+                },
+                {
+                    source: src + 'Angel/angel1.jpg',
+                    dest: dst + '1/angel1.jpg'
+                },
+                {
+                    source: src + 'Angel/angel2.jpg',
+                    dest: dst + '1/angel2.jpg'
+                },
+                {
+                    source: src + 'Angel/angel-gif.gif',
+                    dest: dst + '1/angel-gif.gif'
+                },
+                {
+                    source: src + 'Angel/angel-gif2.gif',
+                    dest: dst + '1/angel-gif2.gif'
+                },
+                {
+                    source: src + 'jAlba/jalba1.jpg',
+                    dest: dst + '2/jalba1.jpg'
+                },
+                {
+                    source: src + 'jAlba/jalba2.jpg',
+                    dest: dst + '2/jalba2.jpg'
+                },
+                {
+                    source: src + 'jAlba/jalba3.jpg',
+                    dest: dst + '2/jalba3.jpg'
+                },
+                {
+                    source: src + 'jAlba/jalba4.jpg',
+                    dest: dst + '2/jalba4.jpg'
+                },
+                {
+                    source: src + 'jAlba/jalba5.gif',
+                    dest: dst + '2/jalba5.gif'
+                },
+                {
+                    source: src + 'Madonna/madonna1.jpg',
+                    dest: dst + '3/madonna1.jpg'
+                },
+                {
+                    source: src + 'Madonna/madonna2.jpg',
+                    dest: dst + '3/madonna2.jpg'
+                },
+                {
+                    source: src + 'Madonna/madonna3.jpg',
+                    dest: dst + '3/madonna3.jpg'
+                },
+                {
+                    source: src + 'Madonna/madonna4.jpg',
+                    dest: dst + '3/madonna4.jpg'
+                },
+                {
+                    source: src + 'Madonna/madonna5.gif',
+                    dest: dst + '3/madonna5.gif'
+                },
+                {
+                    source: src + 'Louane/louane1.jpg',
+                    dest: dst + '4/louane1.jpg'
+                },
+                {
+                    source: src + 'Louane/louane2.jpg',
+                    dest: dst + '4/louane2.jpg'
+                },
+                {
+                    source: src + 'Louane/louane3.png',
+                    dest: dst + '4/louane3.png'
+                },
+                {
+                    source: src + 'Louane/louane4.jpg',
+                    dest: dst + '4/louane4.jpg'
+                },
+                {
+                    source: src + 'Louane/louane5.gif',
+                    dest: dst + '4/louane5.gif'
+                },
+                {
+                    source: src + 'jDujardin/jdujardin1.jpg',
+                    dest: dst + '5/jdujardin1.jpg'
+                },
+                {
+                    source: src + 'jDujardin/jdujardin2.jpg',
+                    dest: dst + '5/jdujardin2.jpg'
+                },
+                {
+                    source: src + 'jDujardin/jdujardin3.jpg',
+                    dest: dst + '5/jdujardin3.jpg'
+                },
+                {
+                    source: src + 'jDujardin/jdujardin4.jpg',
+                    dest: dst + '5/jdujardin4.jpg'
+                },
+                {
+                    source: src + 'jDujardin/jdujardin5.gif',
+                    dest: dst + '5/jdujardin5.gif'
+                }
+            ]
+        ;
+
+        return Promise.all(array.map((photo) => {
+            return fs.copy(photo.source, photo.dest);
+        }));
     }
 }
 module.exports = SeedAccount;

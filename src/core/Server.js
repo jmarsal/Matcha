@@ -16,7 +16,6 @@ class Server {
 
         app.set('httpServer', http.Server(app));
         this.port = 3000;
-        // app.set('views', path.join(__dirname, './src'));
         this.middleware();
         app.disable('x-powered-by');
         this.setupViewEngine();
