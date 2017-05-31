@@ -112,7 +112,8 @@ class SeedAccount {
         this.basicPhotos = [
             {
                 'id_user': 1,
-                'src_photo': "/profils/1/angel.jpg"
+                'src_photo': "/profils/1/angel.jpg",
+                'photo_profil': 1
             },
             {
                 'id_user': 1,
@@ -136,7 +137,8 @@ class SeedAccount {
             },
             {
                 'id_user': 2,
-                'src_photo': "/profils/2/jalba2.jpg"
+                'src_photo': "/profils/2/jalba2.jpg",
+                'photo_profil': 1
             },
             {
                 'id_user': 2,
@@ -164,7 +166,8 @@ class SeedAccount {
             },
             {
                 'id_user': 3,
-                'src_photo': "/profils/3/madonna4.jpg"
+                'src_photo': "/profils/3/madonna4.jpg",
+                'photo_profil': 1
             },
             {
                 'id_user': 3,
@@ -180,7 +183,8 @@ class SeedAccount {
             },
             {
                 'id_user': 4,
-                'src_photo': "/profils/4/louane3.png"
+                'src_photo': "/profils/4/louane3.png",
+                'photo_profil': 1
             },
             {
                 'id_user': 4,
@@ -192,7 +196,8 @@ class SeedAccount {
             },
             {
                 'id_user': 5,
-                'src_photo': "/profils/5/jdujardin1.jpg"
+                'src_photo': "/profils/5/jdujardin1.jpg",
+                'photo_profil': 1
             },
             {
                 'id_user': 5,

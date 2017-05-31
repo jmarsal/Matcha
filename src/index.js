@@ -27,23 +27,6 @@ db.createDb()
         return seed.addPhotosToFolderUsers();
     })
     .then(() => {
-        for (let user = 1; user < 6; user++) {
-            let sql = "SELECT id FROM users_photos_profils WHERE id_user = ?";
-
-            connection.query(sql, [user],(err, res) => {
-                let nb = Math.floor(Math.random() * 5);
-
-                if (res) {
-                    UserModel.updateFavoritePhotoById(res[nb], user);
-                }
-                if (err) {
-                    console.error(err);
-                }
-            })
-        }
-        return true;
-    })
-    .then(() => {
         const server = new Server();
         server.listen();
     })
