@@ -113,12 +113,21 @@ block content
                     type="hidden"
                     value=firstName
                     )
+                div(class="birthdayRegisterText") Ma date de naissance
+                    div: input(
+                    type="date"
+                    autocomplete=true
+                    class="modify-account birthdayRegisterInput" id="birthdayAccountInput"
+                    name="birthdayRegisterInput"
+                    value=birthday
+                    onblur="submitForm('birthday')"
+                    )
                 div(class="location-container")
-                    div(class="location-town") Mon Adresse
+                    div(class="location-town") Mon adresse
                         div: input(
                                 id="autocomplete"
                                 placeholder="Enter your address"
-                                value=adress
+                                value=address
                                 onFocus="geolocate()"
                                 type="text"
                             )

@@ -590,6 +590,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%; }
 
+.text1-account p {
+  border: 5px solid #C2185B; }
+
 .separator-profil {
   margin-bottom: 5%; }
 
@@ -603,22 +606,9 @@ input:checked + .slider:before {
   .infos-profil-browse:hover {
     background-color: rgba(248, 187, 208, 0.6); }
 
-.login-profil-browse {
-  display: inline-flex;
-  position: relative;
-  width: auto;
-  margin-left: 15%;
-  margin-right: 10%;
-  color: #f3f3f3; }
-
-.localite-infos {
-  display: inline-flex;
-  position: relative;
-  width: auto; }
-
 .photo-profil-browse {
   display: inline-flex;
-  position: absolute;
+  position: relative;
   width: 200px;
   height: 200px;
   background-position: center;
@@ -626,22 +616,7 @@ input:checked + .slider:before {
   border: 2px solid #ddd;
   /* Gray border */
   border-radius: 0;
-  /* Rounded border */
-  z-index: 1; }
-
-.secondary-infos {
-  width: 100%;
-  position: relative;
-  display: inline-block;
-  bottom: 205px; }
-
-.about-me {
-  width: 100%;
-  position: relative;
-  display: inline-block; }
-
-.bio-browse {
-  max-width: 30%; }
+  /* Rounded border */ }
 
 .infos {
   margin: 0% auto;

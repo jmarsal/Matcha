@@ -44,17 +44,20 @@ class Database {
                 'prenom VARCHAR(255) DEFAULT NULL,' +
                 'login VARCHAR(16) DEFAULT NULL,' +
                 'email VARCHAR(255) DEFAULT NULL,' +
+                'birthday VARCHAR(10) DEFAULT "1901-01-01",' +
+                'age SMALLINT DEFAULT 116,' +
                 'passwd VARCHAR(255) DEFAULT NULL,' +
                 'cle VARCHAR(255) DEFAULT NULL,' +
                 'active BOOLEAN DEFAULT 0,' +
                 'sex SMALLINT DEFAULT 2,' +
                 'orientation SMALLINT DEFAULT 3,' +
                 'bio TEXT DEFAULT NULL,' +
-                'adress VARCHAR(255) DEFAULT NULL,' +
+                'address VARCHAR(255) DEFAULT NULL,' +
                 'lat FLOAT(10, 6) DEFAULT NULL,' +
                 'lng FLOAT(10, 6) DEFAULT NULL,' +
                 'city VARCHAR(150) DEFAULT NULL,' +
-                'country VARCHAR(150) DEFAULT NULL' +
+                'country VARCHAR(150) DEFAULT NULL,' +
+                'distanceFromUser VARCHAR(10) DEFAULT NULL' +
                 ')';
             const userPhotos = 'CREATE TABLE IF NOT EXISTS users_photos_profils' +
                 '(' +

@@ -2,7 +2,8 @@
  * Created by jbmar on 11/05/2017.
  */
 
-const uniqid = require('uniqid');
+const uniqid = require('uniqid'),
+    Helper = require('../core/Helpers');
 
 class UserModel {
     /*
@@ -128,7 +129,7 @@ class UserModel {
     }
 
     /*
-     ** Recupere le login associe a l'adresse email dans la DB
+     ** Recupere le login associe a l'addresse email dans la DB
      */
     static getLoginCleByEmail(email) {
         return new Promise((resolve, reject) => {
@@ -424,6 +425,22 @@ class UserModel {
             const sql = "UPDATE users SET bio = ? WHERE id = ?";
 
             connection.query(sql, [bio, userId], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    static modifyBirthdayByUserId(userId, birthday) {
+        return new Promise((resolve, reject) => {
+            let sql = "UPDATE users SET birthday = ?, age = ? WHERE id = ?",
+                age = Helper.getAge(birthday)
+            ;
+
+            connection.query(sql, [birthday, age, userId], (err) => {
                 if (err) {
                     reject(err);
                 } else {

@@ -182,7 +182,7 @@ class AccueilController {
                                 Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                             });
                         } else {
-                            Helpers.sendResponseToClient("Un compte existe déjà pour cette adresse mail !", 1, res);
+                            Helpers.sendResponseToClient("Un compte existe déjà pour cette addresse mail !", 1, res);
                         }
                     }).catch((err) => {
                     console.error(err);
@@ -270,13 +270,13 @@ class AccueilController {
                                             Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                                         });
                                     } else
-                                        Helpers.sendResponseToClient("Aucun compte n'est associé à cette adresse email !", 1, res, true, '../logon/');
+                                        Helpers.sendResponseToClient("Aucun compte n'est associé à cette addresse email !", 1, res, true, '../logon/');
                                 }).catch((err) => {
                                 console.error(err);
                                 Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                             });
                         } else {
-                            Helpers.sendResponseToClient("Aucun compte n'est associé à cette adresse email !", 1, res, true, '../logon/');
+                            Helpers.sendResponseToClient("Aucun compte n'est associé à cette addresse email !", 1, res, true, '../logon/');
                         }
                     }).catch((err) => {
                     console.error(err);

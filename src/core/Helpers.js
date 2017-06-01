@@ -47,13 +47,29 @@ class Helpers {
         });
     }
 
-    static reflect(promise) {
-        return promise.then(function (v) {
-                return {v: v, status: "resolved"}
-            },
-            function (e) {
-                return {e: e, status: "rejected"}
-            });
+    static getAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    static isValidDate(data) {
+        let years = parseInt(data.yf),
+            month = parseInt(data.mf),
+            day = parseInt(data.df)
+        ;
+
+        if (data.yf.length == 4 && years > 1900 && years < 2017 &&
+            data.mf.length == 2 && month > 0 && month <= 12 &&
+            data.df.length == 2 && day > 0 && day <= 31) {
+            return true;
+        }
+        return false;
     }
 }
 module.exports = Helpers;

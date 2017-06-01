@@ -30,10 +30,16 @@ class BrowseController {
                 BrowseModel.getInfosAllProfils(req.session.user.id)
                     .then((infos) => {
                         profils.infos = infos;
-                        return BrowseModel.getAllPhotosProfils(req.session.user.id)
+                        return BrowseModel.getAllPhotosProfils(req.session.user.id);
                     })
                     .then((photos) => {
                         profils.photos = photos;
+                        return BrowseModel.getaddressUserSession(req.session.user.id);
+                    })
+                    .then((addressUserSession) => {
+                        return BrowseModel.updateDistanceFromUserAndtheOther(req.session.user.id, profils.infos, addressUserSession)
+                    })
+                    .then((distances) => {
                         res.render('./views/browse/browseContent', {
                             title: "Voici quelques profils qui pourrait te convenir ...",
                             profils: profils.infos,
