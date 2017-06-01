@@ -34,15 +34,18 @@ class BrowseController {
                     })
                     .then((photos) => {
                         profils.photos = photos;
-                        return BrowseModel.getaddressUserSession(req.session.user.id);
+                        return BrowseModel.getInfosUserSession(req.session.user.id);
                     })
-                    .then((addressUserSession) => {
-                        return BrowseModel.updateDistanceFromUserAndtheOther(req.session.user.id, profils.infos, addressUserSession)
+                    .then((infosUserSession) => {
+                        return BrowseModel.updateDistanceFromUserAndtheOther(profils.infos, infosUserSession)
                     })
-                    .then((distances) => {
+                    .then((infosUserSession) => {
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, infosUserSession[0]);
+                    })
+                    .then((profilsOrder) => {
                         res.render('./views/browse/browseContent', {
                             title: "Voici quelques profils qui pourrait te convenir ...",
-                            profils: profils.infos,
+                            profils: profilsOrder,
                             photos: profils.photos
                         });
                     })

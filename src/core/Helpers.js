@@ -3,7 +3,8 @@
  */
 
 const crypto = require('crypto');
-
+const request = require('request');
+const fs = require('fs-extra')
 
 class Helpers {
     /*
@@ -70,6 +71,27 @@ class Helpers {
             return true;
         }
         return false;
+    }
+
+    static saveImgFromWebToServer(src, dest) {
+        return new Promise((resolve) => {
+            const download = function (uri, filename, callback) {
+                request.head(uri, function (err, res, body) {
+                    console.log('content-type:', res.headers['content-type']);
+                    console.log('content-length:', res.headers['content-length']);
+
+                    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+                });
+            };
+            console.log(src);
+            if (src !== "" && dest) {
+                download(src, dest, () => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
+        });
     }
 }
 module.exports = Helpers;

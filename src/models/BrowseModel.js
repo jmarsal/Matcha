@@ -2,15 +2,13 @@
  * Created by jbmar on 31/05/2017.
  */
 
-const distance = require('google-distance')
-    // BrowseModelBack = require('./BrowseModel')
-;
+const geolib = require('geolib');
 
 class BrowseModel {
 
     static getInfosAllProfils(idUserSession) {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT id, login, orientation, bio, address, lat, lng, age, city, country FROM users WHERE id != ?";
+            let sql = "SELECT id, login, orientation, bio, lat, lng, age, city, country FROM users WHERE id != ?";
 
             connection.query(sql, [idUserSession], (err, res) => {
                 resolve(res);
@@ -34,9 +32,9 @@ class BrowseModel {
         });
     }
 
-    static getaddressUserSession(idUserSession) {
+    static getInfosUserSession(idUserSession) {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT address FROM users WHERE id = ?";
+            let sql = "SELECT * FROM users WHERE id = ?";
 
             connection.query(sql, [idUserSession], (err, res) => {
                 resolve(res);
@@ -47,50 +45,69 @@ class BrowseModel {
         });
     }
 
-    static updateDistanceFromUserAndtheOther(idUserSession, profils, addressUserSession) {
+    static updateDistanceFromUserAndtheOther(profils, infosUserSession) {
         return Promise.all(profils.map((profil) => {
-            console.log(addressUserSession[0].address);
-            console.log(profil.address);
-            return BrowseModel.getDistanceFromAddress(addressUserSession[0].address, profil.address, idUserSession)
+            return BrowseModel.getDistanceFromAddress(infosUserSession, profil)
         }));
     }
 
-    static getDistanceFromAddress(address1, address2, idUser) {
+    static getDistanceFromAddress(infosUserSession, profil) {
         return new Promise((resolve, reject) => {
-            // Essayer avec latLng peut etre ...
-            distance.get({
-                origin: address1,
-                destination: address2
-            }, (err, data) => {
-                if (err) {
-                    console.log('ici')
+            let distance = geolib.getDistanceSimple(
+                {latitude: infosUserSession[0].lat, longitude: infosUserSession[0].lng},
+                {latitude: profil.lat, longitude: profil.lng}
+            );
+
+            BrowseModel.sendDistanceFromUserSessionInDb(distance, profil.id)
+                .then(() => {
+                    resolve(infosUserSession);
+                })
+                .catch((err) => {
                     reject(err);
-                }
-                else {
-                    console.log(data.distance);
-                    BrowseModel.sendDistanceFromUserSessionInDb(data.distance, idUser)
-                        .then(() => {
-                            resolve();
-                        })
-                        .catch((err) => {
-                            reject(err);
-                        });
+                })
+            ;
+        });
+    }
+
+    static sendDistanceFromUserSessionInDb(distanceFromUser, idProfil) {
+        return new Promise((resolve, reject) => {
+            let sql = "UPDATE users SET distanceFromUser = ? WHERE id = ?";
+
+            connection.query(sql, [distanceFromUser, idProfil], (err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
                 }
             });
         });
     }
 
-    static sendDistanceFromUserSessionInDb(distanceFromUser, id_user) {
+    static filterProfilsOrderByDistance(idUserSession, infosUserSession) {
         return new Promise((resolve, reject) => {
-            let sql = "UPDATE users SET distanceFromUser = ? WHERE id = ?";
+            let sql = "",
+                orientation = infosUserSession[0].orientation,
+                sex = infosUserSession[0].sex
+            ;
+           if (orientation == 3 && sex == 1) { // Homme be => trouver homme gay ou be + femme hetero ou be
+               sql = "SELECT * FROM users WHERE id != ? && (sex = 1 && (orientation = 1 || orientation = 3) || sex = 2 && (orientation = 1 || orientation = 3)) ORDER BY distanceFromUser ASC";
+           } else if (orientation == 3 && sex == 2) { // Femme be => trouver homme hetero ou be + femme gay ou be
+               sql = "SELECT * FROM users WHERE id != ? && (sex = 1 && (orientation = 2 || orientation = 3) || sex = 2 && (orientation = 2 || orientation = 3)) ORDER BY distanceFromUser ASC";
+           } else if (orientation == 2 && sex == 1) { // Homme hetero => trouver femme hetero ou femme be
+               sql = "SELECT * FROM users WHERE id != ? && sex = 2 && (orientation = 1 || orientation = 3) ORDER BY distanceFromUser ASC";
+           } else if (orientation == 2 && sex == 2) { // femme gay => trouver femme gay ou be
+               sql = "SELECT * FROM users WHERE id != ? && sex = 2 && (orientation = 2 || orientation = 3) ORDER BY distanceFromUser ASC";
+           } else if (orientation == 1 && sex == 1) { // homme gay => trouver homme gay ou be
+               sql = "SELECT * FROM users WHERE id != ? && sex = 1 && (orientation = 1 || orientation = 3) ORDER BY distanceFromUser ASC";
+           } else if (orientation == 1 && sex == 2) { // femme hetero => trouver homme hetero ou be
+               sql = "SELECT * FROM users WHERE id != ? && sex = 1 && (orientation = 2 || orientation = 3) ORDER BY distanceFromUser ASC";
+           }
 
-            console.log(distanceFromUser)
-            console.log(id_user)
-            connection.query(sql, [distanceFromUser, id_user], (err) => {
+            connection.query(sql, [idUserSession], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve();
+                    resolve(res);
                 }
             });
         });
