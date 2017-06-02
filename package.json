@@ -12,6 +12,7 @@
     "body-parser": "^1.17.1",
     "crypto": "^0.0.3",
     "del": "^2.2.2",
+    "download": "^6.2.2",
     "express": "~4.15.2",
     "express-session": "^1.15.2",
     "foundation-sites": "^6.3.1",

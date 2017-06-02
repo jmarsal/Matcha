@@ -24,9 +24,6 @@ db.createDb()
         return seed.insertData();
     })
     .then(() => {
-        return seed.addPhotosToFolderUsers();
-    })
-    .then(() => {
         const server = new Server();
         server.listen();
     })
