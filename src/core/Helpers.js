@@ -73,25 +73,8 @@ class Helpers {
         return false;
     }
 
-    static saveImgFromWebToServer(src, dest) {
-        return new Promise((resolve) => {
-            const download = function (uri, filename, callback) {
-                request.head(uri, function (err, res, body) {
-                    console.log('content-type:', res.headers['content-type']);
-                    console.log('content-length:', res.headers['content-length']);
-
-                    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-                });
-            };
-            console.log(src);
-            if (src !== "" && dest) {
-                download(src, dest, () => {
-                    resolve();
-                });
-            } else {
-                resolve();
-            }
-        });
+    static getExtension(url) {
+        return (url = url.substr(1 + url.lastIndexOf("/")).split('?')[0]).split('#')[0].substr(url.lastIndexOf("."));
     }
 }
 module.exports = Helpers;
