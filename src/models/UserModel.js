@@ -11,6 +11,7 @@ class UserModel {
      */
     static newUser(dataUser) {
         return new Promise((resolve, reject) => {
+            // Check si l'email existe deja dans les utilisateurs
             let sql = "SELECT email FROM users WHERE email = ?";
 
             connection.query(sql, [dataUser.email], (err, res) => {
@@ -19,17 +20,45 @@ class UserModel {
                 }
 
                 if (!res.length) {
-                    sql = "INSERT INTO users SET ?";
+                    // Check si le login existe deja dans les utilisateurs
+                    sql = "SELECT login FROM users WHERE login = ?";
 
-                    connection.query(sql, dataUser, (err) => {
+                    connection.query(sql, [dataUser.login], (err, res) => {
                         if (err) {
                             reject(err);
                         }
 
-                        resolve(true);
+                        if (!res.length) {
+                            // on insert toutes les infos nouvel user dans la db
+                            sql = "INSERT INTO users SET ?";
+
+                            connection.query(sql, dataUser, (err) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    sql = "SELECT id FROM users WHERE ?";
+
+                                    connection.query(sql, {"login": dataUser.login}, (err, res) => {
+                                       if (err) { reject(err); }
+                                       else {
+                                           sql = "INSERT INTO users_photos_profils SET ?";
+
+                                           connection.query(sql, [{"src_photo": "/images/upload/default-user.png", "id_user": res[0].id}], (err) => {
+                                               if (err) { reject(err); }
+                                               else {
+                                                   resolve(true);
+                                               }
+                                           });
+                                       }
+                                    });
+                                }
+                            });
+                        } else {
+                            resolve("Un compte existe déjà pour ce login !");
+                        }
                     });
                 } else {
-                    resolve(false);
+                    resolve("Un compte existe déjà pour cette addresse mail !");
                 }
             });
         });
@@ -174,14 +203,38 @@ class UserModel {
      */
     static addPhotoProfil(data) {
         return new Promise((resolve, reject) => {
-            const sql = "INSERT INTO users_photos_profils SET ?";
+            let sql = "SELECT id FROM users_photos_profils WHERE id_user = ? && src_photo = ?"
 
-            connection.query(sql, data, (err) => {
-                if (err) {
-                    reject(err);
-                }
+            connection.query(sql, [data.id_user, "/images/upload/default-user.png"], (err, resId) => {
+               if (err) { reject(err); }
+               else {
+                   if (resId.length) {
+                       sql = "DELETE FROM users_photos_profils WHERE id = ?"
 
-                resolve(true);
+                       connection.query(sql, [resId[0].id], (err) => {
+                           if (err) { reject(err); }
+                            else {
+                               sql = "INSERT INTO users_photos_profils SET ?";
+
+                               connection.query(sql, data, (err) => {
+                                   if (err) {
+                                       reject(err);
+                                   }
+                                   resolve(true);
+                               });
+                           }
+                       });
+                   } else {
+                       sql = "INSERT INTO users_photos_profils SET ?";
+
+                       connection.query(sql, data, (err) => {
+                           if (err) {
+                               reject(err);
+                           }
+                           resolve(true);
+                       });
+                   }
+               }
             });
         })
     }
@@ -244,21 +297,39 @@ class UserModel {
 
     static removePhotoById(idPhoto) {
         return new Promise((resolve, reject) => {
-            let sql = "SELECT src_photo FROM users_photos_profils WHERE id = ?",
-                srcToRemove = ""
+            let sql = "SELECT src_photo, id_user FROM users_photos_profils WHERE id = ?",
+                srcToRemove = "",
+                id_user = ""
             ;
 
             connection.query(sql, [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    srcToRemove = res[0];
+                    srcToRemove = res[0].src_photo;
+                    id_user = res[0].id_user;
                     sql = "DELETE FROM users_photos_profils WHERE id = ?";
                     connection.query(sql, [idPhoto], (err, res) => {
                         if (err) {
                             reject(err);
                         } else {
-                            resolve(srcToRemove);
+                            sql = "SELECT src_photo FROM users_photos_profils WHERE id_user = ?"
+
+                            connection.query(sql, [id_user], (err, res) => {
+                               if (err) { reject(err); }
+                               else {
+                                   if (!res.length) {
+                                       sql = "INSERT INTO users_photos_profils SET ?"
+
+                                       connection.query(sql, [{"id_user": id_user, "src_photo": "/images/upload/default-user.png"}], (err) => {
+                                          if (err) { reject(err); }
+                                           resolve(srcToRemove);
+                                       });
+                                   } else {
+                                       resolve(srcToRemove);
+                                   }
+                               }
+                            });
                         }
                     });
                 }
@@ -271,12 +342,10 @@ class UserModel {
             let sql = "SELECT photo_profil, src_photo FROM users_photos_profils WHERE id = ?"
             ;
 
-            console.log(idPhoto);
             connection.query(sql, [idPhoto], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    console.log(res[0]);
                     let fav = {
                         favorite: (res[0].photo_profil === 0) ? 1 : 0,
                         src: res[0].src_photo

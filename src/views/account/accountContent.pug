@@ -27,7 +27,7 @@ block content
                             class=((photo.photo_profil == 1) ? "div-photo-user star " : "div-photo-user")
                             id=photo.id
                             style='background-image: url("' + photo.src_photo + '")'
-                            onclick="interactPhoto("+ photo.id +")"
+                            onclick= (photo.src_photo === "/images/upload/default-user.png") ? "" : "interactPhoto("+ photo.id +")"
                         )
                         if photo.photo_profil
                             img(

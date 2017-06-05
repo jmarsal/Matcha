@@ -172,7 +172,7 @@ class AccueilController {
 
                 UserModel.newUser(dataUser)
                     .then((status) => {
-                        if (status) {
+                        if (status === true) {
                             mailSender.mailNewUser(dataUser)
                                 .then((message) => {
                                     Helpers.sendResponseToClient("Votre compte est créé !", 0, res, true, '../login/');
@@ -182,7 +182,7 @@ class AccueilController {
                                 Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
                             });
                         } else {
-                            Helpers.sendResponseToClient("Un compte existe déjà pour cette addresse mail !", 1, res);
+                            Helpers.sendResponseToClient(status, 1, res);
                         }
                     }).catch((err) => {
                     console.error(err);

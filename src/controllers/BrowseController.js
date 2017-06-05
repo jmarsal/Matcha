@@ -4,7 +4,9 @@
 
 const express = require('express');
 
-const BrowseModel = require('../models/BrowseModel');
+const BrowseModel = require('../models/BrowseModel'),
+    UserModel = require('../models/UserModel')
+;
 
 class BrowseController {
     constructor() {
@@ -24,7 +26,7 @@ class BrowseController {
 
     browseRoute() {
         this.router.get('/browse', (req, res) => {
-            if (req.session.start){
+            if (req.session.start) {
                 let profils = [];
 
                 BrowseModel.getInfosAllProfils(req.session.user.id)
@@ -37,16 +39,22 @@ class BrowseController {
                         return BrowseModel.getInfosUserSession(req.session.user.id);
                     })
                     .then((infosUserSession) => {
+                        profils.infosUserSession = infosUserSession;
                         return BrowseModel.updateDistanceFromUserAndtheOther(profils.infos, infosUserSession)
                     })
-                    .then((infosUserSession) => {
-                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, infosUserSession[0]);
+                    .then(() => {
+                        return UserModel.getPhotoProfil(req.session.user.id);
+                    })
+                    .then((photoUserSession) => {
+                        profils.photosProfil = photoUserSession.photosProfil;
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession);
                     })
                     .then((profilsOrder) => {
                         res.render('./views/browse/browseContent', {
                             title: "Voici quelques profils qui pourrait te convenir ...",
                             profils: profilsOrder,
-                            photos: profils.photos
+                            photos: profils.photos,
+                            photoFav: (profils.photosProfil ? profils.photosProfil : ""),
                         });
                     })
                     .catch((err) => {

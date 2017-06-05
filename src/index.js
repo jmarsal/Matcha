@@ -21,7 +21,14 @@ db.createDb()
         return db.createTables()
     })
     .then(() => {
-        return seed.insertData();
+        return UserModel.getIdbyLogin("FredericLopez");
+    })
+    .then((status) => {
+        if (status === false) {
+            return seed.insertData();
+        } else {
+            return false;
+        }
     })
     .then(() => {
         const server = new Server();
