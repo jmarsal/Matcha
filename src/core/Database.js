@@ -58,7 +58,8 @@ class Database {
                 'city VARCHAR(150) DEFAULT NULL,' +
                 'country VARCHAR(150) DEFAULT NULL,' +
                 'distanceFromUser INT DEFAULT NULL,' +
-                'tagsCommun INT DEFAULT NULL' +
+                'tagsCommun INT DEFAULT 0,' +
+                'popularity INT DEFAULT 0' +
                 ')';
             const userPhotos = 'CREATE TABLE IF NOT EXISTS users_photos_profils' +
                 '(' +

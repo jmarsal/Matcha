@@ -43,6 +43,9 @@ class BrowseController {
                         return BrowseModel.updateDistanceFromUserAndtheOther(profils.infos, infosUserSession)
                     })
                     .then(() => {
+                        return BrowseModel.getCommunTagsByUsers(req.session.user.id);
+                    })
+                    .then(() => {
                         return UserModel.getPhotoProfil(req.session.user.id);
                     })
                     .then((photoUserSession) => {
