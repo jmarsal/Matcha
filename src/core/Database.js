@@ -57,8 +57,6 @@ class Database {
                 'lng FLOAT(10, 6) DEFAULT NULL,' +
                 'city VARCHAR(150) DEFAULT NULL,' +
                 'country VARCHAR(150) DEFAULT NULL,' +
-                'distanceFromUser INT DEFAULT NULL,' +
-                'tagsCommun INT DEFAULT 0,' +
                 'popularity INT DEFAULT 0' +
                 ')';
             const userPhotos = 'CREATE TABLE IF NOT EXISTS users_photos_profils' +
@@ -79,23 +77,28 @@ class Database {
                 'id INT PRIMARY KEY AUTO_INCREMENT,' +
                 'tag VARCHAR(150) NOT NULL' +
                 ')';
+            const userInteracts = 'CREATE TABLE IF NOT EXISTS user_interacts' +
+                '(' +
+                'id INT PRIMARY KEY AUTO_INCREMENT,' +
+                'id_user_session INT NOT NULL,' +
+                'id_user INT NOT NULL,' +
+                'distanceFromUser INT DEFAULT NULL,' +
+                'tagsCommun INT DEFAULT 0' +
+                ')';
             connection.query(users, (err) => {
-                if (err) {
-                    reject(err);
-                } else {
+                if (err) { reject(err); } else {
                     connection.query(userPhotos, (err) => {
-                        if (err) {
-                            reject(err);
-                        } else {
+                        if (err) { reject(err); } else {
                             connection.query(tagsUser, (err) => {
-                                if (err) {
-                                    reject(err);
-                                } else {
+                                if (err) { reject(err); } else {
                                     connection.query(tags, (err) => {
-                                        if (err) {
-                                            reject(err);
+                                        if (err) { reject(err); }
+                                        else {
+                                            connection.query(userInteracts, (err) => {
+                                               if (err) { reject(err); }
+                                               else { resolve(); }
+                                            });
                                         }
-                                        resolve();
                                     });
                                 }
                             });

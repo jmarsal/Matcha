@@ -40,9 +40,10 @@ class BrowseController {
                     })
                     .then((infosUserSession) => {
                         profils.infosUserSession = infosUserSession;
-                        return BrowseModel.updateDistanceFromUserAndtheOther(profils.infos, infosUserSession)
+                        return BrowseModel.updateDistanceFromUserAndtheOther(req.session.user.id, profils.infos, infosUserSession)
                     })
-                    .then(() => {
+                    .then((distancesFromUsers) => {
+                        profils.distances = distancesFromUsers;
                         return BrowseModel.getCommunTagsByUsers(req.session.user.id);
                     })
                     .then(() => {
@@ -50,7 +51,7 @@ class BrowseController {
                     })
                     .then((photoUserSession) => {
                         profils.photosProfil = photoUserSession.photosProfil;
-                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession);
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession, profils.distances);
                     })
                     .then((profilsOrder) => {
                         res.render('./views/browse/browseContent', {
