@@ -622,3 +622,48 @@ input:checked + .slider:before {
   margin: 0% auto;
   background-color: rgba(194, 24, 91, 0.6);
   color: #f3f3f3; }
+
+.info-pop-tag {
+  background-color: #e92266;
+  display: flex;
+  width: 100%; }
+
+.popularity-browse {
+  margin-left: 40px;
+  float: left;
+  display: block;
+  position: relative; }
+
+.commun-tags-browse {
+  display: block;
+  position: relative;
+  margin-left: 50%;
+  margin-right: 20px; }
+
+.trie {
+  width: 50%; }
+  .trie.button {
+    text-align: center; }
+  .trie:hover {
+    background-color: #E91E63; }
+
+.fitres-interval {
+  width: 50%;
+  margin: 0 auto 50px; }
+  .fitres-interval:hover {
+    background-color: #E91E63; }
+
+.container-trie-options {
+  display: none;
+  margin: 0px auto;
+  width: 50%;
+  margin-top: 0; }
+
+.trie-option {
+  border: 1px solid #f3f3f3;
+  background-color: #e42973;
+  cursor: pointer;
+  border-radius: 50px;
+  width: auto; }
+  .trie-option:hover {
+    background-color: #E91E63; }

@@ -186,7 +186,7 @@ let seeders = [
         "active": 1,
         "sex": 1,
         "orientation": 3,
-        "bio": "Alex tu me manque T_T, besoin de reconfort !",
+        "bio": "Alex tu me manques T_T, besoin de reconfort !",
         "address": "R & D - Société d'Avocats 28 avenue de Messine 75008 Paris France",
         "lat": 48.8771133,
         "lng": 2.3120758000000023,

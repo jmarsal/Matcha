@@ -22,6 +22,7 @@ class BrowseController {
 
     registerRoutes() {
         this.browseRoute();
+        this.browsePostRoute();
     }
 
     browseRoute() {
@@ -51,11 +52,11 @@ class BrowseController {
                     })
                     .then((photoUserSession) => {
                         profils.photosProfil = photoUserSession.photosProfil;
-                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession, profils.distances);
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession, "ASC");
                     })
                     .then((profilsOrder) => {
                         res.render('./views/browse/browseContent', {
-                            title: "Voici quelques profils qui pourrait te convenir ...",
+                            title: "Voici quelques profils qui pourraient te convenir ...",
                             profils: profilsOrder,
                             photos: profils.photos,
                             photoFav: (profils.photosProfil ? profils.photosProfil : ""),
@@ -67,6 +68,144 @@ class BrowseController {
             } else {
                 res.redirect('../accueil');
             }
+        });
+
+        this.router.get('/browse/DESC', (req, res) => {
+            if (req.session.start) {
+                let profils = [];
+
+                BrowseModel.getInfosAllProfils(req.session.user.id)
+                    .then((infos) => {
+                        profils.infos = infos;
+                        return BrowseModel.getAllPhotosProfils(req.session.user.id);
+                    })
+                    .then((photos) => {
+                        profils.photos = photos;
+                        return BrowseModel.getInfosUserSession(req.session.user.id);
+                    })
+                    .then((infosUserSession) => {
+                        profils.infosUserSession = infosUserSession;
+                        return BrowseModel.updateDistanceFromUserAndtheOther(req.session.user.id, profils.infos, infosUserSession)
+                    })
+                    .then((distancesFromUsers) => {
+                        profils.distances = distancesFromUsers;
+                        return BrowseModel.getCommunTagsByUsers(req.session.user.id);
+                    })
+                    .then(() => {
+                        return UserModel.getPhotoProfil(req.session.user.id);
+                    })
+                    .then((photoUserSession) => {
+                        profils.photosProfil = photoUserSession.photosProfil;
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession, "DESC");
+                    })
+                    .then((profilsOrder) => {
+                        res.render('./views/browse/browseContent', {
+                            title: "Voici quelques profils qui pourraient te convenir ...",
+                            profils: profilsOrder,
+                            photos: profils.photos,
+                            photoFav: (profils.photosProfil ? profils.photosProfil : ""),
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
+            } else {
+                res.redirect('../accueil');
+            }
+        });
+
+        this.router.get('/browse/TAGS', (req, res) => {
+            if (req.session.start) {
+                let profils = [];
+
+                BrowseModel.getInfosAllProfils(req.session.user.id)
+                    .then((infos) => {
+                        profils.infos = infos;
+                        return BrowseModel.getAllPhotosProfils(req.session.user.id);
+                    })
+                    .then((photos) => {
+                        profils.photos = photos;
+                        return BrowseModel.getInfosUserSession(req.session.user.id);
+                    })
+                    .then((infosUserSession) => {
+                        profils.infosUserSession = infosUserSession;
+                        return BrowseModel.updateDistanceFromUserAndtheOther(req.session.user.id, profils.infos, infosUserSession)
+                    })
+                    .then((distancesFromUsers) => {
+                        profils.distances = distancesFromUsers;
+                        return BrowseModel.getCommunTagsByUsers(req.session.user.id);
+                    })
+                    .then(() => {
+                        return UserModel.getPhotoProfil(req.session.user.id);
+                    })
+                    .then((photoUserSession) => {
+                        profils.photosProfil = photoUserSession.photosProfil;
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession, "ASC", 'TAGS');
+                    })
+                    .then((profilsOrder) => {
+                        res.render('./views/browse/browseContent', {
+                            title: "Voici quelques profils qui pourraient te convenir ...",
+                            profils: profilsOrder,
+                            photos: profils.photos,
+                            photoFav: (profils.photosProfil ? profils.photosProfil : ""),
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
+            } else {
+                res.redirect('../accueil');
+            }
+        });
+
+        this.router.get('/browse/POP', (req, res) => {
+            if (req.session.start) {
+                let profils = [];
+
+                BrowseModel.getInfosAllProfils(req.session.user.id)
+                    .then((infos) => {
+                        profils.infos = infos;
+                        return BrowseModel.getAllPhotosProfils(req.session.user.id);
+                    })
+                    .then((photos) => {
+                        profils.photos = photos;
+                        return BrowseModel.getInfosUserSession(req.session.user.id);
+                    })
+                    .then((infosUserSession) => {
+                        profils.infosUserSession = infosUserSession;
+                        return BrowseModel.updateDistanceFromUserAndtheOther(req.session.user.id, profils.infos, infosUserSession)
+                    })
+                    .then((distancesFromUsers) => {
+                        profils.distances = distancesFromUsers;
+                        return BrowseModel.getCommunTagsByUsers(req.session.user.id);
+                    })
+                    .then(() => {
+                        return UserModel.getPhotoProfil(req.session.user.id);
+                    })
+                    .then((photoUserSession) => {
+                        profils.photosProfil = photoUserSession.photosProfil;
+                        return BrowseModel.filterProfilsOrderByDistance(req.session.user.id, profils.infosUserSession, "ASC", 'POP');
+                    })
+                    .then((profilsOrder) => {
+                        res.render('./views/browse/browseContent', {
+                            title: "Voici quelques profils qui pourraient te convenir ...",
+                            profils: profilsOrder,
+                            photos: profils.photos,
+                            photoFav: (profils.photosProfil ? profils.photosProfil : ""),
+                        });
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    })
+            } else {
+                res.redirect('../accueil');
+            }
+        });
+    }
+
+    browsePostRoute() {
+        this.router.post("/browse/Change-Filters-Trie", (req, res) => {
+
         });
     }
 }

@@ -1,6 +1,7 @@
 extends ../layout/layout
 
 block js
+    script(src="../js/ajaxBrowse.js")
     script(src="http://maps.google.com/maps/api/js?key=AIzaSyC-QpPQdgESP_iKFtbuIchUgp-NjZBqCFA&libraries=places"
     async defer)
 
@@ -14,6 +15,15 @@ block content
                 div(class="welcome-account" id="welcome-account")
                 div(class="text1-account"): p #{title}
                     br
+                div(class="container-filters")
+                    div(class="button trie" onclick="displayFilterOptions()") Filtres Basiques
+                    div(class="container-trie-options" id="containerTrieOptions"
+                        style="display:none")
+                        div(class="trie-option" onclick="displayOptions('ASC')") Distance croissante
+                        div(class="trie-option" onclick="displayOptions('DESC')") Distance decroissante
+                        div(class="trie-option" onclick="displayOptions('TAGS')") Tags en Commun
+                        div(class="trie-option" onclick="displayOptions('POP')") Popularité
+                    div(class="fitres-interval button") Filtres par Intervales
             div(class="container-profils-browse")
                 if profils
                     div(class="separator-profil")
@@ -27,6 +37,9 @@ block content
                                     div(class='login-profil-browse infos') #{profil.login}    #{profil.age} ans
                                     for photo in photos
                                         if photo.id_user == profil.id
+                                            div(class="info-pop-tag")
+                                                div(class="popularity-browse") Popularité:  #{profil.popularity}%
+                                                div(class="commun-tags-browse") #: #{profil.tagsCommun} commun
                                             div(
                                             class="photo-profil-browse"
                                             style='background-image: url("' + photo.src_photo + '")'

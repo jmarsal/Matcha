@@ -200,7 +200,7 @@ class BrowseModel {
         });
     }
 
-    static filterProfilsOrderByDistance(idUserSession, infosUserSession, infosUsersDistances) {
+    static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option) {
         return new Promise((resolve, reject) => {
             let sql = "",
                 orientation = infosUserSession[0].orientation,
@@ -214,7 +214,7 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && " +
                     "(sex = 1 && (orientation = 1 || orientation = 3) || sex = 2 && (orientation = 1 || orientation = 3)) " +
-                    "ORDER BY distanceFromUser ASC";
+                    "ORDER BY distanceFromUser " + orderBy;
             } else if (orientation == 3 && sex == 2) { // Femme be => trouver homme hetero ou be + femme gay ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -222,15 +222,15 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && " +
                     "(sex = 1 && (orientation = 2 || orientation = 3) || sex = 2 && (orientation = 2 || orientation = 3)) " +
-                    "ORDER BY distanceFromUser ASC";
+                    "ORDER BY distanceFromUser " + orderBy;
             } else if (orientation == 2 && sex == 1) { // Homme hetero => trouver femme hetero ou femme be
                 sql = "SELECT * " +
                     "FROM users " +
                     "INNER JOIN user_interacts " +
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 2 && " +
-                    "(orientation = 1 || orientation = 3) ";// +
-                "ORDER BY distanceFromUser ASC";
+                    "(orientation = 1 || orientation = 3) " +
+                    "ORDER BY distanceFromUser " + orderBy;
             } else if (orientation == 2 && sex == 2) { // femme gay => trouver femme gay ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -238,7 +238,7 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 2 && " +
                     "(orientation = 2 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC";
+                    "ORDER BY distanceFromUser " + orderBy;
             } else if (orientation == 1 && sex == 1) { // homme gay => trouver homme gay ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -246,7 +246,7 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 1 && " +
                     "(orientation = 1 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC";
+                    "ORDER BY distanceFromUser " + orderBy;
             } else if (orientation == 1 && sex == 2) { // femme hetero => trouver homme hetero ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -254,14 +254,17 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 1 && " +
                     "(orientation = 2 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC";
+                    "ORDER BY distanceFromUser " + orderBy;
             }
 
             connection.query(sql, [idUserSession, idUserSession], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    BrowseModel.engineFilterUsers(res, "distance")
+                    if (!option){
+                        option = 'zone';
+                    }
+                    BrowseModel.engineFilterUsers(res, option)
                         .then((newTabUsers) => {
                             resolve(newTabUsers);
                         });
@@ -270,53 +273,126 @@ class BrowseModel {
         });
     }
 
-    static engineFilterUsers(data, filterType, zoneSize) { // filterType can be "distance", "tags", "popularity"
-        return new Promise((resolve, reject) => {
-            let newTabUsers = [],
-                CommunTagsFilter = []
-            ;
+    static engineFilterUsers(data, filterType, zoneSize) { // filterType can be "zone", "tags", "popularity"
+        return new Promise((resolve) => {
+            let newTabUsers = [];
 
             if (!zoneSize) {
-                let zoneSize = 50000;
+                zoneSize = 5;
             }
 
-            if (filterType === "distance") {
-                let DistanceFilterTabUser = [];
+            if (filterType === "zone") {
                 // Filtre la data par distance
-                for (let i = 0; i < data.length; i++) {
-                    if (i > 0) {
-                        if (data[i - 1].distanceFromUser > data[i].distanceFromUser &&
-                            data[i].distanceFromUser < zoneSize) {
-                            DistanceFilterTabUser[i - 1] = data[i];
-                            i = 0;
-                        }
-                    }
-                    if (data[i].distanceFromUser < zoneSize) {
-                        DistanceFilterTabUser[i] = data[i];
-                    }
-                }
+                newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
                 //Filtre la data par tags Commun
-                for (let i = 0; i < DistanceFilterTabUser.length; i++) {
+                newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize);
+                //Filtre par popularite
+                newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
+                if (newTabUsers.length < 1) {
+                    newTabUsers = BrowseModel.filterEngineByTags(data, "noUsersWithZoneSize");
+                    newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, "noUsersWithZoneSize");
+                }
+            }
 
-                    if (i > 0) {
-                        if ((DistanceFilterTabUser[i - 1].tagsCommun < DistanceFilterTabUser[i].tagsCommun) &&
-                            DistanceFilterTabUser[i].tagsCommun >= 3 &&
-                            DistanceFilterTabUser[i].distanceFromUser < zoneSize) {
-                            CommunTagsFilter[i - 1] = DistanceFilterTabUser[i];
+            if (filterType === "TAGS") {
+                // Filtre la data par distance
+                newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
+                //Filtre la data par tags Commun
+                newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize, "tags");
+                if (newTabUsers.length < 1) {
+                    newTabUsers = BrowseModel.filterEngineByTags(data, "noUsersWithZoneSize", "tags");
+                }
+            }
+
+            if (filterType === "POP") {
+                // Filtre la data par distance
+                newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
+                //Filtre par popularite
+                newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
+                if (newTabUsers.length < 1) {
+                    newTabUsers = BrowseModel.filterEngineByPop(data, "noUsersWithZoneSize", 'pop');
+                }
+            }
+            resolve(newTabUsers);
+        });
+    }
+
+    static filterEngineByZone(data, zoneSize) {
+        let newTabUsers = [];
+
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].distanceFromUser <= zoneSize) {
+                newTabUsers.push(data[i]);
+            }
+        }
+        return newTabUsers;
+    }
+
+    static filterEngineByTags(data, zoneSize, option) {
+
+        for (let i = 0; i < data.length; i++) {
+            let tmp = data[i];
+
+            if (i > 0) {
+                if (!option) {
+                    if (zoneSize !== "noUsersWithZoneSize"){
+                        if ((data[i - 1].tagsCommun < data[i].tagsCommun) && (data[i].distanceFromUser - data[i - 1].distanceFromUser) <= zoneSize) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        }
+                    } else {
+                        if ((data[i - 1].tagsCommun < data[i].tagsCommun) && (data[i].city === data[i - 1].city)) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
                             i = 0;
                         }
                     }
-                    CommunTagsFilter[i] = DistanceFilterTabUser[i];
+                } else if (option === 'tags') {
+                    if (data[i - 1].tagsCommun < data[i].tagsCommun) {
+                        data[i] = data[i - 1];
+                        data[i - 1] = tmp;
+                        i = 0;
+                    }
                 }
-                newTabUsers = CommunTagsFilter;
-                //Voir pour l'algo de popularite
-                // if ((DistanceFilterTabUser[i - 1].popularity < i DistanceFilterTabUser[i].popularity) && DistanceFilterTabUser[i - 1].tagsCommun < 3)
-                newTabUsers.map((user) => {
-                    console.log(user.distanceFromUser);
-                });
-                resolve(newTabUsers);
             }
-        });
+        }
+        return data;
+    }
+
+    static filterEngineByPop(data, zoneSize, option) {
+        for (let i = 0; i < data.length; i++) {
+            let tmp = data[i];
+
+            if (i > 0) {
+                if (!option) {
+                    if (zoneSize !== "noUsersWithZoneSize"){
+                        if ((data[i - 1].popularity < data[i].popularity) &&
+                            ((data[i].distanceFromUser - data[i - 1].distanceFromUser) <= zoneSize) &&
+                            (data[i - 1].tagsCommun == data[i].tagsCommun)) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        }
+                    } else {
+                        if ((data[i - 1].tagsCommun < data[i].tagsCommun) &&
+                            (data[i].city === data[i - 1].city) &&
+                            (data[i - 1].tagsCommun == data[i].tagsCommun)) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        }
+                    }
+                } else if (option === 'pop') {
+                    if (data[i - 1].popularity < data[i].popularity) {
+                        data[i] = data[i - 1];
+                        data[i - 1] = tmp;
+                        i = 0;
+                    }
+                }
+            }
+        }
+        return data;
     }
 }
 module.exports = BrowseModel;
