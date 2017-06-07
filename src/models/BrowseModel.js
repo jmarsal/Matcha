@@ -214,7 +214,7 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && " +
                     "(sex = 1 && (orientation = 1 || orientation = 3) || sex = 2 && (orientation = 1 || orientation = 3)) " +
-                    "ORDER BY distanceFromUser ASC, tagsCommun ASC, popularity ASC";
+                    "ORDER BY distanceFromUser ASC";
             } else if (orientation == 3 && sex == 2) { // Femme be => trouver homme hetero ou be + femme gay ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -222,15 +222,15 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && " +
                     "(sex = 1 && (orientation = 2 || orientation = 3) || sex = 2 && (orientation = 2 || orientation = 3)) " +
-                    "ORDER BY distanceFromUser ASC, tagsCommun ASC, popularity ASC";
+                    "ORDER BY distanceFromUser ASC";
             } else if (orientation == 2 && sex == 1) { // Homme hetero => trouver femme hetero ou femme be
                 sql = "SELECT * " +
                     "FROM users " +
                     "INNER JOIN user_interacts " +
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 2 && " +
-                    "(orientation = 1 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC, tagsCommun ASC, popularity ASC";
+                    "(orientation = 1 || orientation = 3) ";// +
+                "ORDER BY distanceFromUser ASC";
             } else if (orientation == 2 && sex == 2) { // femme gay => trouver femme gay ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -238,7 +238,7 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 2 && " +
                     "(orientation = 2 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC, tagsCommun ASC, popularity ASC";
+                    "ORDER BY distanceFromUser ASC";
             } else if (orientation == 1 && sex == 1) { // homme gay => trouver homme gay ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -246,7 +246,7 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 1 && " +
                     "(orientation = 1 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC, tagsCommun ASC, popularity ASC";
+                    "ORDER BY distanceFromUser ASC";
             } else if (orientation == 1 && sex == 2) { // femme hetero => trouver homme hetero ou be
                 sql = "SELECT * " +
                     "FROM users " +
@@ -254,16 +254,68 @@ class BrowseModel {
                     "ON users.id = user_interacts.id_user " +
                     "WHERE users.id != ? && sex = 1 && " +
                     "(orientation = 2 || orientation = 3) " +
-                    "ORDER BY distanceFromUser ASC, tagsCommun ASC, popularity ASC";
+                    "ORDER BY distanceFromUser ASC";
             }
 
             connection.query(sql, [idUserSession, idUserSession], (err, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(res);
+                    BrowseModel.engineFilterUsers(res, "distance")
+                        .then((newTabUsers) => {
+                            resolve(newTabUsers);
+                        });
                 }
             });
+        });
+    }
+
+    static engineFilterUsers(data, filterType, zoneSize) { // filterType can be "distance", "tags", "popularity"
+        return new Promise((resolve, reject) => {
+            let newTabUsers = [],
+                CommunTagsFilter = []
+            ;
+
+            if (!zoneSize) {
+                let zoneSize = 50000;
+            }
+
+            if (filterType === "distance") {
+                let DistanceFilterTabUser = [];
+                // Filtre la data par distance
+                for (let i = 0; i < data.length; i++) {
+                    if (i > 0) {
+                        if (data[i - 1].distanceFromUser > data[i].distanceFromUser &&
+                            data[i].distanceFromUser < zoneSize) {
+                            DistanceFilterTabUser[i - 1] = data[i];
+                            i = 0;
+                        }
+                    }
+                    if (data[i].distanceFromUser < zoneSize) {
+                        DistanceFilterTabUser[i] = data[i];
+                    }
+                }
+                //Filtre la data par tags Commun
+                for (let i = 0; i < DistanceFilterTabUser.length; i++) {
+
+                    if (i > 0) {
+                        if ((DistanceFilterTabUser[i - 1].tagsCommun < DistanceFilterTabUser[i].tagsCommun) &&
+                            DistanceFilterTabUser[i].tagsCommun >= 3 &&
+                            DistanceFilterTabUser[i].distanceFromUser < zoneSize) {
+                            CommunTagsFilter[i - 1] = DistanceFilterTabUser[i];
+                            i = 0;
+                        }
+                    }
+                    CommunTagsFilter[i] = DistanceFilterTabUser[i];
+                }
+                newTabUsers = CommunTagsFilter;
+                //Voir pour l'algo de popularite
+                // if ((DistanceFilterTabUser[i - 1].popularity < i DistanceFilterTabUser[i].popularity) && DistanceFilterTabUser[i - 1].tagsCommun < 3)
+                newTabUsers.map((user) => {
+                    console.log(user.distanceFromUser);
+                });
+                resolve(newTabUsers);
+            }
         });
     }
 }
