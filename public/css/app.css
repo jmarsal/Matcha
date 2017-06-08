@@ -667,3 +667,5 @@ input:checked + .slider:before {
   width: auto; }
   .trie-option:hover {
     background-color: #E91E63; }
+  .trie-option.active {
+    background-color: #c1134e; }

@@ -10,21 +10,25 @@ block var
 
 block content
     div(class="container-account-user")
-        div(class="content-account-user")
-            div(class="welcome-text-account")
+        div(class="content-account-user" id="contentAccountUser")
+            div(class="welcome-text-account" id="welcomeTextAccount")
                 div(class="welcome-account" id="welcome-account")
+                div(class=( locals.error ? "error red" : "error"), id="error") #{error}
                 div(class="text1-account"): p #{title}
                     br
                 div(class="container-filters")
                     div(class="button trie" onclick="displayFilterOptions()") Filtres Basiques
                     div(class="container-trie-options" id="containerTrieOptions"
                         style="display:none")
-                        div(class="trie-option" onclick="displayOptions('ASC')") Distance croissante
-                        div(class="trie-option" onclick="displayOptions('DESC')") Distance decroissante
-                        div(class="trie-option" onclick="displayOptions('TAGS')") Tags en Commun
-                        div(class="trie-option" onclick="displayOptions('POP')") Popularité
+                        div(class="trie-option active" id="optionASC" onclick="displayOptions('ASC')") Distance croissante
+                        div(class="trie-option" id="optionDESC" onclick="displayOptions('DESC')") Distance decroissante
+                        div(class="trie-option" id="optionTAGS" onclick="displayOptions('TAGS')") Tags en Commun
+                        div(class="trie-option" id="optionPOP" onclick="displayOptions('POP')") Popularité
+                        div(class="trie-option" id="optionAgeASC" onclick="displayOptions('AgeASC')") Age croissant
+                        div(class="trie-option" id="optionAgeDESC" onclick="displayOptions('AgeDESC')") Age decroissant
                     div(class="fitres-interval button") Filtres par Intervales
-            div(class="container-profils-browse")
+                    div(class="padding-browse")
+            div(class="container-profils-browse" id="containerProfilsBrowse")
                 if profils
                     div(class="separator-profil")
                         for profil in profils

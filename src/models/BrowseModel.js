@@ -278,7 +278,7 @@ class BrowseModel {
             let newTabUsers = [];
 
             if (!zoneSize) {
-                zoneSize = 5;
+                zoneSize = 5000000;
             }
 
             if (filterType === "zone") {
@@ -311,6 +311,24 @@ class BrowseModel {
                 newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
                 if (newTabUsers.length < 1) {
                     newTabUsers = BrowseModel.filterEngineByPop(data, "noUsersWithZoneSize", 'pop');
+                }
+            }
+            if (filterType === "AgeASC") {
+                // Filtre la data par distance
+                newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
+                //Filtre par popularite
+                newTabUsers = BrowseModel.filterEngineByAge(newTabUsers, zoneSize);
+                if (newTabUsers.length < 1) {
+                    newTabUsers = BrowseModel.filterEngineByAge(data, "noUsersWithZoneSize", 'ageASC');
+                }
+            }
+            if (filterType === "AgeDESC") {
+                // Filtre la data par distance
+                newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
+                //Filtre par popularite
+                newTabUsers = BrowseModel.filterEngineByAge(newTabUsers, zoneSize);
+                if (newTabUsers.length < 1) {
+                    newTabUsers = BrowseModel.filterEngineByAge(data, "noUsersWithZoneSize", 'ageDESC');
                 }
             }
             resolve(newTabUsers);
@@ -385,6 +403,60 @@ class BrowseModel {
                     }
                 } else if (option === 'pop') {
                     if (data[i - 1].popularity < data[i].popularity) {
+                        data[i] = data[i - 1];
+                        data[i - 1] = tmp;
+                        i = 0;
+                    }
+                }
+            }
+        }
+        return data;
+    }
+
+    static filterEngineByAge(data, zoneSize, option) {
+        for (let i = 0; i < data.length; i++) {
+            let tmp = data[i];
+
+            console.log(option);
+            if (i > 0) {
+                if (!option) {
+                    if (zoneSize !== "noUsersWithZoneSize"){
+                        if ((data[i - 1].age > data[i].age) &&
+                            ((data[i].distanceFromUser - data[i - 1].distanceFromUser) <= zoneSize)) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        } else if ((data[i - 1].age == data[i].age) &&
+                            ((data[i].distanceFromUser - data[i - 1].distanceFromUser) <= zoneSize) &&
+                            ((data[i].tagsCommun > data[i - 1].tagsCommun) || ((data[i].tagsCommun == data[i - 1].tagsCommun) &&
+                            data[i].popularity > data[i - 1].popularity))) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        }
+                    } else {
+                        if (data[i - 1].age > data[i].age) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        } else if ((data[i - 1].age == data[i].age) &&
+                            (data[i].city === data[i - 1].city) &&
+                            ((data[i - 1].tagsCommun < data[i].tagsCommun) || ((data[i].tagsCommun == data[i - 1].tagsCommun) &&
+                            data[i].popularity > data[i - 1].popularity))) {
+                            data[i] = data[i - 1];
+                            data[i - 1] = tmp;
+                            i = 0;
+                        }
+                    }
+                } else if (option === 'ageASC') {
+                    if (data[i - 1].age > data[i].age) {
+                        data[i] = data[i - 1];
+                        data[i - 1] = tmp;
+                        i = 0;
+                    }
+                } else if (option === 'ageDESC') {
+                    console.log('ici');
+                    if (data[i - 1].age < data[i].age) {
                         data[i] = data[i - 1];
                         data[i - 1] = tmp;
                         i = 0;
