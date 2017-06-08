@@ -669,3 +669,19 @@ input:checked + .slider:before {
     background-color: #E91E63; }
   .trie-option.active {
     background-color: #c1134e; }
+
+.padding-browse {
+  margin-top: 60px; }
+
+.container-trie-options {
+  cursor: pointer;
+  border-radius: 50px; }
+
+.containerFiltresOptions input {
+  background-color: rgba(194, 24, 91, 0);
+  font-family: inherit;
+  font-size: 1rem; }
+
+.sliders {
+  width: 60%;
+  margin: 0 auto; }

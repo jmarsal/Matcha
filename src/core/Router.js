@@ -18,7 +18,6 @@ class Router {
             console.error('Error! Exiting... You must provide the Express instance to the Router.');
             process.exit(1);
         }
-
         this.registerRoutes();
     }
 

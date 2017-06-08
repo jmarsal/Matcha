@@ -14,18 +14,14 @@
 
 .infos-profil-browse {
     border: 5px solid $primary-color-dark;
-    background-color: rgba($primary-color, 0.6);
-    //-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
+    background-color: rgba($primary-color, 0.6); //-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
     //transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
     cursor: pointer;
     z-index: 0;
     border-radius: 0;
     transition-duration: 2s;
-    
     &:hover {
-        background-color: rgba($primary-color-light, 0.6);
-        
-        //&, .infos {
+        background-color: rgba($primary-color-light, 0.6); //&, .infos {
         //  background-color: rgba($primary-color-text, 0.6);
         //}
         //filter: hue-rotate(360deg);
@@ -33,9 +29,7 @@
     }
 }
 
-.primary-infos {
-
-}
+.primary-infos {}
 
 //.login-profil-browse{
 //  display: inline-flex;
@@ -45,14 +39,12 @@
 //  margin-right: 10%;
 //  color: $color_text;
 //}
-
 //.localite-infos {
 //  display: inline-flex;
 //  position: relative;
 //  width: auto;
 //  //margin-right: -5%;
 //}
-
 .photo-profil-browse {
     display: inline-flex;
     position: relative;
@@ -60,8 +52,10 @@
     height: 200px;
     background-position: center;
     background-size: cover;
-    border: 2px solid #ddd; /* Gray border */
-    border-radius: 0; /* Rounded border */
+    border: 2px solid #ddd;
+    /* Gray border */
+    border-radius: 0;
+    /* Rounded border */
     //z-index: 1;
 }
 
@@ -80,7 +74,6 @@
 //  //padding-left: 53px;
 //  //padding-right: 451px;
 //}
-
 //.bio-browse {
 //  max-width: 30%;
 //}
@@ -113,7 +106,6 @@
 
 .trie {
     width: 50%;
-    
     &.button {
         text-align: center;
     }
@@ -125,7 +117,6 @@
 .fitres-interval {
     width: 50%;
     margin: 0 auto 50px;
-    
     &:hover {
         background-color: $primary-color;
     }
@@ -144,17 +135,33 @@
     cursor: pointer;
     border-radius: 50px;
     width: auto;
-    
     &:hover {
         background-color: $primary-color;
     }
-    
     &.active {
         background-color: darken($primary-color, 10);
     }
 }
 
 .padding-browse {
-//    background-color: rgba($primary-color-dark, 0.6);
+    margin-top: 60px; //    background-color: rgba($primary-color-dark, 0.6);
     //padding-top: 5px;
+}
+
+.container-trie-options {
+    cursor: pointer;
+    border-radius: 50px;
+}
+
+.containerFiltresOptions {
+    input {
+        background-color: rgba($primary-color-dark, 0);
+        font-family: inherit;
+        font-size: 1rem;
+    }
+}
+
+.sliders {
+    width: 60%;
+    margin: 0 auto;
 }

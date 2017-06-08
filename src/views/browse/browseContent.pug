@@ -17,7 +17,7 @@ block content
                 div(class="text1-account"): p #{title}
                     br
                 div(class="container-filters")
-                    div(class="button trie" onclick="displayFilterOptions()") Filtres Basiques
+                    div(class="button trie" onclick="displayTrieOptions()") Filtres Basiques
                     div(class="container-trie-options" id="containerTrieOptions"
                         style="display:none")
                         div(class="trie-option active" id="optionASC" onclick="displayOptions('ASC')") Distance croissante
@@ -26,7 +26,29 @@ block content
                         div(class="trie-option" id="optionPOP" onclick="displayOptions('POP')") Popularité
                         div(class="trie-option" id="optionAgeASC" onclick="displayOptions('AgeASC')") Age croissant
                         div(class="trie-option" id="optionAgeDESC" onclick="displayOptions('AgeDESC')") Age decroissant
-                    div(class="fitres-interval button") Filtres par Intervales
+                    div(class="fitres-interval button" onclick="displayFilterOptions()") Filtres par Intervales
+                    div(class="containerFiltresOptions" id="containerFiltersOptions"
+                        style="display:none")
+                        p
+                            label(for="amount-slider-distance") Distances: 
+                            input(type="text" id="amount-slider-distance" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-distance")
+                        p
+                            label(for="amount-slider-tags") Tags: 
+                            input(type="text" id="amount-slider-tags" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-tags")
+                        p
+                            label(for="amount-slider-pop") Popularité: 
+                            input(type="text" id="amount-slider-pop" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-pop")
+                        p
+                            label(for="amount-slider-age") Age: 
+                            input(type="text" id="amount-slider-age" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-age")
                     div(class="padding-browse")
             div(class="container-profils-browse" id="containerProfilsBrowse")
                 if profils
