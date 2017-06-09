@@ -6,7 +6,7 @@ const express = require('express');
 
 const BrowseModel = require('../models/BrowseModel'),
 	UserModel = require('../models/UserModel'),
-	Helper = require('../Core/Helpers');
+	Helper = require('../core/Helpers');
 
 class BrowseController {
 	constructor() {
@@ -67,7 +67,7 @@ class BrowseController {
 							title: 'Voici quelques profils qui pourraient te convenir ...',
 							profils: profilsOrder,
 							photos: profils.photos,
-							photoFav: profils.photosProfil ? profils.photosProfil : '',
+							photoFav: profils.photosProfil ? profils.photosProfil : ''
 						});
 					})
 					.catch((err) => {
@@ -142,7 +142,7 @@ class BrowseController {
 					const response = {
 						infos: profils.infos,
 						photos: profils.photos,
-						profilsOrder: profils.profilsOrder,
+						profilsOrder: profils.profilsOrder
 					};
 					Helper.sendResponseToClient(response, 0, res);
 				})
@@ -174,8 +174,47 @@ class BrowseController {
 				})
 				.then((minMaxVal) => {
 					const response = {
-						minMax: minMaxVal,
+						minMax: minMaxVal
 					};
+					Helper.sendResponseToClient(response, 0, res);
+				})
+				.catch((err) => {
+					console.error(err);
+					Helper.sendResponseToClient('Something went wrong!', 1, res);
+				});
+		});
+
+		this.router.post('/browse/New-Users-Filters-Intervals', (req, res) => {
+			let profils = [], minMax = req.body;
+
+			console.log(minMax);
+			BrowseModel.getInfosAllProfils(req.session.user.id)
+				.then((infos) => {
+					profils.infos = infos;
+					return BrowseModel.getAllPhotosProfils(req.session.user.id);
+				})
+				.then((photos) => {
+					profils.photos = photos;
+					return BrowseModel.getInfosUserSession(req.session.user.id);
+				})
+				.then((infosUserSession) => {
+					profils.infosUserSession = infosUserSession;
+					return BrowseModel.filterProfilsOrderByDistance(
+						req.session.user.id,
+						profils.infosUserSession,
+						'ASC',
+						'zone',
+						minMax
+					);
+				})
+				.then((profilsOrder) => {
+					profils.profilsOrder = profilsOrder;
+					const response = {
+						infos: profils.infos,
+						photos: profils.photos,
+						profilsOrder: profils.profilsOrder
+					};
+
 					Helper.sendResponseToClient(response, 0, res);
 				})
 				.catch((err) => {

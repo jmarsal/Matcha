@@ -57,11 +57,11 @@ class BrowseModel {
 			let distance = geolib.getDistanceSimple(
 				{
 					latitude: infosUserSession[0].lat,
-					longitude: infosUserSession[0].lng,
+					longitude: infosUserSession[0].lng
 				},
 				{
 					latitude: profil.lat,
-					longitude: profil.lng,
+					longitude: profil.lng
 				}
 			);
 
@@ -84,25 +84,35 @@ class BrowseModel {
 					reject(err);
 				} else {
 					if (res.length) {
-						sql = 'UPDATE user_interacts SET distanceFromUser = ? WHERE id_user_session = ? && id_user = ?';
+						sql =
+							'UPDATE user_interacts SET distanceFromUser = ?, distanceFromUserKm = ? WHERE id_user_session = ? && id_user = ?';
 
-						connection.query(sql, [ distanceFromUser, idUserSession, idProfil ], (err) => {
-							if (err) {
-								reject(err);
-							} else {
-								resolve();
+						connection.query(
+							sql,
+							[ distanceFromUser, Math.trunc(distanceFromUser / 1000), idUserSession, idProfil ],
+							(err) => {
+								if (err) {
+									reject(err);
+								} else {
+									resolve();
+								}
 							}
-						});
+						);
 					} else {
-						sql = 'INSERT INTO user_interacts SET id_user_session = ?, distanceFromUser = ?, id_user = ?';
+						sql =
+							'INSERT INTO user_interacts SET id_user_session = ?, distanceFromUser = ?, distanceFromUserKm = ?, id_user = ?';
 
-						connection.query(sql, [ idUserSession, distanceFromUser, idProfil ], (err) => {
-							if (err) {
-								reject(err);
-							} else {
-								resolve();
+						connection.query(
+							sql,
+							[ idUserSession, distanceFromUser, Math.trunc(distanceFromUser / 1000), idProfil ],
+							(err) => {
+								if (err) {
+									reject(err);
+								} else {
+									resolve();
+								}
 							}
-						});
+						);
 					}
 				}
 			});
@@ -114,7 +124,7 @@ class BrowseModel {
 			let sql = 'SELECT * FROM tags_user WHERE id_user != ?',
 				AllTags = {
 					tagsAllOtherUsers: [],
-					tagsUserSession: [],
+					tagsUserSession: []
 				};
 
 			connection.query(sql, [ idUserSession ], (err, res) => {
@@ -191,7 +201,7 @@ class BrowseModel {
 				if (countByUser[i] && countByUser[i] > 0) {
 					dataToSend[j] = {
 						id: i,
-						tagsCommun: countByUser[i],
+						tagsCommun: countByUser[i]
 					};
 					j++;
 				}
@@ -200,78 +210,56 @@ class BrowseModel {
 		});
 	}
 
-	static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option) {
+	static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option, minMax) {
 		return new Promise((resolve, reject) => {
-			let sql = '', orientation = infosUserSession[0].orientation, sex = infosUserSession[0].sex;
+			let sql =
+				'SELECT * ' +
+				'FROM users ' +
+				'INNER JOIN user_interacts ' +
+				'ON users.id = user_interacts.id_user ' +
+				'WHERE users.id != ? && ',
+				orientation = infosUserSession[0].orientation,
+				sex = infosUserSession[0].sex;
 
 			if (orientation == 3 && sex == 1) {
 				// Homme be => trouver homme gay ou be + femme hetero ou be
-				sql =
-					'SELECT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && ' +
-					'(sex = 1 && (orientation = 1 || orientation = 3) || sex = 2 && (orientation = 1 || orientation = 3)) ' +
-					'ORDER BY distanceFromUser ' +
-					orderBy;
+				sql +=
+					'(sex = 1 && (orientation = 1 || orientation = 3) || sex = 2 && (orientation = 1 || orientation = 3)) ';
 			} else if (orientation == 3 && sex == 2) {
 				// Femme be => trouver homme hetero ou be + femme gay ou be
-				sql =
-					'SELECT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && ' +
-					'(sex = 1 && (orientation = 2 || orientation = 3) || sex = 2 && (orientation = 2 || orientation = 3)) ' +
-					'ORDER BY distanceFromUser ' +
-					orderBy;
+				sql +=
+					'(sex = 1 && (orientation = 2 || orientation = 3) || sex = 2 && (orientation = 2 || orientation = 3)) ';
 			} else if (orientation == 2 && sex == 1) {
 				// Homme hetero => trouver femme hetero ou femme be
-				sql =
-					'SELECT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && sex = 2 && ' +
-					'(orientation = 1 || orientation = 3) ' +
-					'ORDER BY distanceFromUser ' +
-					orderBy;
+				sql += 'sex = 2 && ' + '(orientation = 1 || orientation = 3) ';
 			} else if (orientation == 2 && sex == 2) {
 				// femme gay => trouver femme gay ou be
-				sql =
-					'SELECT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && sex = 2 && ' +
-					'(orientation = 2 || orientation = 3) ' +
-					'ORDER BY distanceFromUser ' +
-					orderBy;
+				sql += 'sex = 2 && ' + '(orientation = 2 || orientation = 3) ';
 			} else if (orientation == 1 && sex == 1) {
 				// homme gay => trouver homme gay ou be
-				sql =
-					'SELECT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && sex = 1 && ' +
-					'(orientation = 1 || orientation = 3) ' +
-					'ORDER BY distanceFromUser ' +
-					orderBy;
+				sql += 'sex = 1 && ' + '(orientation = 1 || orientation = 3) ';
 			} else if (orientation == 1 && sex == 2) {
 				// femme hetero => trouver homme hetero ou be
-				sql =
-					'SELECT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && sex = 1 && ' +
-					'(orientation = 2 || orientation = 3) ' +
-					'ORDER BY distanceFromUser ' +
-					orderBy;
+				sql += 'sex = 1 && ' + '(orientation = 2 || orientation = 3) ';
 			}
 
+			if (minMax) {
+				sql +=
+					' && ' +
+					minMax.distance +
+					' >= ' +
+					minMax.minDistance +
+					' && ' +
+					minMax.distance +
+					' <= ' +
+					minMax.maxDistance;
+				// sql += ' && ' + minMax.tags + ' >= ' + minMax.minTags + ' && ' + minMax.tags + ' <= ' + minMax.maxTags;
+				// sql += ' && ' + minMax.pop + ' >= ' + minMax.minPop + ' && ' + minMax.pop + ' <= ' + minMax.maxPop;
+				// sql += ' && ' + minMax.age + ' >= ' + minMax.minAge + ' && ' + minMax.age + ' <= ' + minMax.maxAge;
+			}
+			sql += ' ORDER BY distanceFromUser ' + orderBy;
+			console.log(minMax);
+			console.log(sql);
 			connection.query(sql, [ idUserSession, idUserSession ], (err, res) => {
 				if (err) {
 					reject(err);
@@ -293,7 +281,7 @@ class BrowseModel {
 			let newTabUsers = [];
 
 			if (!zoneSize) {
-				zoneSize = 50000;
+				zoneSize = 5000000;
 			}
 
 			if (filterType === 'zone') {
@@ -435,7 +423,6 @@ class BrowseModel {
 	}
 
 	static filterEngineByAge(data, zoneSize, option) {
-		debugger;
 		for (let i = 0; i < data.length; i++) {
 			let tmp = data[i];
 			if (i > 0) {
@@ -538,9 +525,11 @@ class BrowseModel {
 				}
 				if (user.distanceFromUser < minMax.minDistance) {
 					minMax.minDistance = user.distanceFromUser;
+					minMax.minDistanceKm = user.distanceFromUserKm;
 				}
 				if (user.distanceFromUser > minMax.maxDistance) {
 					minMax.maxDistance = user.distanceFromUser;
+					minMax.maxDistanceKm = user.distanceFromUserKm;
 				}
 				if (user.tagsCommun < minMax.minTags) {
 					minMax.minTags = user.tagsCommun;
@@ -557,7 +546,7 @@ class BrowseModel {
 					minDistance: user.distanceFromUser,
 					maxDistance: user.distanceFromUser,
 					minTags: user.tagsCommun,
-					maxTags: user.tagsCommun,
+					maxTags: user.tagsCommun
 				};
 			}
 		});

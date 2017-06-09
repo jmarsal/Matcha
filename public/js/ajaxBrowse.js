@@ -20,9 +20,8 @@ function displayFilterOptions() {
 		$('#containerTrieOptions').css('display', 'none');
 		buttonFilter.css('display', 'block');
 
-		$.post('/browse/Change-Filters-Intervals', {}, function (data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText),
-				divError = $('#error');
+		$.post('/browse/Change-Filters-Intervals', {}, function(data, textStatus, jqXHR) {
+			var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
 
 			divError.removeClass('red green');
 			dataRes.isErr === 1 ? divError.addClass('red') : '';
@@ -31,11 +30,10 @@ function displayFilterOptions() {
 			// rebaseBrowseUsers(dataRes.response)
 			setIntervalsMinMax(
 				'slider-distance',
-				dataRes.response.minMax.minDistance / 1000,
-				dataRes.response.minMax.maxDistance / 1000,
+				dataRes.response.minMax.minDistanceKm,
+				dataRes.response.minMax.maxDistanceKm,
 				'Km'
 			);
-			// debugger;
 			setIntervalsMinMax('slider-tags', dataRes.response.minMax.minTags, dataRes.response.minMax.maxTags, '');
 			setIntervalsMinMax('slider-pop', dataRes.response.minMax.minPop, dataRes.response.minMax.maxPop, '%');
 			setIntervalsMinMax('slider-age', dataRes.response.minMax.minAge, dataRes.response.minMax.maxAge, 'ans');
@@ -50,20 +48,20 @@ function setIntervalsMinMax(slider, min, max, unite) {
 		range: true,
 		min: min,
 		max: max,
-		values: [min, max],
-		slide: function (event, ui) {
+		values: [ min, max ],
+		slide: function(event, ui) {
 			$('#amount-' + slider).val(ui.values[0] + ' ' + unite + '   ' + ui.values[1] + ' ' + unite + '');
 		}
 	});
 	$('#amount-' + slider).val(
 		$('#' + slider).slider('values', 0) +
-		' ' +
-		unite +
-		'  -  ' +
-		$('#' + slider).slider('values', 1) +
-		' ' +
-		unite +
-		' '
+			' ' +
+			unite +
+			'  -  ' +
+			$('#' + slider).slider('values', 1) +
+			' ' +
+			unite +
+			' '
 	);
 }
 
@@ -87,9 +85,8 @@ function displayOptions(valeur) {
 		$('#optionAgeDESC').addClass('active');
 	}
 
-	$.post('/browse/Change-Filters-Trie', dataToSend, function (data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText),
-			divError = $('#error');
+	$.post('/browse/Change-Filters-Trie', dataToSend, function(data, textStatus, jqXHR) {
+		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
 
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : '';
@@ -116,7 +113,7 @@ function rebaseBrowseUsers(data) {
 			id: profil.id,
 			class: 'profil-browse',
 			on: {
-				click: function () {
+				click: function() {
 					aChangerPlusTard(profil.id);
 				}
 			},
@@ -222,9 +219,56 @@ function rebaseBrowseUsers(data) {
 	});
 }
 
-// console.log($('#amount-slider-age').slider('option', 'value'));
-$('#amount-slider-age').slider({
-	change: function (event, ui) {
-		alert(ui.value);
+let dataToSend = {};
+
+$('#slider-age').slider({
+	start: function(event, ui) {
+		(dataToSend.age = 'age'), (dataToSend.minAge = ui.values[0]), (dataToSend.maxAge = ui.values[1]);
+
+		// let min = ui.values[0], max = ui.values[1];
+
+		modifyUsersByIntervals(dataToSend);
+		console.log(dataToSend);
 	}
 });
+
+// $('#slider-distance').slider({
+// 	start: function(event, ui) {
+// 		(dataToSend.distance = 'distanceFromUserKm'), (dataToSend.minDistance = ui.values[0]), (dataToSend.maxDistance =
+// 			ui.values[1]);
+
+// 		console.log();
+// 		modifyUsersByIntervals(dataToSend);
+// 		console.log(dataToSend);
+// 	}
+// });
+
+$('#slider-tags').slider({
+	start: function(event, ui) {
+		(dataToSend.tags = 'tagsCommun'), (dataToSend.minTags = ui.values[0]), (dataToSend.maxTags = ui.values[1]);
+
+		modifyUsersByIntervals(dataToSend);
+		console.log(dataToSend);
+	}
+});
+
+$('#slider-pop').slider({
+	start: function(event, ui) {
+		(dataToSend.pop = 'popularity'), (dataToSend.minPop = ui.values[0]), (dataToSend.maxPop = ui.values[1]);
+
+		modifyUsersByIntervals(dataToSend);
+		console.log(dataToSend);
+	}
+});
+
+function modifyUsersByIntervals(dataToSend) {
+	$.post('/browse/New-Users-Filters-Intervals', dataToSend, function(data, textStatus, jqXHR) {
+		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+
+		divError.removeClass('red green');
+		dataRes.isErr === 1 ? divError.addClass('red') : '';
+		dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
+
+		rebaseBrowseUsers(dataRes.response);
+	});
+}
