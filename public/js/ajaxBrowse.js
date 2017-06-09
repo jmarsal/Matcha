@@ -21,13 +21,28 @@ function displayFilterOptions() {
 		buttonFilter.css('display', 'block');
 
 		$.post('/browse/Change-Filters-Intervals', {}, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#error'),
+				dataToSend = {
+					distance: 'distanceFromUserKm',
+					minDistance: dataRes.response.minMax.minDistanceKm,
+					maxDistance: dataRes.response.minMax.maxDistanceKm,
+					tags: 'tagsCommun',
+					minTags: dataRes.response.minMax.minTags,
+					maxTags: dataRes.response.minMax.maxTags,
+					pop: 'popularity',
+					minPop: dataRes.response.minMax.minPop,
+					maxPop: dataRes.response.minMax.maxPop,
+					age: 'age',
+					minAge: dataRes.response.minMax.minAge,
+					maxAge: dataRes.response.minMax.maxAge
+				};
 
 			divError.removeClass('red green');
 			dataRes.isErr === 1 ? divError.addClass('red') : '';
 			dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
 
-			// rebaseBrowseUsers(dataRes.response)
+			console.log(dataRes);
 			setIntervalsMinMax(
 				'slider-distance',
 				dataRes.response.minMax.minDistanceKm,
@@ -37,10 +52,54 @@ function displayFilterOptions() {
 			setIntervalsMinMax('slider-tags', dataRes.response.minMax.minTags, dataRes.response.minMax.maxTags, '');
 			setIntervalsMinMax('slider-pop', dataRes.response.minMax.minPop, dataRes.response.minMax.maxPop, '%');
 			setIntervalsMinMax('slider-age', dataRes.response.minMax.minAge, dataRes.response.minMax.maxAge, 'ans');
+			$('#slider-distance').slider({
+				change: function(event, ui) {
+					(dataToSend.distance = 'distanceFromUserKm'), (dataToSend.minDistance =
+						ui.values[0]), (dataToSend.maxDistance = ui.values[1]);
+					modifyUsersByIntervals(dataToSend);
+				}
+			});
+
+			$('#slider-tags').slider({
+				change: function(event, ui) {
+					(dataToSend.tags = 'tagsCommun'), (dataToSend.minTags = ui.values[0]), (dataToSend.maxTags =
+						ui.values[1]);
+
+					modifyUsersByIntervals(dataToSend);
+				}
+			});
+
+			$('#slider-pop').slider({
+				change: function(event, ui) {
+					(dataToSend.pop = 'popularity'), (dataToSend.minPop = ui.values[0]), (dataToSend.maxPop =
+						ui.values[1]);
+
+					modifyUsersByIntervals(dataToSend);
+				}
+			});
+
+			$('#slider-age').slider({
+				change: function(event, ui) {
+					(dataToSend.age = 'age'), (dataToSend.minAge = ui.values[0]), (dataToSend.maxAge = ui.values[1]);
+					modifyUsersByIntervals(dataToSend);
+				}
+			});
 		});
 	} else {
 		buttonFilter.css('display', 'none');
 	}
+}
+
+function modifyUsersByIntervals(dataToSend) {
+	$.post('/browse/New-Users-Filters-Intervals', dataToSend, function(data, textStatus, jqXHR) {
+		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+
+		divError.removeClass('red green');
+		dataRes.isErr === 1 ? divError.addClass('red') : '';
+		dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
+
+		rebaseBrowseUsers(dataRes.response);
+	});
 }
 
 function setIntervalsMinMax(slider, min, max, unite) {
@@ -219,56 +278,7 @@ function rebaseBrowseUsers(data) {
 	});
 }
 
-let dataToSend = {};
-
-$('#slider-age').slider({
-	start: function(event, ui) {
-		(dataToSend.age = 'age'), (dataToSend.minAge = ui.values[0]), (dataToSend.maxAge = ui.values[1]);
-
-		// let min = ui.values[0], max = ui.values[1];
-
-		modifyUsersByIntervals(dataToSend);
-		console.log(dataToSend);
-	}
-});
-
-// $('#slider-distance').slider({
-// 	start: function(event, ui) {
-// 		(dataToSend.distance = 'distanceFromUserKm'), (dataToSend.minDistance = ui.values[0]), (dataToSend.maxDistance =
-// 			ui.values[1]);
-
-// 		console.log();
-// 		modifyUsersByIntervals(dataToSend);
-// 		console.log(dataToSend);
-// 	}
-// });
-
-$('#slider-tags').slider({
-	start: function(event, ui) {
-		(dataToSend.tags = 'tagsCommun'), (dataToSend.minTags = ui.values[0]), (dataToSend.maxTags = ui.values[1]);
-
-		modifyUsersByIntervals(dataToSend);
-		console.log(dataToSend);
-	}
-});
-
-$('#slider-pop').slider({
-	start: function(event, ui) {
-		(dataToSend.pop = 'popularity'), (dataToSend.minPop = ui.values[0]), (dataToSend.maxPop = ui.values[1]);
-
-		modifyUsersByIntervals(dataToSend);
-		console.log(dataToSend);
-	}
-});
-
-function modifyUsersByIntervals(dataToSend) {
-	$.post('/browse/New-Users-Filters-Intervals', dataToSend, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
-
-		divError.removeClass('red green');
-		dataRes.isErr === 1 ? divError.addClass('red') : '';
-		dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
-
-		rebaseBrowseUsers(dataRes.response);
-	});
+function printDetailsProfils(idUser) {
+	console.log(idUser);
+	window.location.replace('/browse/profil' + encodeURI('?user=' + idUser));
 }

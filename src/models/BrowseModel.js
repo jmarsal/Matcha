@@ -89,7 +89,7 @@ class BrowseModel {
 
 						connection.query(
 							sql,
-							[ distanceFromUser, Math.trunc(distanceFromUser / 1000), idUserSession, idProfil ],
+							[ distanceFromUser, Math.round(distanceFromUser / 1000), idUserSession, idProfil ],
 							(err) => {
 								if (err) {
 									reject(err);
@@ -104,7 +104,7 @@ class BrowseModel {
 
 						connection.query(
 							sql,
-							[ idUserSession, distanceFromUser, Math.trunc(distanceFromUser / 1000), idProfil ],
+							[ idUserSession, distanceFromUser, Math.round(distanceFromUser / 1000), idProfil ],
 							(err) => {
 								if (err) {
 									reject(err);
@@ -253,13 +253,11 @@ class BrowseModel {
 					minMax.distance +
 					' <= ' +
 					minMax.maxDistance;
-				// sql += ' && ' + minMax.tags + ' >= ' + minMax.minTags + ' && ' + minMax.tags + ' <= ' + minMax.maxTags;
-				// sql += ' && ' + minMax.pop + ' >= ' + minMax.minPop + ' && ' + minMax.pop + ' <= ' + minMax.maxPop;
-				// sql += ' && ' + minMax.age + ' >= ' + minMax.minAge + ' && ' + minMax.age + ' <= ' + minMax.maxAge;
+				sql += ' && ' + minMax.tags + ' >= ' + minMax.minTags + ' && ' + minMax.tags + ' <= ' + minMax.maxTags;
+				sql += ' && ' + minMax.pop + ' >= ' + minMax.minPop + ' && ' + minMax.pop + ' <= ' + minMax.maxPop;
+				sql += ' && ' + minMax.age + ' >= ' + minMax.minAge + ' && ' + minMax.age + ' <= ' + minMax.maxAge;
 			}
 			sql += ' ORDER BY distanceFromUser ' + orderBy;
-			console.log(minMax);
-			console.log(sql);
 			connection.query(sql, [ idUserSession, idUserSession ], (err, res) => {
 				if (err) {
 					reject(err);
@@ -281,7 +279,7 @@ class BrowseModel {
 			let newTabUsers = [];
 
 			if (!zoneSize) {
-				zoneSize = 5000000;
+				zoneSize = 50000;
 			}
 
 			if (filterType === 'zone') {
@@ -545,12 +543,40 @@ class BrowseModel {
 					maxPop: user.popularity,
 					minDistance: user.distanceFromUser,
 					maxDistance: user.distanceFromUser,
+					minDistanceKm: user.distanceFromUserKm,
+					maxDistanceKm: user.distanceFromUserKm,
 					minTags: user.tagsCommun,
 					maxTags: user.tagsCommun
 				};
 			}
 		});
 		return minMax;
+	}
+
+	static getAllPhotoUser(idUser) {
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT src_photo FROM users_photos_profils WHERE id_user = ?';
+
+			connection.query(sql, [ idUser ], (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				resolve(res);
+			});
+		});
+	}
+
+	static getAllTagsUser(idUser) {
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT tag FROM tags_user WHERE id_user = ?';
+
+			connection.query(sql, [ idUser ], (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				resolve(res);
+			});
+		});
 	}
 }
 module.exports = BrowseModel;

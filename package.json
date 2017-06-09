@@ -50,8 +50,7 @@
   },
   "scripts": {
     "test": "echo 'Error: no test specified' && exit 1",
-    "start": "nodemon src/index.js",
-    "watch": "pm2 start src/index.js --watch",
+    "start": "nodemon --inspect src/index.js --exec node -r babel-register",
     "dev": "nodemon --inspect src/index.js --exec node -r babel-register"
   },
   "repository": {

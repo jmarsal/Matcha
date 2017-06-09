@@ -77,6 +77,39 @@ class BrowseController {
 				res.redirect('../accueil');
 			}
 		});
+
+		this.router.get('/browse/profil', (req, res) => {
+			if (req.session.start) {
+				let user = req.query.user, infos = {};
+
+				BrowseModel.getInfosUserSession(user)
+					.then((infosUserSession) => {
+						infos.infos = infosUserSession;
+
+						return BrowseModel.getAllPhotoUser(user);
+						res.render('./views/browse/browseProfil');
+					})
+					.then((photosUser) => {
+						infos.photos = photosUser;
+						return BrowseModel.getAllTagsUser(user);
+					})
+					.then((tags) => {
+						infos.tags = tags;
+
+						res.render('./views/browse/browseProfil', {
+							title: 'En detail ...',
+							profils: infos.infos,
+							photos: infos.photos,
+							tags: infos.tags
+						});
+					})
+					.catch((err) => {
+						console.error(err);
+					});
+			} else {
+				res.redirect('../accueil');
+			}
+		});
 	}
 
 	browsePostRoute() {
@@ -154,7 +187,6 @@ class BrowseController {
 
 		this.router.post('/browse/Change-Filters-Intervals', (req, res) => {
 			let profils = [];
-
 			BrowseModel.getInfosAllProfils(req.session.user.id)
 				.then((infos) => {
 					profils.infos = infos;
@@ -187,7 +219,6 @@ class BrowseController {
 		this.router.post('/browse/New-Users-Filters-Intervals', (req, res) => {
 			let profils = [], minMax = req.body;
 
-			console.log(minMax);
 			BrowseModel.getInfosAllProfils(req.session.user.id)
 				.then((infos) => {
 					profils.infos = infos;
