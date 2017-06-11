@@ -284,11 +284,17 @@ function printDetailsProfils(idUser) {
 }
 
 function displayLarge(idPhoto) {
-	console.log(idPhoto);
+	$('.active').removeClass('active');
 	$('#' + idPhoto).addClass('active');
 }
 
-function displayNormalise(idPhoto) {
-	console.log('displayNormalise');
-	$('#' + idPhoto).removeClass('active');
+function displayNormalise() {
+	$('.active').removeClass('active');
 }
+
+$('body').on('click', (e) => {
+	if (e.target.classList.contains('active')) {
+		return false;
+	}
+	displayNormalise();
+});
