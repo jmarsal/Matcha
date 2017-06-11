@@ -378,7 +378,8 @@ html {
   width: 75%;
   display: inline-flex;
   position: relative; }
-  .container-checkbox .sex-user-input, .container-checkbox .orientation-user-input {
+  .container-checkbox .sex-user-input,
+  .container-checkbox .orientation-user-input {
     font-size: inherit;
     width: 100%;
     display: inline-block;
@@ -480,7 +481,8 @@ html {
   margin-top: -15px;
   margin-bottom: 25px; }
 
-@-webkit-keyframes rotating /* Safari and Chrome */ {
+@-webkit-keyframes rotating
+/* Safari and Chrome */ {
   from {
     -webkit-transform: rotate(0deg);
     -o-transform: rotate(0deg);
@@ -614,9 +616,7 @@ input:checked + .slider:before {
   background-position: center;
   background-size: cover;
   border: 2px solid #ddd;
-  /* Gray border */
-  border-radius: 0;
-  /* Rounded border */ }
+  border-radius: 0; }
 
 .infos {
   margin: 0% auto;
@@ -693,8 +693,8 @@ input:checked + .slider:before {
 .photo-profil-browse {
   cursor: pointer;
   z-index: 0;
-  -webkit-transition: width 1s, height 1s, filter 1s, transform 1s;
-  transition: width 1s, height 1s, filter 1s, transform 1s; }
+  -webkit-transition: width 1s, height 1s;
+  transition: width 1s, height 1s; }
   .photo-profil-browse.active {
     width: 95%;
     height: 80%;

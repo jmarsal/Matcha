@@ -1,7 +1,52 @@
 extends ../layout/layout
 
+block js
+    script(src="../js/ajaxSearch.js")
+    script(src="http://maps.google.com/maps/api/js?key=AIzaSyC-QpPQdgESP_iKFtbuIchUgp-NjZBqCFA&libraries=places"
+    async defer)
+
 block var
     - page = "search";
 
 block content
-    p #{title}
+    div(class="container-account-user")
+        div(class="content-account-user" id="contentAccountUser")
+            div(class="welcome-text-account" id="welcomeTextAccount")
+                div(class="welcome-account" id="welcome-account")
+                div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+                div(class="text1-account"): p #{title}
+                    br
+                div(class="container-filters")
+                    div(class="button trie" onclick="displayTrieOptions()") Filtres Basiques
+                    div(class="container-trie-options" id="containerTrieOptions"
+                        style="display:none")
+                        div(class="trie-option active" id="optionASC" onclick="displayOptions('ASC')") Distance croissante
+                        div(class="trie-option" id="optionDESC" onclick="displayOptions('DESC')") Distance decroissante
+                        div(class="trie-option" id="optionTAGS" onclick="displayOptions('TAGS')") Tags en Commun
+                        div(class="trie-option" id="optionPOP" onclick="displayOptions('POP')") Popularité
+                        div(class="trie-option" id="optionAgeASC" onclick="displayOptions('AgeASC')") Age croissant
+                        div(class="trie-option" id="optionAgeDESC" onclick="displayOptions('AgeDESC')") Age decroissant
+                    div(class="fitres-interval button" onclick="displayFilterOptions()") Filtres par Intervales
+                    div(class="containerFiltresOptions" id="containerFiltersOptions"
+                        style="display:none")
+                        p
+                            label(for="amount-slider-distance") Distances: 
+                            input(type="text" id="amount-slider-distance" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-distance")
+                        p
+                            label(for="amount-slider-tags") Tags: 
+                            input(type="text" id="amount-slider-tags" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-tags")
+                        p
+                            label(for="amount-slider-pop") Popularité: 
+                            input(type="text" id="amount-slider-pop" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-pop")
+                        p
+                            label(for="amount-slider-age") Age: 
+                            input(type="text" id="amount-slider-age" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-age")
+                    div(class="padding-browse")

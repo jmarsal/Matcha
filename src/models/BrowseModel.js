@@ -213,7 +213,7 @@ class BrowseModel {
 	static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option, minMax) {
 		return new Promise((resolve, reject) => {
 			let sql =
-				'SELECT * ' +
+				'SELECT DISTINCT * ' +
 				'FROM users ' +
 				'INNER JOIN user_interacts ' +
 				'ON users.id = user_interacts.id_user ' +
@@ -265,12 +265,27 @@ class BrowseModel {
 					if (!option) {
 						option = 'zone';
 					}
+					// debugger;
+					BrowseModel.removeDuplicateRow(res);
 					BrowseModel.engineFilterUsers(res, option).then((newTabUsers) => {
 						resolve(newTabUsers);
 					});
 				}
 			});
 		});
+	}
+
+	static removeDuplicateRow(data) {
+		for (let i = 0; i < data.length; i++) {
+			data[i].login;
+
+			for (let j = i + 1; j < data.length; j++) {
+				if (data[i].login === data[j].login) {
+					data.splice(i, 1);
+					i = 0;
+				}
+			}
+		}
 	}
 
 	static engineFilterUsers(data, filterType, zoneSize) {
@@ -283,6 +298,15 @@ class BrowseModel {
 			}
 
 			if (filterType === 'zone') {
+				while (newTabUsers.length < 1 && zoneSize < 100000000) {
+					// Filtre la data par distance
+					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
+					//Filtre la data par tags Commun
+					newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize);
+					//Filtre par popularite
+					newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
+					zoneSize += 50000;
+				}
 				// Filtre la data par distance
 				newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
 				//Filtre la data par tags Commun

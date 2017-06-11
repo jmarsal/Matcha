@@ -2,9 +2,8 @@
  * Created by jbmar on 30/04/2017.
  */
 
-const express = require('express');
-
-const BrowseModel = require('../models/BrowseModel'),
+const express = require('express'),
+	BrowseModel = require('../models/BrowseModel'),
 	UserModel = require('../models/UserModel'),
 	Helper = require('../core/Helpers');
 
@@ -63,6 +62,8 @@ class BrowseController {
 						);
 					})
 					.then((profilsOrder) => {
+						// debugger;
+
 						res.render('./views/browse/browseContent', {
 							title: 'Voici quelques profils qui pourraient te convenir ...',
 							profils: profilsOrder,
@@ -111,16 +112,23 @@ class BrowseController {
 								}
 							}
 						}
+						infos.retTags = retTags;
+						return UserModel.getPhotoProfil(req.session.user.id);
+					})
+					.then((photoUserSession) => {
+						infos.photosProfil = photoUserSession.photosProfil;
 
-						debugger;
 						res.render('./views/browse/browseProfil', {
 							title: 'En détail ...',
 							profil: infos.infos[0],
 							photos: infos.photos,
 							tagsUser2: infos.tags,
-							tags: retTags.tags,
-							tagsUser: retTags.tags_user,
-							check: retTags.check
+							tags: infos.retTags.tags,
+							tagsUser: infos.retTags.tags_user,
+							check: infos.retTags.check,
+							lat: infos.infos[0].lat,
+							lng: infos.infos[0].lng,
+							photoFav: infos.photosProfil ? infos.photosProfil : ''
 						});
 					})
 					.catch((err) => {
