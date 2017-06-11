@@ -282,3 +282,13 @@ function printDetailsProfils(idUser) {
 	console.log(idUser);
 	window.location.replace('/browse/profil' + encodeURI('?user=' + idUser));
 }
+
+function displayLarge(idPhoto) {
+	console.log(idPhoto);
+	$('#' + idPhoto).addClass('active');
+}
+
+function displayNormalise(idPhoto) {
+	console.log('displayNormalise');
+	$('#' + idPhoto).removeClass('active');
+}

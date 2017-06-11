@@ -685,3 +685,18 @@ input:checked + .slider:before {
 .sliders {
   width: 60%;
   margin: 0 auto; }
+
+.container-tags {
+  display: inline-flex;
+  width: 80%; }
+
+.photo-profil-browse {
+  cursor: pointer;
+  z-index: 0;
+  -webkit-transition: width 1s, height 1s, filter 1s, transform 1s;
+  transition: width 1s, height 1s, filter 1s, transform 1s; }
+  .photo-profil-browse.active {
+    transform: rotate(360deg);
+    width: 95%;
+    height: 80%;
+    z-index: 2; }

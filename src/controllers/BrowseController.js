@@ -91,16 +91,36 @@ class BrowseController {
 					})
 					.then((photosUser) => {
 						infos.photos = photosUser;
+
 						return BrowseModel.getAllTagsUser(user);
 					})
 					.then((tags) => {
 						infos.tags = tags;
 
+						return UserModel.getTagsInDb(req.session.user.id);
+					})
+					.then((retTags) => {
+						for (let i = 0; i < retTags.tags.length; i++) {
+							retTags.check[i].idTag = retTags.tags[i].id;
+							for (let j = 0; j < retTags.tags_user.length; j++) {
+								if (retTags.tags[i].tag === retTags.tags_user[j].tag) {
+									retTags.check[i].check = true;
+									j = retTags.tags_user.length;
+								} else {
+									retTags.check[i].check = false;
+								}
+							}
+						}
+
+						debugger;
 						res.render('./views/browse/browseProfil', {
-							title: 'En detail ...',
-							profils: infos.infos,
+							title: 'En détail ...',
+							profil: infos.infos[0],
 							photos: infos.photos,
-							tags: infos.tags
+							tagsUser2: infos.tags,
+							tags: retTags.tags,
+							tagsUser: retTags.tags_user,
+							check: retTags.check
 						});
 					})
 					.catch((err) => {
