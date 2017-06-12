@@ -58,12 +58,13 @@ class BrowseController {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
-							'ASC'
+							'ASC',
+							null,
+							null,
+							null
 						);
 					})
 					.then((profilsOrder) => {
-						// debugger;
-
 						res.render('./views/browse/browseContent', {
 							title: 'Voici quelques profils qui pourraient te convenir ...',
 							profils: profilsOrder,
@@ -159,41 +160,61 @@ class BrowseController {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
-							'ASC'
+							'ASC',
+							'zone',
+							null,
+							null,
+							'trie'
 						);
 					} else if (valueReq === 'DESC') {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
-							'DESC'
+							'DESC',
+							'zone',
+							null,
+							null,
+							'trie'
 						);
 					} else if (valueReq === 'TAGS') {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
 							'ASC',
-							'TAGS'
+							'TAGS',
+							null,
+							null,
+							'trie'
 						);
 					} else if (valueReq === 'POP') {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
 							'ASC',
-							'POP'
+							'POP',
+							null,
+							null,
+							'trie'
 						);
 					} else if (valueReq === 'AgeASC') {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
 							'ASC',
-							'AgeASC'
+							'AgeASC',
+							null,
+							null,
+							'trie'
 						);
 					} else if (valueReq === 'AgeDESC') {
 						return BrowseModel.filterProfilsOrderByDistance(
 							req.session.user.id,
 							profils.infosUserSession,
 							'ASC',
-							'AgeDESC'
+							'AgeDESC',
+							null,
+							null,
+							'trie'
 						);
 					}
 				})

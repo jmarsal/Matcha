@@ -320,27 +320,31 @@ function modifyTagUser(tag) {
 }
 
 function initialize(lat, lng) {
-	map = new google.maps.Map(document.getElementById('map_canvas'), {
-		zoom: 19,
-		center: new google.maps.LatLng(lat ? lat : 48.858565, lng ? lng : 2.347198),
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	});
-	if (lat && lng) {
-		let marker = new google.maps.Marker({
-			position: new google.maps.LatLng(lat, lng),
-			map: map
-		});
-	}
+	let canvas = document.getElementById('map_canvas');
 
-	if (!lat && !lng) {
-		if (navigator.geolocation)
-			navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
-				enableHighAccuracy: true,
-				timeout: 10000,
-				maximumAge: 600000
+	if (canvas) {
+		map = new google.maps.Map(canvas, {
+			zoom: 19,
+			center: new google.maps.LatLng(lat ? lat : 48.858565, lng ? lng : 2.347198),
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+		if (lat && lng) {
+			let marker = new google.maps.Marker({
+				position: new google.maps.LatLng(lat, lng),
+				map: map
 			});
-		else {
-			alert('Votre navigateur ne prend pas en compte la géolocalisation HTML5');
+		}
+
+		if (!lat && !lng) {
+			if (navigator.geolocation)
+				navigator.geolocation.getCurrentPosition(successCallback, errorCallback, {
+					enableHighAccuracy: true,
+					timeout: 10000,
+					maximumAge: 600000
+				});
+			else {
+				alert('Votre navigateur ne prend pas en compte la géolocalisation HTML5');
+			}
 		}
 	}
 

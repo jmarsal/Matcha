@@ -210,7 +210,7 @@ class BrowseModel {
 		});
 	}
 
-	static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option, minMax) {
+	static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option, minMax, zoneSize, trie) {
 		return new Promise((resolve, reject) => {
 			let sql =
 				'SELECT DISTINCT * ' +
@@ -220,7 +220,6 @@ class BrowseModel {
 				'WHERE users.id != ? && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
-
 			if (orientation == 3 && sex == 1) {
 				// Homme be => trouver homme gay ou be + femme hetero ou be
 				sql +=
@@ -265,9 +264,8 @@ class BrowseModel {
 					if (!option) {
 						option = 'zone';
 					}
-					// debugger;
-					BrowseModel.removeDuplicateRow(res);
-					BrowseModel.engineFilterUsers(res, option).then((newTabUsers) => {
+					res = BrowseModel.removeDuplicateRow(res);
+					BrowseModel.engineFilterUsers(res, option, zoneSize, orderBy, trie).then((newTabUsers) => {
 						resolve(newTabUsers);
 					});
 				}
@@ -277,42 +275,41 @@ class BrowseModel {
 
 	static removeDuplicateRow(data) {
 		for (let i = 0; i < data.length; i++) {
-			data[i].login;
-
 			for (let j = i + 1; j < data.length; j++) {
 				if (data[i].login === data[j].login) {
-					data.splice(i, 1);
+					let remove = data[i].id > data[j].id ? i : j;
+					data.splice(remove, 1);
 					i = 0;
 				}
 			}
 		}
+		return data;
 	}
 
-	static engineFilterUsers(data, filterType, zoneSize) {
+	static engineFilterUsers(data, filterType, zoneSize, orderBy, trie) {
 		// filterType can be "zone", "tags", "popularity"
 		return new Promise((resolve) => {
-			let newTabUsers = [];
+			let newTabUsers = [], maxZone = 100000000;
 
 			if (!zoneSize) {
 				zoneSize = 50000;
 			}
 
+			if (orderBy !== 'ASC' && orderBy !== 'DESC') {
+				orderBy = 'ASC';
+			}
 			if (filterType === 'zone') {
-				while (newTabUsers.length < 1 && zoneSize < 100000000) {
+				while (newTabUsers.length < 1 && zoneSize < maxZone) {
 					// Filtre la data par distance
-					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
+					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize, orderBy);
 					//Filtre la data par tags Commun
-					newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize);
-					//Filtre par popularite
-					newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
-					zoneSize += 50000;
+					if (!trie) {
+						newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize);
+						//Filtre par popularite
+						newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
+					}
+					zoneSize += zoneSize;
 				}
-				// Filtre la data par distance
-				newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
-				//Filtre la data par tags Commun
-				newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize);
-				//Filtre par popularite
-				newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
 				if (newTabUsers.length < 1) {
 					newTabUsers = BrowseModel.filterEngineByTags(data, 'noUsersWithZoneSize');
 					newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, 'noUsersWithZoneSize');
@@ -320,38 +317,58 @@ class BrowseModel {
 			}
 
 			if (filterType === 'TAGS') {
-				// Filtre la data par distance
-				newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
-				//Filtre la data par tags Commun
-				newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize, 'tags');
+				while (newTabUsers.length < 1 && zoneSize < maxZone) {
+					// Filtre la data par distance
+					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize, orderBy);
+					//Filtre la data par tags Commun
+					if (!trie) {
+						newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize);
+					} else {
+						newTabUsers = BrowseModel.filterEngineByTags(newTabUsers, zoneSize, 'tags');
+					}
+					zoneSize += zoneSize;
+				}
 				if (newTabUsers.length < 1) {
 					newTabUsers = BrowseModel.filterEngineByTags(data, 'noUsersWithZoneSize', 'tags');
 				}
 			}
 
 			if (filterType === 'POP') {
-				// Filtre la data par distance
-				newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
-				//Filtre par popularite
-				newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
+				while (newTabUsers.length < 1 && zoneSize < maxZone) {
+					// Filtre la data par distance
+					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize, orderBy);
+					//Filtre par popularite
+					if (!trie) {
+						newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize);
+					} else {
+						newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, zoneSize, 'pop');
+					}
+					zoneSize += zoneSize;
+				}
 				if (newTabUsers.length < 1) {
 					newTabUsers = BrowseModel.filterEngineByPop(data, 'noUsersWithZoneSize', 'pop');
 				}
 			}
 			if (filterType === 'AgeASC') {
-				// Filtre la data par distance
-				newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
-				//Filtre par popularite
-				newTabUsers = BrowseModel.filterEngineByAge(newTabUsers, zoneSize, 'ageASC');
+				while (newTabUsers.length < 1 && zoneSize < maxZone) {
+					// Filtre la data par distance
+					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize, orderBy);
+					//Filtre par popularite
+					newTabUsers = BrowseModel.filterEngineByAge(newTabUsers, zoneSize, 'ageASC');
+					zoneSize += zoneSize;
+				}
 				if (newTabUsers.length < 1) {
 					newTabUsers = BrowseModel.filterEngineByAge(data, 'noUsersWithZoneSize', 'ageASC');
 				}
 			}
 			if (filterType === 'AgeDESC') {
-				// Filtre la data par distance
-				newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize);
-				//Filtre par popularite
-				newTabUsers = BrowseModel.filterEngineByAge(newTabUsers, zoneSize, 'ageDESC');
+				while (newTabUsers.length < 1 && zoneSize < maxZone) {
+					// Filtre la data par distance
+					newTabUsers = BrowseModel.filterEngineByZone(data, zoneSize, orderBy);
+					//Filtre par popularite
+					newTabUsers = BrowseModel.filterEngineByAge(newTabUsers, zoneSize, 'ageDESC');
+					zoneSize += zoneSize;
+				}
 				if (newTabUsers.length < 1) {
 					newTabUsers = BrowseModel.filterEngineByAge(data, 'noUsersWithZoneSize', 'ageDESC');
 				}
@@ -360,12 +377,39 @@ class BrowseModel {
 		});
 	}
 
-	static filterEngineByZone(data, zoneSize) {
+	static filterEngineByZone(data, zoneSize, orderBy) {
 		let newTabUsers = [];
 
 		for (let i = 0; i < data.length; i++) {
 			if (data[i].distanceFromUser <= zoneSize) {
 				newTabUsers.push(data[i]);
+			}
+		}
+		if (orderBy === 'ASC') {
+			for (let i = 0; i < newTabUsers.length; i++) {
+				let tmp = newTabUsers[i].distanceFromUser;
+
+				if (i + 1 < newTabUsers.length) {
+					if (newTabUsers[i + 1].distanceFromUser < newTabUsers[i].distanceFromUser) {
+						newTabUsers[i].distanceFromUser = newTabUsers[i + 1].distanceFromUser;
+						newTabUsers[i + 1].distanceFromUser = tmp;
+						i = 0;
+					}
+				}
+			}
+		}
+
+		if (orderBy === 'DESC') {
+			for (let i = 0; i < newTabUsers.length; i++) {
+				let tmp = newTabUsers[i].distanceFromUser;
+
+				if (i + 1 < newTabUsers.length) {
+					if (newTabUsers[i + 1].distanceFromUser > newTabUsers[i].distanceFromUser) {
+						newTabUsers[i].distanceFromUser = newTabUsers[i + 1].distanceFromUser;
+						newTabUsers[i + 1].distanceFromUser = tmp;
+						i = 0;
+					}
+				}
 			}
 		}
 		return newTabUsers;

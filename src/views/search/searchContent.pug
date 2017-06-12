@@ -2,6 +2,7 @@ extends ../layout/layout
 
 block js
     script(src="../js/ajaxSearch.js")
+    script(src="../js/ajaxBrowse.js")
     script(src="http://maps.google.com/maps/api/js?key=AIzaSyC-QpPQdgESP_iKFtbuIchUgp-NjZBqCFA&libraries=places"
     async defer)
 
@@ -20,13 +21,13 @@ block content
                     div(class="button trie" onclick="displayTrieOptions()") Filtres Basiques
                     div(class="container-trie-options" id="containerTrieOptions"
                         style="display:none")
-                        div(class="trie-option active" id="optionASC" onclick="displayOptions('ASC')") Distance croissante
-                        div(class="trie-option" id="optionDESC" onclick="displayOptions('DESC')") Distance decroissante
-                        div(class="trie-option" id="optionTAGS" onclick="displayOptions('TAGS')") Tags en Commun
-                        div(class="trie-option" id="optionPOP" onclick="displayOptions('POP')") Popularité
-                        div(class="trie-option" id="optionAgeASC" onclick="displayOptions('AgeASC')") Age croissant
-                        div(class="trie-option" id="optionAgeDESC" onclick="displayOptions('AgeDESC')") Age decroissant
-                    div(class="fitres-interval button" onclick="displayFilterOptions()") Filtres par Intervales
+                        div(class="trie-option active" id="optionASC" onclick="displayOptions('search', 'ASC')") Distance croissante
+                        div(class="trie-option" id="optionDESC" onclick="displayOptions('search', 'DESC')") Distance decroissante
+                        div(class="trie-option" id="optionTAGS" onclick="displayOptions('search', 'TAGS')") Tags en Commun
+                        div(class="trie-option" id="optionPOP" onclick="displayOptions('search', 'POP')") Popularité
+                        div(class="trie-option" id="optionAgeASC" onclick="displayOptions('search', 'AgeASC')") Age croissant
+                        div(class="trie-option" id="optionAgeDESC" onclick="displayOptions('search', 'AgeDESC')") Age decroissant
+                    div(class="fitres-interval button" onclick="displayFilterOptions('search')") Filtres par Intervales
                     div(class="containerFiltresOptions" id="containerFiltersOptions"
                         style="display:none")
                         p

@@ -13,14 +13,16 @@ function displayTrieOptions() {
 	}
 }
 
-function displayFilterOptions() {
+function displayFilterOptions(page) {
 	let buttonFilter = $('#containerFiltersOptions');
 
 	if (buttonFilter[0].style.display === 'none') {
 		$('#containerTrieOptions').css('display', 'none');
 		buttonFilter.css('display', 'block');
 
-		$.post('/browse/Change-Filters-Intervals', {}, function(data, textStatus, jqXHR) {
+		let urlPost = page === 'browse' ? '/browse/Change-Filters-Intervals' : '/search/Change-Filters-Intervals';
+
+		$.post(urlPost, {}, function(data, textStatus, jqXHR) {
 			var dataRes = JSON.parse(jqXHR.responseText),
 				divError = $('#error'),
 				dataToSend = {
@@ -42,7 +44,6 @@ function displayFilterOptions() {
 			dataRes.isErr === 1 ? divError.addClass('red') : '';
 			dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
 
-			console.log(dataRes);
 			setIntervalsMinMax(
 				'slider-distance',
 				dataRes.response.minMax.minDistanceKm,
@@ -124,7 +125,7 @@ function setIntervalsMinMax(slider, min, max, unite) {
 	);
 }
 
-function displayOptions(valeur) {
+function displayOptions(page, valeur) {
 	let dataToSend = {
 		data: valeur
 	};
@@ -144,7 +145,9 @@ function displayOptions(valeur) {
 		$('#optionAgeDESC').addClass('active');
 	}
 
-	$.post('/browse/Change-Filters-Trie', dataToSend, function(data, textStatus, jqXHR) {
+	let urlPost = page === 'browse' ? '/browse/Change-Filters-Trie' : '/search/Change-Filters-Trie';
+
+	$.post(urlPost, dataToSend, function(data, textStatus, jqXHR) {
 		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
 
 		divError.removeClass('red green');
@@ -279,7 +282,6 @@ function rebaseBrowseUsers(data) {
 }
 
 function printDetailsProfils(idUser) {
-	console.log(idUser);
 	window.location.replace('/browse/profil' + encodeURI('?user=' + idUser));
 }
 
