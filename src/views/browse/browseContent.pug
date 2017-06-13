@@ -21,7 +21,8 @@ block content
                     div(class="button trie" onclick="displayTrieOptions()") Filtres Basiques
                     div(class="container-trie-options" id="containerTrieOptions"
                         style="display:none")
-                        div(class="trie-option active" id="optionASC" onclick="displayOptions('browse', 'ASC')") Distance croissante
+                        div(class="trie-option activeTrie" id="optionTOP" onclick="displayOptions('browse', 'TOP')") Matcha Top !
+                        div(class="trie-option" id="optionASC" onclick="displayOptions('browse', 'ASC')") Distance croissante
                         div(class="trie-option" id="optionDESC" onclick="displayOptions('browse', 'DESC')") Distance decroissante
                         div(class="trie-option" id="optionTAGS" onclick="displayOptions('browse', 'TAGS')") Tags en Commun
                         div(class="trie-option" id="optionPOP" onclick="displayOptions('browse', 'POP')") Popularité

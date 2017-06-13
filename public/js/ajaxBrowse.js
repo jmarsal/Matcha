@@ -130,19 +130,21 @@ function displayOptions(page, valeur) {
 		data: valeur
 	};
 
-	$('#containerTrieOptions>div.active').removeClass('active');
+	$('#containerTrieOptions>div.activeTrie').removeClass('activeTrie');
 	if (valeur === 'ASC') {
-		$('#optionASC').addClass('active');
+		$('#optionASC').addClass('activeTrie');
 	} else if (valeur === 'DESC') {
-		$('#optionDESC').addClass('active');
+		$('#optionDESC').addClass('activeTrie');
 	} else if (valeur === 'TAGS') {
-		$('#optionTAGS').addClass('active');
+		$('#optionTAGS').addClass('activeTrie');
 	} else if (valeur === 'POP') {
-		$('#optionPOP').addClass('active');
+		$('#optionPOP').addClass('activeTrie');
 	} else if (valeur === 'AgeASC') {
-		$('#optionAgeASC').addClass('active');
+		$('#optionAgeASC').addClass('activeTrie');
 	} else if (valeur === 'AgeDESC') {
-		$('#optionAgeDESC').addClass('active');
+		$('#optionAgeDESC').addClass('activeTrie');
+	} else if (valeur === 'TOP') {
+		$('#optionTOP').addClass('activeTrie');
 	}
 
 	let urlPost = page === 'browse' ? '/browse/Change-Filters-Trie' : '/search/Change-Filters-Trie';
@@ -176,7 +178,7 @@ function rebaseBrowseUsers(data) {
 			class: 'profil-browse',
 			on: {
 				click: function() {
-					aChangerPlusTard(profil.id);
+					printDetailsProfils(profil.id);
 				}
 			},
 			appendTo: $('#separatorProfil')

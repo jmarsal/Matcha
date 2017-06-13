@@ -669,6 +669,8 @@ input:checked + .slider:before {
     background-color: #E91E63; }
   .trie-option.active {
     background-color: #c1134e; }
+  .trie-option.activeTrie {
+    background-color: #c1134e; }
 
 .padding-browse {
   margin-top: 60px; }

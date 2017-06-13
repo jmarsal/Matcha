@@ -99,6 +99,9 @@
     &.active {
         background-color: darken($primary-color, 10);
     }
+    &.activeTrie {
+        background-color: darken($primary-color, 10);
+    }
 }
 
 .padding-browse {

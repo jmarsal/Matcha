@@ -216,6 +216,16 @@ class BrowseController {
 							null,
 							'trie'
 						);
+					} else if (valueReq === 'TOP') {
+						return BrowseModel.filterProfilsOrderByDistance(
+							req.session.user.id,
+							profils.infosUserSession,
+							'ASC',
+							null,
+							null,
+							null,
+							null
+						);
 					}
 				})
 				.then((profilsOrder) => {
