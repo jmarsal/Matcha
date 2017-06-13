@@ -8,6 +8,7 @@ block js
 
 block var
     - page = "search";
+    - countElems = 0;
 
 block content
     div(class="container-account-user")
@@ -21,7 +22,8 @@ block content
                     div(class="button trie" onclick="displayTrieOptions()") Filtres Basiques
                     div(class="container-trie-options" id="containerTrieOptions"
                         style="display:none")
-                        div(class="trie-option active" id="optionASC" onclick="displayOptions('search', 'ASC')") Distance croissante
+                        div(class="trie-option activeTrie" id="optionTOP" onclick="displayOptions('search', 'TOP')") Matcha Top !
+                        div(class="trie-option" id="optionASC" onclick="displayOptions('search', 'ASC')") Distance croissante
                         div(class="trie-option" id="optionDESC" onclick="displayOptions('search', 'DESC')") Distance decroissante
                         div(class="trie-option" id="optionTAGS" onclick="displayOptions('search', 'TAGS')") Tags en Commun
                         div(class="trie-option" id="optionPOP" onclick="displayOptions('search', 'POP')") Popularité
@@ -50,4 +52,51 @@ block content
                             input(type="text" id="amount-slider-age" readonly
                                 style="border:0; color:#f6931f; font-weight:bold;")
                         div(class="sliders" id="slider-age")
+                    div(class="fitres-tags button" onclick="displayFilterTagsOptions()") Filtres par Tags
+                    div(class="containerTagsOption" id="containerTagsOption"
+                    style="display:none")
+                        div(class="container-tags" id="container-tags")
+                            if tags
+                                - countElems = 0;
+                                for tag in tags
+                                    div(
+                                    class=("tags button")
+                                    id=tag.tag
+                                    onclick="searchWithTags("+tag.tag+")"
+                                    ) ##{tag.tag}
+                                    - countElems++;
                     div(class="padding-browse")
+            div(class="container-profils-browse" id="containerProfilsBrowse")
+                if profils
+                    div(class="separator-profil")
+                        for profil in profils
+                            div(
+                                class="profil-browse"
+                                id=profil.id
+                                onclick="printDetailsProfils('"+ profil.id +"')"
+                            )
+                                div(class='infos-profil-browse')
+                                    div(class='login-profil-browse infos') #{profil.login}    #{profil.age} ans
+                                    for photo in photos
+                                        if photo.id_user == profil.id
+                                            div(class="info-pop-tag")
+                                                div(class="popularity-browse") Popularité:  #{profil.popularity}%
+                                                div(class="commun-tags-browse") #: #{profil.tagsCommun} commun
+                                            div(
+                                            class="photo-profil-browse"
+                                            style='background-image: url("' + photo.src_photo + '")'
+                                            )
+                                    div(class="primary-infos")
+                                        div(class="localite-infos") #{profil.city} #{profil.country === "États-Unis" ? "aux" : "en"} #{profil.country}
+                                    div(class='secondary-infos')
+                                        div(class='about-me infos') A propos de moi :
+                                        div(class="about")
+                                            div(class="bio-browse") "#{profil.bio}"
+                                        div(class='looking-for infos') Je recherche :
+                                        if (profil.orientation == 1)
+                                            div(class='looking') un homme
+                                        else if (profil.orientation == 2)
+                                            div(class='looking') une femme
+                                        else
+                                            div(class='looking') un homme ou une femme
+                                div(class="separator-profil")        

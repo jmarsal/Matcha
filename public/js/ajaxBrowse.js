@@ -7,6 +7,7 @@ function displayTrieOptions() {
 
 	if (buttonFilter[0].style.display === 'none') {
 		$('#containerFiltersOptions').css('display', 'none');
+		$('#containerTagsOption').css('display', 'none');
 		buttonFilter.css('display', 'block');
 	} else {
 		buttonFilter.css('display', 'none');
@@ -18,6 +19,7 @@ function displayFilterOptions(page) {
 
 	if (buttonFilter[0].style.display === 'none') {
 		$('#containerTrieOptions').css('display', 'none');
+		$('#containerTagsOption').css('display', 'none');
 		buttonFilter.css('display', 'block');
 
 		let urlPost = page === 'browse' ? '/browse/Change-Filters-Intervals' : '/search/Change-Filters-Intervals';
@@ -57,7 +59,7 @@ function displayFilterOptions(page) {
 				change: function(event, ui) {
 					(dataToSend.distance = 'distanceFromUserKm'), (dataToSend.minDistance =
 						ui.values[0]), (dataToSend.maxDistance = ui.values[1]);
-					modifyUsersByIntervals(dataToSend);
+					modifyUsersByIntervals(dataToSend, urlPost);
 				}
 			});
 
@@ -66,7 +68,7 @@ function displayFilterOptions(page) {
 					(dataToSend.tags = 'tagsCommun'), (dataToSend.minTags = ui.values[0]), (dataToSend.maxTags =
 						ui.values[1]);
 
-					modifyUsersByIntervals(dataToSend);
+					modifyUsersByIntervals(dataToSend, urlPost);
 				}
 			});
 
@@ -75,14 +77,14 @@ function displayFilterOptions(page) {
 					(dataToSend.pop = 'popularity'), (dataToSend.minPop = ui.values[0]), (dataToSend.maxPop =
 						ui.values[1]);
 
-					modifyUsersByIntervals(dataToSend);
+					modifyUsersByIntervals(dataToSend, urlPost);
 				}
 			});
 
 			$('#slider-age').slider({
 				change: function(event, ui) {
 					(dataToSend.age = 'age'), (dataToSend.minAge = ui.values[0]), (dataToSend.maxAge = ui.values[1]);
-					modifyUsersByIntervals(dataToSend);
+					modifyUsersByIntervals(dataToSend, urlPost);
 				}
 			});
 		});
@@ -91,9 +93,14 @@ function displayFilterOptions(page) {
 	}
 }
 
-function modifyUsersByIntervals(dataToSend) {
-	$.post('/browse/New-Users-Filters-Intervals', dataToSend, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+function modifyUsersByIntervals(dataToSend, urlPost) {
+	let newUrlPost = urlPost === '/search/Change-Filters-Intervals'
+		? '/search/New-Users-Filters-Intervals'
+		: '/browse/New-Users-Filters-Intervals';
+
+	$.post(newUrlPost, dataToSend, function(data, textStatus, jqXHR) {
+		var dataRes = JSON.parse(jqXHR.responseText),
+			divError = $('#error');
 
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : '';
@@ -150,7 +157,8 @@ function displayOptions(page, valeur) {
 	let urlPost = page === 'browse' ? '/browse/Change-Filters-Trie' : '/search/Change-Filters-Trie';
 
 	$.post(urlPost, dataToSend, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+		var dataRes = JSON.parse(jqXHR.responseText),
+			divError = $('#error');
 
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : '';
@@ -302,3 +310,49 @@ $('body').on('click', (e) => {
 	}
 	displayNormalise();
 });
+
+function cleanArray(actual) {
+	var newArray = new Array();
+	for (var i = 0; i < actual.length; i++) {
+		if (actual[i]) {
+			newArray.push(actual[i]);
+		}
+	}
+	return newArray;
+}
+
+function searchWithTags(tag) {
+	let arrayTags = [],
+		i = 0;
+
+	if (tag.toString() === '[object HTMLDivElement]') {
+		tag = $(tag)[0].id;
+	}
+
+	let check = $('#' + tag)[0].classList.contains('check') ? 1 : 0;
+	if (check == 0) {
+		$('#' + tag).addClass('check');
+	} else {
+		$('#' + tag).removeClass('check');
+	}
+	$('#container-tags').children('div').each(function() {
+		if (this.classList.contains('check')) {
+			arrayTags[i] = this.id;
+		}
+		i++;
+	});
+
+	arrayTags = cleanArray(arrayTags);
+	$.post('/search/Click-tag', { data: arrayTags }, function(data, textStatus, jqXHR) {
+		var dataRes = JSON.parse(jqXHR.responseText),
+			divError = $('#errorTag');
+		divError.removeClass('red green');
+		if (dataRes.isErr === 0) {
+			dataRes.response.insertOrDelette === true
+				? $('#' + tag).removeClass('check')
+				: $('#' + tag).addClass('check');
+		}
+		dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
+		divError.text(dataRes.response.mess);
+	});
+}

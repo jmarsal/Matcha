@@ -4,10 +4,6 @@
     }
 }
 
-.welcome-text-account {
-    //padding-bottom: 1px;
-}
-
 .separator-profil {
     margin-bottom: 5%;
 }
@@ -73,6 +69,14 @@
 }
 
 .fitres-interval {
+    width: 50%;
+    margin: 0 auto 0px;
+    &:hover {
+        background-color: $primary-color;
+    }
+}
+
+.fitres-tags {
     width: 50%;
     margin: 0 auto 50px;
     &:hover {

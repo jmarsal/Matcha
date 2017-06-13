@@ -194,41 +194,48 @@
 .tags-account {
     display: inline-block;
     margin-top: 10px;
-    .tags {
-        display: inline-block;
-        background-color: #919191;
-        margin-right: 5px;
-        -webkit-transition: -webkit-transform 1s;
-        transition: transform 1s;
-        width: auto;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.tags {
+    display: inline-block;
+    background-color: #919191;
+    margin: 30px 10px;
+    -webkit-transition: -webkit-transform 1s;
+    transition: transform 1s;
+    width: auto;
+    &:hover {
+        background-color: $primary-color;
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+    &.check {
+        background-color: $primary-color;
+        border: 1px solid whitesmoke;
         &:hover {
-            background-color: $primary-color;
-            -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-        &.check {
-            background-color: $primary-color;
-            border: 1px solid whitesmoke;
-            &:hover {
-                background-color: #919191;
-            }
+            background-color: #919191;
         }
     }
-    .new-tag {
-        display: block;
-    }
-    .tags-input-account-p {
-        position: relative;
-        display: inline-block;
-        margin-left: 3%;
-    }
-    .tags-input-account {
-        text-align: left;
-        display: inline-block;
-        position: relative;
-        margin: 0% auto;
-        width: 42%;
-    }
+}
+
+.new-tag {
+    display: block;
+}
+
+.tags-input-account-p {
+    position: relative;
+    display: inline-block;
+    margin-left: 3%;
+}
+
+.tags-input-account {
+    text-align: left;
+    display: inline-block;
+    position: relative;
+    margin: 0% auto;
+    width: 42%;
 }
 
 #errorTag {

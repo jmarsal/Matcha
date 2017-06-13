@@ -424,35 +424,42 @@ html {
 
 .tags-account {
   display: inline-block;
-  margin-top: 10px; }
-  .tags-account .tags {
-    display: inline-block;
-    background-color: #919191;
-    margin-right: 5px;
-    -webkit-transition: -webkit-transform 1s;
-    transition: transform 1s;
-    width: auto; }
-    .tags-account .tags:hover {
-      background-color: #E91E63;
-      -webkit-transform: rotate(360deg);
-      transform: rotate(360deg); }
-    .tags-account .tags.check {
-      background-color: #E91E63;
-      border: 1px solid whitesmoke; }
-      .tags-account .tags.check:hover {
-        background-color: #919191; }
-  .tags-account .new-tag {
-    display: block; }
-  .tags-account .tags-input-account-p {
-    position: relative;
-    display: inline-block;
-    margin-left: 3%; }
-  .tags-account .tags-input-account {
-    text-align: left;
-    display: inline-block;
-    position: relative;
-    margin: 0% auto;
-    width: 42%; }
+  margin-top: 10px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0; }
+
+.tags {
+  display: inline-block;
+  background-color: #919191;
+  margin: 30px 10px;
+  -webkit-transition: -webkit-transform 1s;
+  transition: transform 1s;
+  width: auto; }
+  .tags:hover {
+    background-color: #E91E63;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); }
+  .tags.check {
+    background-color: #E91E63;
+    border: 1px solid whitesmoke; }
+    .tags.check:hover {
+      background-color: #919191; }
+
+.new-tag {
+  display: block; }
+
+.tags-input-account-p {
+  position: relative;
+  display: inline-block;
+  margin-left: 3%; }
+
+.tags-input-account {
+  text-align: left;
+  display: inline-block;
+  position: relative;
+  margin: 0% auto;
+  width: 42%; }
 
 #errorTag {
   margin-top: 10px; }
@@ -649,8 +656,14 @@ input:checked + .slider:before {
 
 .fitres-interval {
   width: 50%;
-  margin: 0 auto 50px; }
+  margin: 0 auto 0px; }
   .fitres-interval:hover {
+    background-color: #E91E63; }
+
+.fitres-tags {
+  width: 50%;
+  margin: 0 auto 50px; }
+  .fitres-tags:hover {
     background-color: #E91E63; }
 
 .container-trie-options {

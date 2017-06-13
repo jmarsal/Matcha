@@ -172,7 +172,8 @@ class BrowseModel {
 
 	static calculateCommunTagsByUsers(Alltags) {
 		return new Promise((resolve, reject) => {
-			let user = 0, countByUser = [];
+			let user = 0,
+				countByUser = [];
 
 			Alltags.tagsUserSession.map((tagUserSession) => {
 				// Parcours chaques tag user Session
@@ -195,7 +196,8 @@ class BrowseModel {
 					countByUser[user] = count;
 				});
 			});
-			let dataToSend = [], j = 0;
+			let dataToSend = [],
+				j = 0;
 
 			for (let i = 0; i < countByUser.length; i++) {
 				if (countByUser[i] && countByUser[i] > 0) {
@@ -210,14 +212,23 @@ class BrowseModel {
 		});
 	}
 
-	static filterProfilsOrderByDistance(idUserSession, infosUserSession, orderBy, option, minMax, zoneSize, trie) {
+	static filterProfilsOrderByDistance(
+		idUserSession,
+		infosUserSession,
+		orderBy,
+		option,
+		minMax,
+		zoneSize,
+		trie,
+		tagsArray
+	) {
 		return new Promise((resolve, reject) => {
 			let sql =
-				'SELECT DISTINCT * ' +
-				'FROM users ' +
-				'INNER JOIN user_interacts ' +
-				'ON users.id = user_interacts.id_user ' +
-				'WHERE users.id != ? && ',
+					'SELECT DISTINCT * ' +
+					'FROM users ' +
+					'INNER JOIN user_interacts ' +
+					'ON users.id = user_interacts.id_user ' +
+					'WHERE users.id != ? && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
 			if (orientation == 3 && sex == 1) {
@@ -256,6 +267,7 @@ class BrowseModel {
 				sql += ' && ' + minMax.pop + ' >= ' + minMax.minPop + ' && ' + minMax.pop + ' <= ' + minMax.maxPop;
 				sql += ' && ' + minMax.age + ' >= ' + minMax.minAge + ' && ' + minMax.age + ' <= ' + minMax.maxAge;
 			}
+
 			sql += ' ORDER BY distanceFromUser ' + orderBy;
 			connection.query(sql, [ idUserSession, idUserSession ], (err, res) => {
 				if (err) {
@@ -265,7 +277,14 @@ class BrowseModel {
 						option = 'zone';
 					}
 					res = BrowseModel.removeDuplicateRow(res);
-					BrowseModel.engineFilterUsers(res, option, zoneSize, orderBy, trie).then((newTabUsers) => {
+					BrowseModel.engineFilterUsers(
+						res,
+						option,
+						zoneSize,
+						orderBy,
+						trie,
+						tagsArray
+					).then((newTabUsers) => {
 						resolve(newTabUsers);
 					});
 				}
@@ -286,10 +305,11 @@ class BrowseModel {
 		return data;
 	}
 
-	static engineFilterUsers(data, filterType, zoneSize, orderBy, trie) {
+	static engineFilterUsers(data, filterType, zoneSize, orderBy, trie, tagsArray) {
 		// filterType can be "zone", "tags", "popularity"
 		return new Promise((resolve) => {
-			let newTabUsers = [], maxZone = 100000000;
+			let newTabUsers = [],
+				maxZone = 100000000;
 
 			if (!zoneSize) {
 				zoneSize = 50000;
@@ -313,6 +333,18 @@ class BrowseModel {
 				if (newTabUsers.length < 1) {
 					newTabUsers = BrowseModel.filterEngineByTags(data, 'noUsersWithZoneSize');
 					newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, 'noUsersWithZoneSize');
+					if (tagsArray) {
+						console.log('ici');
+
+						BrowseModel.filterBySelectedTags(tagsArray)
+							.then((users) => {
+								newTabUsers = users;
+								resolve(newTabUsers);
+							})
+							.catch((err) => {
+								console.error(err);
+							});
+					}
 				}
 			}
 
@@ -373,18 +405,43 @@ class BrowseModel {
 					newTabUsers = BrowseModel.filterEngineByAge(data, 'noUsersWithZoneSize', 'ageDESC');
 				}
 			}
-			resolve(newTabUsers);
+			if (!tagsArray) {
+				resolve(newTabUsers);
+			}
+		});
+	}
+
+	static filterBySelectedTags(tagsArray) {
+		return new Promise((resolve, reject) => {
+			let sql = 'SELECT id_user FROM tags_user WHERE ';
+
+			tagsArray.map((tag, index) => {
+				sql += ' tag = ' + tag + (tag[index + 1] !== null) ? ' && ' : '';
+			});
+
+			console.log(sql);
+			connection.query(sql, (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				resolve(res);
+			});
 		});
 	}
 
 	static filterEngineByZone(data, zoneSize, orderBy) {
 		let newTabUsers = [];
 
-		for (let i = 0; i < data.length; i++) {
-			if (data[i].distanceFromUser <= zoneSize) {
-				newTabUsers.push(data[i]);
+		if (zoneSize !== 'noUsersWithZoneSize') {
+			for (let i = 0; i < data.length; i++) {
+				if (data[i].distanceFromUser <= zoneSize) {
+					newTabUsers.push(data[i]);
+				}
 			}
+		} else {
+			newTabUsers = data;
 		}
+
 		if (orderBy === 'ASC') {
 			for (let i = 0; i < newTabUsers.length; i++) {
 				let tmp = newTabUsers[i].distanceFromUser;
@@ -644,6 +701,12 @@ class BrowseModel {
 				}
 				resolve(res);
 			});
+		});
+	}
+
+	static getAllUsersByTags(idUser, tabArray) {
+		return new Promise((resolve, reject) => {
+			let sql = 'SELECT * users';
 		});
 	}
 }
