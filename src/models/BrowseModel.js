@@ -172,8 +172,7 @@ class BrowseModel {
 
 	static calculateCommunTagsByUsers(Alltags) {
 		return new Promise((resolve, reject) => {
-			let user = 0,
-				countByUser = [];
+			let user = 0, countByUser = [];
 
 			Alltags.tagsUserSession.map((tagUserSession) => {
 				// Parcours chaques tag user Session
@@ -196,8 +195,7 @@ class BrowseModel {
 					countByUser[user] = count;
 				});
 			});
-			let dataToSend = [],
-				j = 0;
+			let dataToSend = [], j = 0;
 
 			for (let i = 0; i < countByUser.length; i++) {
 				if (countByUser[i] && countByUser[i] > 0) {
@@ -224,11 +222,11 @@ class BrowseModel {
 	) {
 		return new Promise((resolve, reject) => {
 			let sql =
-					'SELECT DISTINCT * ' +
-					'FROM users ' +
-					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && ',
+				'SELECT DISTINCT * ' +
+				'FROM users ' +
+				'INNER JOIN user_interacts ' +
+				'ON users.id = user_interacts.id_user ' +
+				'WHERE users.id != ? && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
 			if (orientation == 3 && sex == 1) {
@@ -283,7 +281,9 @@ class BrowseModel {
 						zoneSize,
 						orderBy,
 						trie,
-						tagsArray
+						tagsArray,
+						infosUserSession,
+						idUserSession
 					).then((newTabUsers) => {
 						resolve(newTabUsers);
 					});
@@ -305,11 +305,10 @@ class BrowseModel {
 		return data;
 	}
 
-	static engineFilterUsers(data, filterType, zoneSize, orderBy, trie, tagsArray) {
+	static engineFilterUsers(data, filterType, zoneSize, orderBy, trie, tagsArray, infosUserSession, idUserSession) {
 		// filterType can be "zone", "tags", "popularity"
 		return new Promise((resolve) => {
-			let newTabUsers = [],
-				maxZone = 100000000;
+			let newTabUsers = [], maxZone = 100000000;
 
 			if (!zoneSize) {
 				zoneSize = 50000;
@@ -336,7 +335,7 @@ class BrowseModel {
 					if (tagsArray) {
 						console.log('ici');
 
-						BrowseModel.filterBySelectedTags(tagsArray)
+						BrowseModel.filterBySelectedTags(newTabUsers, tagsArray, infosUserSession, idUserSession)
 							.then((users) => {
 								newTabUsers = users;
 								resolve(newTabUsers);
@@ -411,20 +410,27 @@ class BrowseModel {
 		});
 	}
 
-	static filterBySelectedTags(tagsArray) {
+	static filterBySelectedTags(newTabUsers, tagsArray, infosUserSession, idUserSession, option) {
 		return new Promise((resolve, reject) => {
 			let sql = 'SELECT id_user FROM tags_user WHERE ';
 
-			tagsArray.map((tag, index) => {
-				sql += ' tag = ' + tag + (tag[index + 1] !== null) ? ' && ' : '';
-			});
+			for (let i = 0; i < tagsArray.length; i++) {
+				sql += 'tag = ' + '"' + tagsArray[i] + '"';
+				if (i + 1 < tagsArray.length) {
+					sql += ' && ';
+				}
+			}
+			console.log(infosUserSession);
 
-			console.log(sql);
 			connection.query(sql, (err, res) => {
 				if (err) {
 					reject(err);
 				}
-				resolve(res);
+				if (res) {
+					// recuperer dans newTabUsers l'id de res
+				} else {
+					resolve(false);
+				}
 			});
 		});
 	}
