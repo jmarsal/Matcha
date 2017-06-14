@@ -102,7 +102,8 @@ class SearchController {
 
 		this.router.get('/browse/profil', (req, res) => {
 			if (req.session.start) {
-				let user = req.query.user, infos = {};
+				let user = req.query.user,
+					infos = {};
 
 				BrowseModel.getInfosUserSession(user)
 					.then((infosUserSession) => {
@@ -163,7 +164,8 @@ class SearchController {
 
 	searchPostRoute() {
 		this.router.post('/search/Change-Filters-Trie', (req, res) => {
-			let profils = [], valueReq = req.body.data;
+			let profils = [],
+				valueReq = req.body.data;
 
 			BrowseModel.getInfosAllProfils(req.session.user.id)
 				.then((infos) => {
@@ -302,7 +304,8 @@ class SearchController {
 		});
 
 		this.router.post('/search/New-Users-Filters-Intervals', (req, res) => {
-			let profils = [], minMax = req.body;
+			let profils = [],
+				minMax = req.body;
 
 			BrowseModel.getInfosAllProfils(req.session.user.id)
 				.then((infos) => {
@@ -342,10 +345,20 @@ class SearchController {
 		});
 
 		this.router.post('/search/Click-tag', (req, res) => {
-			let tagsArray = req.body.data, profils = [];
+			let tagsArray = req.body.data,
+				profils = [];
 
-			BrowseModel.getInfosUserSession(req.session.user.id)
+			BrowseModel.getInfosAllProfils(req.session.user.id)
+				.then((infos) => {
+					profils.infos = infos;
+					return BrowseModel.getAllPhotosProfils(req.session.user.id);
+				})
+				.then((photos) => {
+					profils.photos = photos;
+					return BrowseModel.getInfosUserSession(req.session.user.id);
+				})
 				.then((infosUserSession) => {
+					profils.infosUserSession = infosUserSession;
 					return BrowseModel.filterProfilsOrderByDistance(
 						req.session.user.id,
 						infosUserSession,
@@ -358,7 +371,12 @@ class SearchController {
 					);
 				})
 				.then((profilsOrder) => {
-					console.log(profilsOrder);
+					const response = {
+						infos: profils.infos,
+						photos: profils.photos,
+						profilsOrder: profilsOrder
+					};
+					Helper.sendResponseToClient(response, 0, res);
 				})
 				.catch((err) => {
 					console.error(err);

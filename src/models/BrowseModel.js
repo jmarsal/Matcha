@@ -172,7 +172,8 @@ class BrowseModel {
 
 	static calculateCommunTagsByUsers(Alltags) {
 		return new Promise((resolve, reject) => {
-			let user = 0, countByUser = [];
+			let user = 0,
+				countByUser = [];
 
 			Alltags.tagsUserSession.map((tagUserSession) => {
 				// Parcours chaques tag user Session
@@ -195,7 +196,8 @@ class BrowseModel {
 					countByUser[user] = count;
 				});
 			});
-			let dataToSend = [], j = 0;
+			let dataToSend = [],
+				j = 0;
 
 			for (let i = 0; i < countByUser.length; i++) {
 				if (countByUser[i] && countByUser[i] > 0) {
@@ -222,11 +224,11 @@ class BrowseModel {
 	) {
 		return new Promise((resolve, reject) => {
 			let sql =
-				'SELECT DISTINCT * ' +
-				'FROM users ' +
-				'INNER JOIN user_interacts ' +
-				'ON users.id = user_interacts.id_user ' +
-				'WHERE users.id != ? && ',
+					'SELECT DISTINCT * ' +
+					'FROM users ' +
+					'INNER JOIN user_interacts ' +
+					'ON users.id = user_interacts.id_user ' +
+					'WHERE users.id != ? && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
 			if (orientation == 3 && sex == 1) {
@@ -308,7 +310,8 @@ class BrowseModel {
 	static engineFilterUsers(data, filterType, zoneSize, orderBy, trie, tagsArray, infosUserSession, idUserSession) {
 		// filterType can be "zone", "tags", "popularity"
 		return new Promise((resolve) => {
-			let newTabUsers = [], maxZone = 100000000;
+			let newTabUsers = [],
+				maxZone = 100000000;
 
 			if (!zoneSize) {
 				zoneSize = 50000;
@@ -333,11 +336,10 @@ class BrowseModel {
 					newTabUsers = BrowseModel.filterEngineByTags(data, 'noUsersWithZoneSize');
 					newTabUsers = BrowseModel.filterEngineByPop(newTabUsers, 'noUsersWithZoneSize');
 					if (tagsArray) {
-						console.log('ici');
-
 						BrowseModel.filterBySelectedTags(newTabUsers, tagsArray, infosUserSession, idUserSession)
 							.then((users) => {
 								newTabUsers = users;
+								// console.log(newTabUsers);
 								resolve(newTabUsers);
 							})
 							.catch((err) => {
@@ -412,22 +414,47 @@ class BrowseModel {
 
 	static filterBySelectedTags(newTabUsers, tagsArray, infosUserSession, idUserSession, option) {
 		return new Promise((resolve, reject) => {
-			let sql = 'SELECT id_user FROM tags_user WHERE ';
+			let sql = 'SELECT id_user FROM tags_user WHERE tag IN (';
 
 			for (let i = 0; i < tagsArray.length; i++) {
-				sql += 'tag = ' + '"' + tagsArray[i] + '"';
+				sql += '"' + tagsArray[i] + '"';
 				if (i + 1 < tagsArray.length) {
-					sql += ' && ';
+					sql += ', ';
+				} else {
+					sql += ') GROUP BY id_user HAVING COUNT(*) = ?';
 				}
 			}
-			console.log(infosUserSession);
-
-			connection.query(sql, (err, res) => {
+			console.log(sql);
+			connection.query(sql, [ tagsArray.length ], (err, res) => {
 				if (err) {
 					reject(err);
 				}
 				if (res) {
-					// recuperer dans newTabUsers l'id de res
+					console.log(res);
+					let retTab = [],
+						i = 0;
+
+					newTabUsers.map((user) => {
+						res.map((id_user) => {
+							if (id_user.id_user == user.id) {
+								let check = true;
+
+								retTab.map((retUser) => {
+									if (retUser.id == id_user.id_user) {
+										check = false;
+									}
+								});
+								if (check === true) {
+									retTab[i] = user;
+									i++;
+								}
+							}
+						});
+					});
+					// console.log(retTab);
+					retTab = BrowseModel.removeDuplicateRow(retTab);
+					// console.log(retTab);
+					resolve(retTab);
 				} else {
 					resolve(false);
 				}

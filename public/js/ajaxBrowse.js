@@ -343,16 +343,14 @@ function searchWithTags(tag) {
 	});
 
 	arrayTags = cleanArray(arrayTags);
+	// debugger;
 	$.post('/search/Click-tag', { data: arrayTags }, function(data, textStatus, jqXHR) {
 		var dataRes = JSON.parse(jqXHR.responseText),
 			divError = $('#errorTag');
+
 		divError.removeClass('red green');
-		if (dataRes.isErr === 0) {
-			dataRes.response.insertOrDelette === true
-				? $('#' + tag).removeClass('check')
-				: $('#' + tag).addClass('check');
-		}
 		dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
 		divError.text(dataRes.response.mess);
+		rebaseBrowseUsers(dataRes.response);
 	});
 }
