@@ -424,13 +424,11 @@ class BrowseModel {
 					sql += ') GROUP BY id_user HAVING COUNT(*) = ?';
 				}
 			}
-			console.log(sql);
 			connection.query(sql, [ tagsArray.length ], (err, res) => {
 				if (err) {
 					reject(err);
 				}
-				if (res) {
-					console.log(res);
+				if (res.length) {
 					let retTab = [],
 						i = 0;
 
@@ -451,9 +449,7 @@ class BrowseModel {
 							}
 						});
 					});
-					// console.log(retTab);
 					retTab = BrowseModel.removeDuplicateRow(retTab);
-					// console.log(retTab);
 					resolve(retTab);
 				} else {
 					resolve(false);

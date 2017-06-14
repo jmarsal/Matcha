@@ -10,7 +10,8 @@ function submitPhoto() {
 }
 
 function showResponse(responseText, statusText, xhr, $form) {
-	let dataRes = JSON.parse(xhr.responseText), divError = $('#error');
+	let dataRes = JSON.parse(xhr.responseText),
+		divError = $('#error');
 
 	if (dataRes.isErr === 0) {
 		let countElems = 0;
@@ -98,7 +99,8 @@ function removePhoto(idPhoto) {
 		divError.text('Selectionne une autre photo de profil afin de pouvoir supprimer celle-ci !');
 	} else {
 		$.post('/account/Delete', { id: idPhoto }, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#error');
 
 			divError.removeClass('red green');
 			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
@@ -126,7 +128,8 @@ function removePhoto(idPhoto) {
 
 function addFavoritePhoto(idPhoto) {
 	$.post('/account/Favorite', { id: idPhoto }, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#error');
+		var dataRes = JSON.parse(jqXHR.responseText),
+			divError = $('#error');
 		divError.removeClass('red green');
 		if (dataRes.response.favorite !== 0 && dataRes.response.favorite !== 1) {
 			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
@@ -149,7 +152,8 @@ function submitForm(input) {
 	let checkInput = false;
 	if ((checkInput = checkIfInputIsModify(input)) !== false) {
 		$.post('/account/Modify-Profil', { input: input, data: checkInput }, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText), divError = $('#errorInfoProfil');
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#errorInfoProfil');
 			divError.removeClass('red green');
 			const checkInput = [ 'email', 'login', 'name', 'firstName', 'birthday' ];
 			let isInfosUser = 0;
@@ -167,7 +171,8 @@ function submitForm(input) {
 }
 
 function checkIfInputIsModify(input) {
-	let checkInput = '', diff = '';
+	let checkInput = '',
+		diff = '';
 
 	if (input === 'email') {
 		diff = $('#hiddenEmailAccountInput').val();
@@ -281,7 +286,8 @@ function addTagToDb() {
 	if (val !== '') {
 		val = val.replace('#', '');
 		$.post('/account/Add-tag', { data: val }, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText), divError = $('#errorTag');
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#errorTag');
 			divError.removeClass('red green');
 			if (dataRes.isErr === 0) {
 				$('<div/>', {
@@ -307,7 +313,8 @@ function modifyTagUser(tag) {
 		tag = $(tag)[0].id;
 	}
 	$.post('/account/Click-tag', { data: tag }, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText), divError = $('#errorTag');
+		var dataRes = JSON.parse(jqXHR.responseText),
+			divError = $('#errorTag');
 		divError.removeClass('red green');
 		if (dataRes.isErr === 0) {
 			dataRes.response.insertOrDelette === true
@@ -357,7 +364,9 @@ function initialize(lat, lng) {
 		});
 		geocoder.geocode({ latLng: marker.position }, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				let searchAddressComponents = results[0].address_components, searchCity = '', searchCountry = '';
+				let searchAddressComponents = results[0].address_components,
+					searchCity = '',
+					searchCountry = '';
 				$.each(searchAddressComponents, function() {
 					if (this.types[0] == 'locality') {
 						searchCity = this.long_name;

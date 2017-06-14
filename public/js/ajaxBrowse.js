@@ -9,6 +9,20 @@ function displayTrieOptions() {
 		$('#containerFiltersOptions').css('display', 'none');
 		$('#containerTagsOption').css('display', 'none');
 		buttonFilter.css('display', 'block');
+		$.post(
+			'/search/Click-tag',
+			{
+				data: []
+			},
+			function(data, textStatus, jqXHR) {
+				var dataRes = JSON.parse(jqXHR.responseText),
+					divError = $('#errorTag');
+
+				divError.removeClass('red green');
+				divError.text(dataRes.response.mess);
+				rebaseBrowseUsers(dataRes.response);
+			}
+		);
 	} else {
 		buttonFilter.css('display', 'none');
 	}
@@ -100,11 +114,11 @@ function modifyUsersByIntervals(dataToSend, urlPost) {
 
 	$.post(newUrlPost, dataToSend, function(data, textStatus, jqXHR) {
 		var dataRes = JSON.parse(jqXHR.responseText),
-			divError = $('#error');
+			divError = $('#errorSlide');
 
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : '';
-		dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
+		dataRes.isErr === 1 ? divError.text(dataRes.response.mess) : '';
 
 		rebaseBrowseUsers(dataRes.response);
 	});
@@ -344,13 +358,47 @@ function searchWithTags(tag) {
 
 	arrayTags = cleanArray(arrayTags);
 	// debugger;
-	$.post('/search/Click-tag', { data: arrayTags }, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText),
-			divError = $('#errorTag');
+	$.post(
+		'/search/Click-tag',
+		{
+			data: arrayTags
+		},
+		function(data, textStatus, jqXHR) {
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#errorTag');
 
-		divError.removeClass('red green');
-		dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
-		divError.text(dataRes.response.mess);
-		rebaseBrowseUsers(dataRes.response);
+			divError.removeClass('red green');
+			dataRes.isErr == 1 ? divError.addClass('red') : divError.addClass('');
+			// debugger;
+			divError.text(dataRes.response.mess);
+			rebaseBrowseUsers(dataRes.response);
+		}
+	);
+}
+
+function removeCheckTags() {
+	let tags = $('#container-tags');
+
+	// $('#errorTag').removeClass('red green');
+
+	tags.children('div').each(function() {
+		if (this.classList.contains('check')) {
+			$('#' + this.id).removeClass('check');
+			// console.log(this);
+		}
 	});
+	$.post(
+		'/search/Click-tag',
+		{
+			data: []
+		},
+		function(data, textStatus, jqXHR) {
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#errorTag');
+
+			divError.removeClass('red green');
+			divError.text(dataRes.response.mess);
+			rebaseBrowseUsers(dataRes.response);
+		}
+	);
 }

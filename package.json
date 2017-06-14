@@ -35,6 +35,8 @@
     "pug": "^2.0.0-beta.12",
     "request": "^2.81.0",
     "sharp": "^0.17.3",
+    "socket.io": "^2.0.3",
+    "socket.io-client": "^2.0.3",
     "uniqid": "^4.1.1",
     "validator": "^7.0.0"
   },

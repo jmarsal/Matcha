@@ -1,149 +1,156 @@
 .text1-account {
-    p {
-        border: 5px solid $primary-color-dark;
-    }
+	p {
+		border: 5px solid $primary-color-dark;
+	}
 }
 
 .separator-profil {
-    margin-bottom: 5%;
+	margin-bottom: 5%;
 }
 
 .infos-profil-browse {
-    border: 5px solid $primary-color-dark;
-    background-color: rgba($primary-color, 0.6); //-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
-    //transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
-    cursor: pointer;
-    z-index: 0;
-    border-radius: 0;
-    transition-duration: 2s;
-    &:hover {
-        background-color: rgba($primary-color-light, 0.6); //&, .infos {
-    }
+	border: 5px solid $primary-color-dark;
+	background-color: rgba(
+		$primary-color,
+		0.6
+	); //-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
+	//transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
+	cursor: pointer;
+	z-index: 0;
+	border-radius: 0;
+	transition-duration: 2s;
+	&:hover {
+		background-color: rgba($primary-color-light, 0.6); //&, .infos {
+	}
 }
 
 .photo-profil-browse {
-    display: inline-flex;
-    position: relative;
-    width: 200px;
-    height: 200px;
-    background-position: center;
-    background-size: cover;
-    border: 2px solid #ddd;
-    border-radius: 0;
+	display: inline-flex;
+	position: relative;
+	width: 200px;
+	height: 200px;
+	background-position: center;
+	background-size: cover;
+	border: 2px solid #ddd;
+	border-radius: 0;
 }
 
 .infos {
-    margin: 0% auto;
-    background-color: rgba($primary-color-dark, 0.6);
-    color: $color_text;
+	margin: 0% auto;
+	background-color: rgba($primary-color-dark, 0.6);
+	color: $color_text;
 }
 
 .info-pop-tag {
-    background-color: lighten($primary-color, 0.9);
-    display: flex;
-    width: 100%;
+	background-color: lighten($primary-color, 0.9);
+	display: flex;
+	width: 100%;
 }
 
 .popularity-browse {
-    margin-left: 40px;
-    float: left;
-    display: block;
-    position: relative;
+	margin-left: 40px;
+	float: left;
+	display: block;
+	position: relative;
 }
 
 .commun-tags-browse {
-    display: block;
-    position: relative;
-    margin-left: 50%;
-    margin-right: 20px;
+	display: block;
+	position: relative;
+	margin-left: 50%;
+	margin-right: 20px;
 }
 
 .trie {
-    width: 50%;
-    &.button {
-        text-align: center;
-    }
-    &:hover {
-        background-color: $primary-color;
-    }
+	width: 50%;
+	&.button {
+		text-align: center;
+	}
+	&:hover {
+		background-color: $primary-color;
+	}
 }
 
 .fitres-interval {
-    width: 50%;
-    margin: 0 auto 0px;
-    &:hover {
-        background-color: $primary-color;
-    }
+	width: 50%;
+	margin: 0 auto 0px;
+	&:hover {
+		background-color: $primary-color;
+	}
 }
 
 .fitres-tags {
-    width: 50%;
-    margin: 0 auto 50px;
-    &:hover {
-        background-color: $primary-color;
-    }
+	width: 50%;
+	margin: 0 auto 50px;
+	&:hover {
+		background-color: $primary-color;
+	}
 }
 
 .container-trie-options {
-    display: none;
-    margin: 0px auto;
-    width: 50%;
-    margin-top: 0;
+	display: none;
+	margin: 0px auto;
+	width: 50%;
+	margin-top: 0;
 }
 
 .trie-option {
-    border: 1px solid $color_text;
-    background-color: lighten($primary-color-dark, 10);
-    cursor: pointer;
-    border-radius: 50px;
-    width: auto;
-    &:hover {
-        background-color: $primary-color;
-    }
-    &.active {
-        background-color: darken($primary-color, 10);
-    }
-    &.activeTrie {
-        background-color: darken($primary-color, 10);
-    }
+	border: 1px solid $color_text;
+	background-color: lighten($primary-color-dark, 10);
+	cursor: pointer;
+	border-radius: 50px;
+	width: auto;
+	&:hover {
+		background-color: $primary-color;
+	}
+	&.active {
+		background-color: darken($primary-color, 10);
+	}
+	&.activeTrie {
+		background-color: darken($primary-color, 10);
+	}
 }
 
 .padding-browse {
-    margin-top: 60px; //    background-color: rgba($primary-color-dark, 0.6);
-    //padding-top: 5px;
+	margin-top: 60px; //    background-color: rgba($primary-color-dark, 0.6);
+	//padding-top: 5px;
 }
 
 .container-trie-options {
-    cursor: pointer;
-    border-radius: 50px;
+	cursor: pointer;
+	border-radius: 50px;
 }
 
 .containerFiltresOptions {
-    input {
-        background-color: rgba($primary-color-dark, 0);
-        font-family: inherit;
-        font-size: 1rem;
-    }
+	input {
+		background-color: rgba($primary-color-dark, 0);
+		font-family: inherit;
+		font-size: 1rem;
+	}
 }
 
 .sliders {
-    width: 60%;
-    margin: 0 auto;
+	width: 60%;
+	margin: 0 auto;
 }
 
 .container-tags {
-    display: inline-flex;
-    width: 80%;
+	display: inline-flex;
+	width: 80%;
 }
 
 .photo-profil-browse {
-    cursor: pointer;
-    z-index: 0;
-    -webkit-transition: width 1s, height 1s;
-    transition: width 1s, height 1s;
-    &.active {
-        width: 95%;
-        height: 80%;
-        z-index: 2;
-    }
+	cursor: pointer;
+	z-index: 0;
+	-webkit-transition: width 1s, height 1s;
+	transition: width 1s, height 1s;
+	&.active {
+		width: 95%;
+		height: 80%;
+		z-index: 2;
+	}
+}
+
+.error.errorSlide {
+	margin: 40 auto;
 }

@@ -1,10 +1,6 @@
-<script>document.write('<script src="http://'
-|     + (location.host || 'localhost').split(':')[0]
-|     + ':35729/livereload.js?snipver=1"></'
-|     + 'script>')</script>
-<script src="../js/jquery-3.2.1.min.js"></script>
-<script src="../js/jquery.form.min.js"></script>
-<script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
+
+
+
 doctype 5
 html(lang='fr')
     block var
@@ -16,6 +12,9 @@ html(lang='fr')
         link(rel="icon" type="image/png" href="")
         link(rel="stylesheet" href= "../css/app.css")
         link(rel="stylesheet" href="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.css")
+        block jsHeader
+            script(src="http://localhost:35729/livereload.js?snipver=1")
+            
     body(onload= (page == "account" || page == "browse" ? "initialize("+lat+","+lng+")" : ""))
         div(class="site-container")
             div(class="site-pusher")
@@ -47,4 +46,9 @@ html(lang='fr')
                         div(class="footer")
                             p(class="footer") &copy; 2017 - Made by Jmarsal
                 div(class="site-cache" id="site-cache" onclick="showhide()")
-        block js
+        block jsFooter
+            <script src="../js/jquery-3.2.1.min.js"></script>
+            <script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
+            <script src="../js/jquery.form.min.js"></script>
+            <script src="../js/socket.io.js"></script>
+            <script src="../js/socket-client.js"></script>

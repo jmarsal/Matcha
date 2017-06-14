@@ -82,7 +82,8 @@ class BrowseController {
 
 		this.router.get('/browse/profil', (req, res) => {
 			if (req.session.start) {
-				let user = req.query.user, infos = {};
+				let user = req.query.user,
+					infos = {};
 
 				BrowseModel.getInfosUserSession(user)
 					.then((infosUserSession) => {
@@ -143,7 +144,8 @@ class BrowseController {
 
 	browsePostRoute() {
 		this.router.post('/browse/Change-Filters-Trie', (req, res) => {
-			let profils = [], valueReq = req.body.data;
+			let profils = [],
+				valueReq = req.body.data;
 
 			BrowseModel.getInfosAllProfils(req.session.user.id)
 				.then((infos) => {
@@ -276,7 +278,8 @@ class BrowseController {
 		});
 
 		this.router.post('/browse/New-Users-Filters-Intervals', (req, res) => {
-			let profils = [], minMax = req.body;
+			let profils = [],
+				minMax = req.body;
 
 			BrowseModel.getInfosAllProfils(req.session.user.id)
 				.then((infos) => {
@@ -305,7 +308,12 @@ class BrowseController {
 						profilsOrder: profils.profilsOrder
 					};
 
-					Helper.sendResponseToClient(response, 0, res);
+					if (profilsOrder.length) {
+						Helper.sendResponseToClient(response, 0, res);
+					} else {
+						response.mess = 'Aucun utilisateurs trouvé avec ces intervals !';
+						Helper.sendResponseToClient(response, 1, res);
+					}
 				})
 				.catch((err) => {
 					console.error(err);

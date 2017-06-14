@@ -291,7 +291,6 @@ class SearchController {
 					return BrowseModel.getMinMaxValForSlidersIntervals(profilsOrder);
 				})
 				.then((minMaxVal) => {
-					debugger;
 					const response = {
 						minMax: minMaxVal
 					};
@@ -336,7 +335,12 @@ class SearchController {
 						profilsOrder: profils.profilsOrder
 					};
 
-					Helper.sendResponseToClient(response, 0, res);
+					if (profilsOrder.length) {
+						Helper.sendResponseToClient(response, 0, res);
+					} else {
+						response.mess = 'Aucun utilisateurs trouvé avec ces intervals !';
+						Helper.sendResponseToClient(response, 1, res);
+					}
 				})
 				.catch((err) => {
 					console.error(err);
@@ -371,12 +375,22 @@ class SearchController {
 					);
 				})
 				.then((profilsOrder) => {
-					const response = {
+					let response = {
 						infos: profils.infos,
 						photos: profils.photos,
 						profilsOrder: profilsOrder
 					};
-					Helper.sendResponseToClient(response, 0, res);
+
+					if (profilsOrder !== false && profilsOrder.length > 0) {
+						Helper.sendResponseToClient(response, 0, res);
+					} else {
+						let pluriels = tagsArray.length > 1 ? true : false;
+
+						response.mess = pluriels
+							? 'Aucun utilisateurs avec vos critères de recherche ne correspond a ces tags'
+							: 'Aucun utilisateurs avec vos critères de recherche ne correspond a ce tag';
+						Helper.sendResponseToClient(response, 1, res);
+					}
 				})
 				.catch((err) => {
 					console.error(err);
