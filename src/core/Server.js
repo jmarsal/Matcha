@@ -6,7 +6,6 @@ const express = require('express'),
 	path = require('path'),
 	http = require('http'),
 	Router = require('./Router'),
-	io = require('socket.io'),
 	bodyParser = require('body-parser'),
 	session = require('express-session'),
 	SocketIo = require('../core/Socket');

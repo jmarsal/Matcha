@@ -11,12 +11,12 @@ class SocketIo {
 	connectSocket() {
 		// Quand un client se connecte, on le note dans la console
 		this.socketIo.on('connection', (socket) => {
-			console.log('Un client est connecté !');
-
-			socket.on('toto', (message) => {
-				console.log(message);
+			socket.on('login', (user) => {
+				this.clientsList[user.id] = user;
 			});
+			console.log('Un client est connecté');
 		});
+		console.log(this.clientsList);
 	}
 }
 module.exports = SocketIo;

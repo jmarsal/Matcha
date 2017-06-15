@@ -5,7 +5,8 @@
 const express = require('express'),
 	BrowseModel = require('../models/BrowseModel'),
 	UserModel = require('../models/UserModel'),
-	Helper = require('../core/Helpers');
+	Helper = require('../core/Helpers'),
+	SocketIo = require('../core/Socket');
 
 class SearchController {
 	constructor() {

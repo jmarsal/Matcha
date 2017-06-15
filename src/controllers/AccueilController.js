@@ -61,7 +61,9 @@ class AccueilController {
 	loginRoute() {
 		this.router.get('/login', (req, res) => {
 			if (!req.session.start) {
-				let getDataUrl = '', getLogin = '', getKey = '';
+				let getDataUrl = '',
+					getLogin = '',
+					getKey = '';
 
 				Helpers.parseURLParams(req.url)
 					.then((get) => {
@@ -121,7 +123,7 @@ class AccueilController {
 								.then((status) => {
 									if (status !== false) {
 										req.session.user = { login: this.login, id: status };
-										Helpers.sendResponseToClient(null, null, res, true, '../search/');
+										Helpers.sendResponseToClient(req.session.user, null, res, true, '../search/');
 									} else {
 										Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
 									}
@@ -201,7 +203,9 @@ class AccueilController {
 	forgetPasswdRoute() {
 		this.router.get('/forget-passwd', (req, res) => {
 			if (!req.session.start) {
-				let getDataUrl = '', getLogin = '', getKey = '';
+				let getDataUrl = '',
+					getLogin = '',
+					getKey = '';
 
 				Helpers.parseURLParams(req.url)
 					.then((get) => {
@@ -249,7 +253,9 @@ class AccueilController {
 
 		this.router.post('/forget-passwd/form', (req, res) => {
 			if (this.checkFormForgetPass(req, res)) {
-				let email = this.email, login = '', cle = '';
+				let email = this.email,
+					login = '',
+					cle = '';
 
 				UserModel.getLoginCleByEmail(email)
 					.then((status) => {
@@ -489,7 +495,9 @@ class AccueilController {
      **  Verifie que les champs du formulaire ne soit pas vide.
      */
 	checkJsonReq(req, res) {
-		let countEmptyValues = 0, i = 0, nbElems = 0;
+		let countEmptyValues = 0,
+			i = 0,
+			nbElems = 0;
 		for (i in req.body) {
 			if (req.body[i] === '') {
 				countEmptyValues++;
