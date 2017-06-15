@@ -2,20 +2,23 @@ const socketClient = {
 	webSocket: null,
 	init: () => {
 		this.webSocket = io.connect('http://localhost:3000');
+		this.webSocket.on('message', (message) => {
+			alert(message);
+		});
 	},
-	login: (channel, user) => {
-		if (!webSocket) {
-			return false;
-		}
-		console.log(channel + user);
-		this.webSocket.emit(channel, user);
-	},
-	message: (channel, message) => {
+	visit: (idUserProfil) => {
 		if (!webSocket) {
 			return false;
 		}
 
-		this.webSocket.emit(channel, message);
+		this.webSocket.emit('visit', idUserProfil);
+	},
+	message: (userId, message) => {
+		if (!webSocket) {
+			return false;
+		}
+
+		this.webSocket.emit('message', { userId: userId, message: message });
 	}
 };
 

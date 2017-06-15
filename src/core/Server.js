@@ -7,8 +7,9 @@ const express = require('express'),
 	http = require('http'),
 	Router = require('./Router'),
 	bodyParser = require('body-parser'),
-	session = require('express-session'),
-	SocketIo = require('../core/Socket');
+	expressSession = require('express-session'),
+	SocketIo = require('../core/Socket'),
+	sharedsession = require('express-socket.io-session');
 
 class Server {
 	constructor() {
@@ -17,26 +18,31 @@ class Server {
 
 		app.set('httpServer', http.Server(app));
 		this.port = 3000;
+
 		this.middleware();
 		app.disable('x-powered-by');
 		this.setupViewEngine();
 
-		app.set('wSocket', new SocketIo());
 		app.set('router', new Router());
+		app.set('wSocket', new SocketIo());
 	}
 
 	middleware() {
+		const session = expressSession({
+			secret: 'vjbJfljLvdsfv515151',
+			resave: false,
+			saveUninitialized: true,
+			cookie: { maxAge: 3600000 }
+		});
+
 		app.use(express.static(path.join(__dirname, '../../public')));
+
 		app.use(bodyParser.json());
 		app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-		app.use(
-			session({
-				secret: 'vjbJfljLvdsfv515151',
-				resave: false,
-				saveUninitialized: true,
-				cookie: { maxAge: 3600000 }
-			})
-		);
+
+		app.set('session', session);
+		app.use(session);
+
 		app.use(require('./middleware/req-session'));
 	}
 

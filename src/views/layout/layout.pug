@@ -50,5 +50,6 @@ html(lang='fr')
             <script src="../js/jquery-3.2.1.min.js"></script>
             <script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
             <script src="../js/jquery.form.min.js"></script>
-            <script src="../js/socket.io.js"></script>
-            <script src="../js/socket-client.js"></script>
+            if (page === 'browse' || page === 'search' || page === 'account')
+                <script src="../js/socket.io.js"></script>
+                <script src="../js/socket-client.js"></script>

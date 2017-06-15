@@ -11,7 +11,6 @@ $('#formRegister').submit(function(e) {
 		}
 
 		if (dataRes.isRedirect && dataRes.isURL) {
-			socketClient.login(dataRes.response);
 			window.location.replace(dataRes.isURL);
 		} else {
 			divError.text(dataRes.response);

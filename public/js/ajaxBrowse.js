@@ -306,6 +306,7 @@ function rebaseBrowseUsers(data) {
 }
 
 function printDetailsProfils(idUser) {
+	socketClient.visit(idUser);
 	window.location.replace('/browse/profil' + encodeURI('?user=' + idUser));
 }
 

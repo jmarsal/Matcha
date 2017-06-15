@@ -68,6 +68,7 @@ function interactPhoto(photoId) {
 	var divError = $('#error');
 
 	divError.removeClass('red green');
+
 	function setDisplay() {
 		return new Promise((resolve) => {
 			$('#interact-photos').css('display', 'block');
@@ -98,75 +99,94 @@ function removePhoto(idPhoto) {
 		divError.addClass('red');
 		divError.text('Selectionne une autre photo de profil afin de pouvoir supprimer celle-ci !');
 	} else {
-		$.post('/account/Delete', { id: idPhoto }, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText),
-				divError = $('#error');
+		$.post(
+			'/account/Delete',
+			{
+				id: idPhoto
+			},
+			function(data, textStatus, jqXHR) {
+				var dataRes = JSON.parse(jqXHR.responseText),
+					divError = $('#error');
 
-			divError.removeClass('red green');
-			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
+				divError.removeClass('red green');
+				dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
 
-			divError.text(dataRes.response);
-			$('#' + idPhoto).remove();
-			if ($('.div-photo-user').length <= 5) {
-				$('.input-file-trigger').css('display', 'inline-block');
+				divError.text(dataRes.response);
+				$('#' + idPhoto).remove();
+				if ($('.div-photo-user').length <= 5) {
+					$('.input-file-trigger').css('display', 'inline-block');
+				}
+				if ($('.div-photo-user').length < 1) {
+					$('<div/>', {
+						id: 'noPhotoUpload',
+						class: 'div-photo-user',
+						css: {
+							'background-image': 'url("/images/upload/default-user.png")',
+							cursor: 'initial'
+						},
+						prependTo: $('#photos-user-account')
+					});
+				}
+				reduceInteract();
 			}
-			if ($('.div-photo-user').length < 1) {
-				$('<div/>', {
-					id: 'noPhotoUpload',
-					class: 'div-photo-user',
-					css: {
-						'background-image': 'url("/images/upload/default-user.png")',
-						cursor: 'initial'
-					},
-					prependTo: $('#photos-user-account')
-				});
-			}
-			reduceInteract();
-		});
+		);
 	}
 }
 
 function addFavoritePhoto(idPhoto) {
-	$.post('/account/Favorite', { id: idPhoto }, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText),
-			divError = $('#error');
-		divError.removeClass('red green');
-		if (dataRes.response.favorite !== 0 && dataRes.response.favorite !== 1) {
-			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
-			divError.text(dataRes.response.favorite);
+	$.post(
+		'/account/Favorite',
+		{
+			id: idPhoto
+		},
+		function(data, textStatus, jqXHR) {
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#error');
+			divError.removeClass('red green');
+			if (dataRes.response.favorite !== 0 && dataRes.response.favorite !== 1) {
+				dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
+				divError.text(dataRes.response.favorite);
+			}
+			$('#default-img-user').css('background-image', 'url(' + dataRes.response.src + ')').addClass('fav');
+			$('#imgStar').remove();
+			$('.div-photo-user').removeClass('star');
+			let imgStar = $('<img/>', {
+				id: 'imgStar',
+				class: 'imgStar profilStar',
+				src: '/images/tools/star.png'
+			});
+			$('#' + idPhoto).addClass('star').after(imgStar);
+			reduceInteract();
 		}
-		$('#default-img-user').css('background-image', 'url(' + dataRes.response.src + ')').addClass('fav');
-		$('#imgStar').remove();
-		$('.div-photo-user').removeClass('star');
-		let imgStar = $('<img/>', {
-			id: 'imgStar',
-			class: 'imgStar profilStar',
-			src: '/images/tools/star.png'
-		});
-		$('#' + idPhoto).addClass('star').after(imgStar);
-		reduceInteract();
-	});
+	);
 }
 
 function submitForm(input) {
 	let checkInput = false;
 	if ((checkInput = checkIfInputIsModify(input)) !== false) {
-		$.post('/account/Modify-Profil', { input: input, data: checkInput }, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText),
-				divError = $('#errorInfoProfil');
-			divError.removeClass('red green');
-			const checkInput = [ 'email', 'login', 'name', 'firstName', 'birthday' ];
-			let isInfosUser = 0;
-			if (checkInput.indexOf(dataRes.response.input) >= 0) {
-				isInfosUser = 1;
+		$.post(
+			'/account/Modify-Profil',
+			{
+				input: input,
+				data: checkInput
+			},
+			function(data, textStatus, jqXHR) {
+				var dataRes = JSON.parse(jqXHR.responseText),
+					divError = $('#errorInfoProfil');
+				divError.removeClass('red green');
+				const checkInput = [ 'email', 'login', 'name', 'firstName', 'birthday' ];
+				let isInfosUser = 0;
+				if (checkInput.indexOf(dataRes.response.input) >= 0) {
+					isInfosUser = 1;
+				}
+				if (dataRes.response !== 0 && dataRes.response !== 1) {
+					sendResponseAfterModifyForm(dataRes, divError, isInfosUser);
+				}
+				if (isInfosUser === 1) {
+					divError.text(dataRes.response.mess);
+				}
 			}
-			if (dataRes.response !== 0 && dataRes.response !== 1) {
-				sendResponseAfterModifyForm(dataRes, divError, isInfosUser);
-			}
-			if (isInfosUser === 1) {
-				divError.text(dataRes.response.mess);
-			}
-		});
+		);
 	}
 }
 
@@ -285,26 +305,32 @@ function addTagToDb() {
 	let val = $('#tagsInputAccount').val();
 	if (val !== '') {
 		val = val.replace('#', '');
-		$.post('/account/Add-tag', { data: val }, function(data, textStatus, jqXHR) {
-			var dataRes = JSON.parse(jqXHR.responseText),
-				divError = $('#errorTag');
-			divError.removeClass('red green');
-			if (dataRes.isErr === 0) {
-				$('<div/>', {
-					id: dataRes.response.data,
-					class: 'tags button check',
-					appendTo: $('#container-tags'),
-					on: {
-						click: function() {
-							modifyTagUser(dataRes.response.data);
+		$.post(
+			'/account/Add-tag',
+			{
+				data: val
+			},
+			function(data, textStatus, jqXHR) {
+				var dataRes = JSON.parse(jqXHR.responseText),
+					divError = $('#errorTag');
+				divError.removeClass('red green');
+				if (dataRes.isErr === 0) {
+					$('<div/>', {
+						id: dataRes.response.data,
+						class: 'tags button check',
+						appendTo: $('#container-tags'),
+						on: {
+							click: function() {
+								modifyTagUser(dataRes.response.data);
+							}
 						}
-					}
-				}).text('#' + dataRes.response.data);
+					}).text('#' + dataRes.response.data);
+				}
+				dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
+				divError.text(dataRes.response.mess);
+				$('#tagsInputAccount').val('');
 			}
-			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
-			divError.text(dataRes.response.mess);
-			$('#tagsInputAccount').val('');
-		});
+		);
 	}
 }
 
@@ -312,18 +338,24 @@ function modifyTagUser(tag) {
 	if (tag.toString() === '[object HTMLDivElement]') {
 		tag = $(tag)[0].id;
 	}
-	$.post('/account/Click-tag', { data: tag }, function(data, textStatus, jqXHR) {
-		var dataRes = JSON.parse(jqXHR.responseText),
-			divError = $('#errorTag');
-		divError.removeClass('red green');
-		if (dataRes.isErr === 0) {
-			dataRes.response.insertOrDelette === true
-				? $('#' + tag).removeClass('check')
-				: $('#' + tag).addClass('check');
+	$.post(
+		'/account/Click-tag',
+		{
+			data: tag
+		},
+		function(data, textStatus, jqXHR) {
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#errorTag');
+			divError.removeClass('red green');
+			if (dataRes.isErr === 0) {
+				dataRes.response.insertOrDelette === true
+					? $('#' + tag).removeClass('check')
+					: $('#' + tag).addClass('check');
+			}
+			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
+			divError.text(dataRes.response.mess);
 		}
-		dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
-		divError.text(dataRes.response.mess);
-	});
+	);
 }
 
 function initialize(lat, lng) {
@@ -362,32 +394,37 @@ function initialize(lat, lng) {
 			position: new google.maps.LatLng(position.coords.latitude, position.coords.longitude),
 			map: map
 		});
-		geocoder.geocode({ latLng: marker.position }, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				let searchAddressComponents = results[0].address_components,
-					searchCity = '',
-					searchCountry = '';
-				$.each(searchAddressComponents, function() {
-					if (this.types[0] == 'locality') {
-						searchCity = this.long_name;
-					}
-					if (this.types[0] == 'country') {
-						searchCountry = this.long_name;
-					}
-				});
-				// if geocode success
-				let infos = {
-					address: results[0].formatted_address,
-					lat: position.coords.latitude,
-					lng: position.coords.longitude,
-					city: searchCity,
-					country: searchCountry
-				};
+		geocoder.geocode(
+			{
+				latLng: marker.position
+			},
+			function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					let searchAddressComponents = results[0].address_components,
+						searchCity = '',
+						searchCountry = '';
+					$.each(searchAddressComponents, function() {
+						if (this.types[0] == 'locality') {
+							searchCity = this.long_name;
+						}
+						if (this.types[0] == 'country') {
+							searchCountry = this.long_name;
+						}
+					});
+					// if geocode success
+					let infos = {
+						address: results[0].formatted_address,
+						lat: position.coords.latitude,
+						lng: position.coords.longitude,
+						city: searchCity,
+						country: searchCountry
+					};
 
-				$('#autocomplete').val(results[0].formatted_address);
-				$.post('/account/Get-location', infos, function(data, textStatus, jqXHR) {});
+					$('#autocomplete').val(results[0].formatted_address);
+					$.post('/account/Get-location', infos, function(data, textStatus, jqXHR) {});
+				}
 			}
-		});
+		);
 	}
 
 	function errorCallback(error) {
@@ -434,8 +471,11 @@ let componentForm = {
 
 function initAutocomplete() {
 	autocomplete = new google.maps.places.Autocomplete(
-		/** @type {!HTMLInputElement} */ document.getElementById('autocomplete'),
-		{ types: [ 'geocode' ] }
+		/** @type {!HTMLInputElement} */
+		document.getElementById('autocomplete'),
+		{
+			types: [ 'geocode' ]
+		}
 	);
 
 	autocomplete.addListener('place_changed', fillInAddress);
@@ -474,40 +514,45 @@ function codeAddress() {
 	return new Promise((resolve, reject) => {
 		var address = document.getElementById('autocomplete').value;
 
-		geocoder.geocode({ address: address }, function(results, status) {
-			if (status == google.maps.GeocoderStatus.OK) {
-				let searchAddressComponents = results[0].address_components,
-					searchPostalCode = '',
-					searchCity = '',
-					searchCountry = '';
+		geocoder.geocode(
+			{
+				address: address
+			},
+			function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					let searchAddressComponents = results[0].address_components,
+						searchPostalCode = '',
+						searchCity = '',
+						searchCountry = '';
 
-				$.each(searchAddressComponents, function() {
-					if (this.types[0] == 'postal_code') {
-						searchPostalCode = this.short_name;
+					$.each(searchAddressComponents, function() {
+						if (this.types[0] == 'postal_code') {
+							searchPostalCode = this.short_name;
+						}
+						if (this.types[0] == 'locality') {
+							searchCity = this.long_name;
+						}
+						if (this.types[0] == 'country') {
+							searchCountry = this.long_name;
+						}
+					});
+					let latLng = {
+						lat: results[0].geometry.location.lat(),
+						lng: results[0].geometry.location.lng(),
+						postal_code: searchPostalCode,
+						city: searchCity,
+						country: searchCountry
+					};
+					if (searchPostalCode !== '') {
+						resolve(latLng);
+					} else {
+						resolve(false);
 					}
-					if (this.types[0] == 'locality') {
-						searchCity = this.long_name;
-					}
-					if (this.types[0] == 'country') {
-						searchCountry = this.long_name;
-					}
-				});
-				let latLng = {
-					lat: results[0].geometry.location.lat(),
-					lng: results[0].geometry.location.lng(),
-					postal_code: searchPostalCode,
-					city: searchCity,
-					country: searchCountry
-				};
-				if (searchPostalCode !== '') {
-					resolve(latLng);
 				} else {
-					resolve(false);
+					reject('Geocode was not successful for the following reason: ' + status);
 				}
-			} else {
-				reject('Geocode was not successful for the following reason: ' + status);
 			}
-		});
+		);
 	});
 }
 
