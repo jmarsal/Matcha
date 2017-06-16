@@ -8,7 +8,8 @@ const socketClient = {
 		this.webSocket.on('visit', (visit) => {
 			let notif = parseInt($('#notifs').text());
 			notif += 1;
-			$('#notifs').text(notif);
+			$('#round-nb').css('display', 'inline-flex');
+			$('#nb').text(notif);
 		});
 	},
 	visit: (idUserProfil) => {

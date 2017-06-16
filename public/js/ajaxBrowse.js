@@ -370,7 +370,6 @@ function searchWithTags(tag) {
 
 			divError.removeClass('red green');
 			dataRes.isErr == 1 ? divError.addClass('red') : divError.addClass('');
-			// debugger;
 			divError.text(dataRes.response.mess);
 			rebaseBrowseUsers(dataRes.response);
 		}
@@ -380,12 +379,9 @@ function searchWithTags(tag) {
 function removeCheckTags() {
 	let tags = $('#container-tags');
 
-	// $('#errorTag').removeClass('red green');
-
 	tags.children('div').each(function() {
 		if (this.classList.contains('check')) {
 			$('#' + this.id).removeClass('check');
-			// console.log(this);
 		}
 	});
 	$.post(

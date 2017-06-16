@@ -103,15 +103,19 @@ class Database {
 				'(' +
 				'id INT PRIMARY KEY AUTO_INCREMENT,' +
 				'id_user INT NOT NULL,' +
+				'login_user_visit VARCHAR(16) NOT NULL,' +
 				'id_user_visit INT NOT NULL,' +
+				'photo_user_visit VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
 				'date_visit DATETIME NOT NULL' +
 				')';
 			const userLikes =
-				'CREATE TABLE IF NOT EXISTS user_Likes' +
+				'CREATE TABLE IF NOT EXISTS user_likes' +
 				'(' +
 				'id INT PRIMARY KEY AUTO_INCREMENT,' +
 				'id_user INT NOT NULL,' +
+				'login_user_like VARCHAR(16) NOT NULL,' +
 				'id_user_like INT NOT NULL,' +
+				'photo_user_like VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
 				'date_visit DATETIME NOT NULL' +
 				')';
 			connection.query(users, (err) => {

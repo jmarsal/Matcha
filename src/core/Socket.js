@@ -22,7 +22,7 @@ class SocketIo {
 				console.log(Object.keys(this.clientsList));
 
 				socket.on('visit', (idUserProfil) => {
-					SocketModel.addNewVisitToDb(user.id, idUserProfil)
+					SocketModel.addNewVisitToDb(user.id, user.login, idUserProfil)
 						.then(() => {
 							if (this.clientsList[idUserProfil]) {
 								this.clientsList[idUserProfil].emit('visit', user.login);

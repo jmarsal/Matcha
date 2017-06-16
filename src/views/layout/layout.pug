@@ -36,11 +36,20 @@ html(lang='fr')
                                         class=("default-img-user") id="default-img-user"
                                         style='background-image: url("/images/upload/default-user.png")'
                                         )
-                            a(href='#', class="notif-nb is_active" id="notifs") #{nbNotif}
+                            a(href='#', class="is_active" id="notifs") 
+                                div(
+                                        class=("notif-img") id="default-img-user"
+                                        style=(nbNotif == 0 || !nbNotif) ? 'left: 15px ; background-image: url("/images/notifs/notification.png")' : 'background-image: url("/images/notifs/notification.png")'
+                                        onclick="displayNotifs()"
+                                        )
+                                    div(class="round-nb" id="round-nb" style=(nbNotif == 0 || !nbNotif) ?"display:none" : "display:inline-flex")
+                                        div(class="nb" id="nb") #{nbNotif}
                             a(href="../accueil", "class"=(page == "accueil" ? "is-active" : "")) Delog
                         else
                             a(href="../login", "class"=(page == "login" ? "is-active" : "")) se connecter
                             a(href="../logon", "class"=(page == "logon" ? "is-active" : "")) créer un compte
+                    div(class="developpe-notif" id="developpe-notif"
+                        style="display='none'")
                 div(class="post")
                     div(class="content" id="app")
                         block content
@@ -51,6 +60,7 @@ html(lang='fr')
             <script src="../js/jquery-3.2.1.min.js"></script>
             <script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
             <script src="../js/jquery.form.min.js"></script>
+            <script src="../js/ajaxLayout.js"></script>
             if (page === 'browse' || page === 'search' || page === 'account')
                 <script src="../js/socket.io.js"></script>
                 <script src="../js/socket-client.js"></script>
