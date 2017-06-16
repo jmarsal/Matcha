@@ -85,7 +85,8 @@ class BrowseModel {
 				} else {
 					if (res.length) {
 						sql =
-							'UPDATE user_interacts SET distanceFromUser = ?, distanceFromUserKm = ? WHERE id_user_session = ? && id_user = ?';
+							'UPDATE user_interacts ' +
+							'SET distanceFromUser = ?, 			distanceFromUserKm = ? WHERE id_user_session = ? && id_user = ?';
 
 						connection.query(
 							sql,

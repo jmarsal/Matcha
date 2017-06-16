@@ -40,6 +40,7 @@ class BrowseController {
 					})
 					.then((infosUserSession) => {
 						profils.infosUserSession = infosUserSession;
+						console.log(profils.infosUserSession);
 						return BrowseModel.updateDistanceFromUserAndtheOther(
 							req.session.user.id,
 							profils.infos,
@@ -69,7 +70,8 @@ class BrowseController {
 							title: 'Voici quelques profils qui pourraient te convenir ...',
 							profils: profilsOrder,
 							photos: profils.photos,
-							photoFav: profils.photosProfil ? profils.photosProfil : ''
+							photoFav: profils.photosProfil ? profils.photosProfil : '',
+							nbNotif: profils.infosUserSession[0].notifications
 						});
 					})
 					.catch((err) => {

@@ -2,44 +2,44 @@
 @import "../variables/paletteColors";
 
 html {
-    margin: 0;
-    padding: 0;
-    background: url(/images/background/background.jpg) no-repeat center fixed;
-    -webkit-background-size: cover;
-    background-size: cover;
-    font-size: 2vw;
-    font-family: "Comic Sans MS";
+	margin: 0;
+	padding: 0;
+	background: url(/images/background/background.jpg) no-repeat center fixed;
+	-webkit-background-size: cover;
+	background-size: cover;
+	font-size: 2vw;
+	font-family: "Comic Sans MS";
 }
 
 .site-container {
-    height: 100%;
+	height: 100%;
 }
 
 .site-pusher {
-    height: 100%;
+	height: 100%;
 }
 
 .header {
-    top: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    height: 66px;
-    line-height: 66px;
-    z-index: 10;
-    background-color: $primary-color-dark;
+	top: 0;
+	position: fixed;
+	left: 0;
+	right: 0;
+	height: 66px;
+	line-height: 66px;
+	z-index: 10;
+	background-color: $primary-color-dark;
 }
 
 .header__logo {
-    background-color: $primary-color;
-    font-size: 1.5vw;
-    font-weight: bold;
-    float: left;
-    padding: 0 25px;
-    text-decoration: none;
-    color: $divider-color;
-    border-right: 1px solid $primary-color;
-    cursor: default;
+	background-color: $primary-color;
+	font-size: 1.5vw;
+	font-weight: bold;
+	float: left;
+	padding: 0 25px;
+	text-decoration: none;
+	color: $divider-color;
+	border-right: 1px solid $primary-color;
+	cursor: default;
 }
 
 //                img {
@@ -48,58 +48,65 @@ html {
 //            }
 //
 .menu {
-    width: 100%;
-    //float: left;
-    //height: 100%;
-    
-    a {
-        text-decoration: none;
-        color: inherit;
-        padding: 0 35px;
-        border-right: 1px solid $primary-color;
-        font-family: Indie Flower;
-        font-size: 1.5vw;
-        color: $primary-text-color;
-        &:hover {
-            color: $primary-color;
-        }
-        &.is-active{
-            color: $primary-color-light;
-        }
-    }
-    
-    .default-img-user {
-        display: inline-block;
-        position: relative;
-        background-position: center;
-        background-size: cover;
-        width: 35px;
-        height: 32px;
-        margin-bottom: -0.5%;
-        left: 15px;
-        
-        &.fav {
-            border: 2px solid #ddd; /* Gray border */
-            border-radius: 50%; /* Rounded border */
-            top: 5px;
-            //margin-bottom: 0;
-        }
-    }
+	width: 100%;
+	//float: left;
+	//height: 100%;
+
+	a {
+		text-decoration: none;
+		color: inherit;
+		padding: 0 35px;
+		border-right: 1px solid $primary-color;
+		font-family: Indie Flower;
+		font-size: 1.5vw;
+		color: $primary-text-color;
+		&:hover {
+			color: $primary-color;
+		}
+		&.is-active {
+			color: $primary-color-light;
+		}
+	}
+
+	.default-img-user {
+		display: inline-block;
+		position: relative;
+		background-position: center;
+		background-size: cover;
+		width: 35px;
+		height: 32px;
+		margin-bottom: -0.5%;
+		left: 15px;
+
+		&.fav {
+			border: 2px solid #ddd; /* Gray border */
+			border-radius: 50%; /* Rounded border */
+			top: 5px;
+			//margin-bottom: 0;
+		}
+	}
 }
 
-.footer{
-    position: relative;
-    bottom: 0px;
-    //height: 100%;
-    width: 100%;
-    color: $primary-text-color;
-    
-    p {
-        position: relative;
-        padding: 0;
-        //bottom: -650px;
-        //margin-bottom: -50px;
-    }
+.footer {
+	position: relative;
+	bottom: 0px;
+	//height: 100%;
+	width: 100%;
+	color: $primary-text-color;
+
+	p {
+		position: relative;
+		padding: 0;
+		//bottom: -650px;
+		//margin-bottom: -50px;
+	}
+}
+
+.notif-nb {
+	background: rgba(indianred, 0.6);
+	border-radius: 100%;
+	width: 1%;
+	height: 10%;
 }
 
 //

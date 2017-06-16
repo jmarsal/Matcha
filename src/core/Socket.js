@@ -1,5 +1,5 @@
 const io = require('socket.io'),
-	VisitModel = require('../models/VisitModel'),
+	SocketModel = require('../models/SocketModel'),
 	sharedsession = require('express-socket.io-session');
 
 class SocketIo {
@@ -18,21 +18,34 @@ class SocketIo {
 
 			if (user) {
 				this.clientsList[user.id] = socket;
-				// socket.on('visit', (idUser) => {
-				// 	VisitModel.addNewVisitToDb(me.id, idUser);
-				// });
 				console.log('Un client est connecté');
 				console.log(Object.keys(this.clientsList));
 
 				socket.on('visit', (idUserProfil) => {
-					console.log(idUserProfil);
+					SocketModel.addNewVisitToDb(user.id, idUserProfil)
+						.then(() => {
+							if (this.clientsList[idUserProfil]) {
+								this.clientsList[idUserProfil].emit('visit', user.login);
+							}
+						})
+						.catch((err) => {
+							console.error(err);
+						});
 				});
 
 				socket.on('message', (data) => {
 					this.clientsList[data.userId].emit('message', data.message);
 				});
 
-				socket.on('disconnect', () => delete this.clientsList[user.id]);
+				socket.on('disconnect', () => {
+					SocketModel.addDisconnectToDb(user.id)
+						.then(() => {
+							delete this.clientsList[user.id];
+						})
+						.catch((err) => {
+							console.error(err);
+						});
+				});
 			}
 		});
 	}

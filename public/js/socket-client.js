@@ -5,12 +5,16 @@ const socketClient = {
 		this.webSocket.on('message', (message) => {
 			alert(message);
 		});
+		this.webSocket.on('visit', (visit) => {
+			let notif = parseInt($('#notifs').text());
+			notif += 1;
+			$('#notifs').text(notif);
+		});
 	},
 	visit: (idUserProfil) => {
 		if (!webSocket) {
 			return false;
 		}
-
 		this.webSocket.emit('visit', idUserProfil);
 	},
 	message: (userId, message) => {

@@ -9,6 +9,7 @@ block append jsFooter
 
 block var
     - page = "browse";
+    - sousPage = "browse/profil"
     - countPhotos = 0;
 
 block content
@@ -18,9 +19,10 @@ block content
                 div(class="welcome-account" id="welcome-account")
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
                 div(class="text1-account"): p #{title} 
-                div(class="print-profil login") #{profil.login}                
+                div(class="like-profil") like             
+                div(class="print-profil login") #{profil.login}
                 p Popularité : #{profil.popularity}%
-                    br
+                    //- br
             div(class="container-profils-browse" id="containerProfilsBrowse")
                 div(class="all-img" id="allImg")
                 if photos

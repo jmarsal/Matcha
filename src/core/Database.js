@@ -62,7 +62,10 @@ class Database {
 				'lng FLOAT(10, 6) DEFAULT NULL,' +
 				'city VARCHAR(150) DEFAULT NULL,' +
 				'country VARCHAR(150) DEFAULT NULL,' +
-				'popularity INT DEFAULT 0' +
+				'popularity INT DEFAULT 0,' +
+				'notifications INT DEFAULT 0,' +
+				'likes_of_other INT DEFAULT 0,' +
+				'disconnect DATETIME DEFAULT NULL' +
 				')';
 			const userPhotos =
 				'CREATE TABLE IF NOT EXISTS users_photos_profils' +
@@ -95,6 +98,22 @@ class Database {
 				'distanceFromUserKm INT DEFAULT NULL,' +
 				'tagsCommun INT DEFAULT 0' +
 				')';
+			const userVisits =
+				'CREATE TABLE IF NOT EXISTS user_visits' +
+				'(' +
+				'id INT PRIMARY KEY AUTO_INCREMENT,' +
+				'id_user INT NOT NULL,' +
+				'id_user_visit INT NOT NULL,' +
+				'date_visit DATETIME NOT NULL' +
+				')';
+			const userLikes =
+				'CREATE TABLE IF NOT EXISTS user_Likes' +
+				'(' +
+				'id INT PRIMARY KEY AUTO_INCREMENT,' +
+				'id_user INT NOT NULL,' +
+				'id_user_like INT NOT NULL,' +
+				'date_visit DATETIME NOT NULL' +
+				')';
 			connection.query(users, (err) => {
 				if (err) {
 					reject(err);
@@ -115,7 +134,19 @@ class Database {
 												if (err) {
 													reject(err);
 												} else {
-													resolve();
+													connection.query(userVisits, (err) => {
+														if (err) {
+															reject(err);
+														} else {
+															connection.query(userLikes, (err) => {
+																if (err) {
+																	reject(err);
+																} else {
+																	resolve();
+																}
+															});
+														}
+													});
 												}
 											});
 										}

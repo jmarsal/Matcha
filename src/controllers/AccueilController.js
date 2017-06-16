@@ -123,7 +123,7 @@ class AccueilController {
 								.then((status) => {
 									if (status !== false) {
 										req.session.user = { login: this.login, id: status };
-										Helpers.sendResponseToClient(req.session.user, null, res, true, '../search/');
+										Helpers.sendResponseToClient(req.session.user, null, res, true, '../account/');
 									} else {
 										Helpers.sendResponseToClient("Une erreur s'est produite!", 1, res);
 									}

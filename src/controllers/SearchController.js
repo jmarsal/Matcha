@@ -90,7 +90,8 @@ class SearchController {
 							photoFav: profils.photosProfil ? profils.photosProfil : '',
 							tags: profils.tags.tags,
 							tagsUser: profils.tags.tags_user,
-							check: profils.tags.check
+							check: profils.tags.check,
+							nbNotif: profils.infosUserSession[0].notifications
 						});
 					})
 					.catch((err) => {
@@ -397,6 +398,11 @@ class SearchController {
 					console.error(err);
 					Helper.sendResponseToClient('Something went wrong!', 1, res);
 				});
+		});
+
+		this.router.post('/search/add', (req, res) => {
+			let tagsArray = req.body.data,
+				profils = [];
 		});
 	}
 }

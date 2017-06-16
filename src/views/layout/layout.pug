@@ -15,7 +15,7 @@ html(lang='fr')
         block jsHeader
             script(src="http://localhost:35729/livereload.js?snipver=1")
             
-    body(onload= (page == "account" || page == "browse" ? "initialize("+lat+","+lng+")" : ""))
+    body(onload= (page === "account" || sousPage === "browse/profil" ? "initialize("+lat+","+lng+")" : ""))
         div(class="site-container")
             div(class="site-pusher")
                 header(class="header")
@@ -36,6 +36,7 @@ html(lang='fr')
                                         class=("default-img-user") id="default-img-user"
                                         style='background-image: url("/images/upload/default-user.png")'
                                         )
+                            a(href='#', class="notif-nb is_active" id="notifs") #{nbNotif}
                             a(href="../accueil", "class"=(page == "accueil" ? "is-active" : "")) Delog
                         else
                             a(href="../login", "class"=(page == "login" ? "is-active" : "")) se connecter
