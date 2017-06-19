@@ -1,6 +1,6 @@
 const express = require('express'),
-	SocketModel = require('../models/SocketModel');
-Helper = require('../core/Helpers');
+	SocketModel = require('../models/SocketModel'),
+	Helper = require('../core/Helpers');
 
 class NotifsController {
 	constructor() {
@@ -33,7 +33,24 @@ class NotifsController {
 		this.router.post('/notifications', (req, res) => {
 			SocketModel.getNotificationsInDb(req.session.user.id)
 				.then((notifs) => {
-					Helper.sendResponseToClient(notifs, 0, res);
+					notifs.map((notif) => {
+						notif.date_visit = notif.date_visit.toLocaleString('fr-FR', { hour12: false });
+					});
+					const notifRet = {
+						notifs: notifs,
+						myId: req.session.user.id
+					};
+					Helper.sendResponseToClient(notifRet, 0, res);
+				})
+				.catch((err) => {
+					console.error(err);
+				});
+		});
+
+		this.router.post('/remove-notifications', (req, res) => {
+			SocketModel.removeNotificationsInDb(req.session.user.id)
+				.then(() => {
+					Helper.sendResponseToClient('done', 0, res);
 				})
 				.catch((err) => {
 					console.error(err);

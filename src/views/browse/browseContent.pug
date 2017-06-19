@@ -59,13 +59,13 @@ block content
                         for profil in profils
                             div(
                                 class="profil-browse"
-                                id=profil.id
-                                onclick="printDetailsProfils('"+ profil.id +"')"
+                                id=profil.id_user
+                                onclick="printDetailsProfils('"+ profil.id_user +"')"
                             )
                                 div(class='infos-profil-browse')
                                     div(class='login-profil-browse infos') #{profil.login}    #{profil.age} ans
                                     for photo in photos
-                                        if photo.id_user == profil.id
+                                        if photo.id_user == profil.id_user
                                             div(class="info-pop-tag")
                                                 div(class="popularity-browse") Popularité:  #{profil.popularity}%
                                                 div(class="commun-tags-browse") #: #{profil.tagsCommun} commun

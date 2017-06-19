@@ -98,25 +98,25 @@ class Database {
 				'distanceFromUserKm INT DEFAULT NULL,' +
 				'tagsCommun INT DEFAULT 0' +
 				')';
-			const userVisits =
-				'CREATE TABLE IF NOT EXISTS user_visits' +
+			const userNotifications =
+				'CREATE TABLE IF NOT EXISTS user_notifications' +
 				'(' +
 				'id INT PRIMARY KEY AUTO_INCREMENT,' +
 				'id_user INT NOT NULL,' +
 				'login_user_visit VARCHAR(16) NOT NULL,' +
 				'id_user_visit INT NOT NULL,' +
 				'photo_user_visit VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
-				'date_visit DATETIME NOT NULL' +
+				'date_visit DATETIME NOT NULL,' +
+				'action VARCHAR(16) NOT NULL' +
 				')';
 			const userLikes =
 				'CREATE TABLE IF NOT EXISTS user_likes' +
 				'(' +
 				'id INT PRIMARY KEY AUTO_INCREMENT,' +
 				'id_user INT NOT NULL,' +
-				'login_user_like VARCHAR(16) NOT NULL,' +
 				'id_user_like INT NOT NULL,' +
 				'photo_user_like VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
-				'date_visit DATETIME NOT NULL' +
+				'matcha_like BOOLEAN DEFAULT false' +
 				')';
 			connection.query(users, (err) => {
 				if (err) {
@@ -138,7 +138,7 @@ class Database {
 												if (err) {
 													reject(err);
 												} else {
-													connection.query(userVisits, (err) => {
+													connection.query(userNotifications, (err) => {
 														if (err) {
 															reject(err);
 														} else {

@@ -253,6 +253,9 @@ class SearchController {
 					}
 				})
 				.then((profilsOrder) => {
+					profilsOrder.map((profil) => {
+						profil.id = profil.id_user;
+					});
 					profils.profilsOrder = profilsOrder;
 
 					const response = {
@@ -289,6 +292,9 @@ class SearchController {
 					);
 				})
 				.then((profilsOrder) => {
+					profilsOrder.map((profil) => {
+						profil.id = profil.id_user;
+					});
 					profils.profilsOrder = profilsOrder;
 					return BrowseModel.getMinMaxValForSlidersIntervals(profilsOrder);
 				})
@@ -330,6 +336,9 @@ class SearchController {
 					);
 				})
 				.then((profilsOrder) => {
+					profilsOrder.map((profil) => {
+						profil.id = profil.id_user;
+					});
 					profils.profilsOrder = profilsOrder;
 					const response = {
 						infos: profils.infos,
@@ -377,11 +386,18 @@ class SearchController {
 					);
 				})
 				.then((profilsOrder) => {
+					if (profilsOrder) {
+						profilsOrder.map((profil) => {
+							profil.id = profil.id_user;
+						});
+					}
+
 					let response = {
 						infos: profils.infos,
 						photos: profils.photos,
 						profilsOrder: profilsOrder
 					};
+					// console.log(response);
 
 					if (profilsOrder !== false && profilsOrder.length > 0) {
 						Helper.sendResponseToClient(response, 0, res);

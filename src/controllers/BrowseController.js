@@ -47,8 +47,8 @@ class BrowseController {
 							infosUserSession
 						);
 					})
-					.then((distancesFromUsers) => {
-						profils.distances = distancesFromUsers;
+					.then(() => {
+						// debugger;
 						return BrowseModel.getCommunTagsByUsers(req.session.user.id);
 					})
 					.then(() => {
@@ -91,8 +91,13 @@ class BrowseController {
 					.then((infosUserSession) => {
 						infos.infos = infosUserSession;
 
+						console.log(infos.infos);
+						return BrowseModel.getInfosUserSession(req.session.user.id);
+					})
+					.then((infosUserLog) => {
+						infos.me = infosUserLog;
+
 						return BrowseModel.getAllPhotoUser(user);
-						res.render('./views/browse/browseProfil');
 					})
 					.then((photosUser) => {
 						infos.photos = photosUser;
@@ -132,7 +137,8 @@ class BrowseController {
 							check: infos.retTags.check,
 							lat: infos.infos[0].lat,
 							lng: infos.infos[0].lng,
-							photoFav: infos.photosProfil ? infos.photosProfil : ''
+							photoFav: infos.photosProfil ? infos.photosProfil : '',
+							nbNotif: infos.me[0].notifications
 						});
 					})
 					.catch((err) => {
@@ -233,6 +239,9 @@ class BrowseController {
 					}
 				})
 				.then((profilsOrder) => {
+					profilsOrder.map((profil) => {
+						profil.id = profil.id_user;
+					});
 					profils.profilsOrder = profilsOrder;
 
 					const response = {
@@ -264,6 +273,9 @@ class BrowseController {
 					);
 				})
 				.then((profilsOrder) => {
+					profilsOrder.map((profil) => {
+						profil.id = profil.id_user;
+					});
 					profils.profilsOrder = profilsOrder;
 					return BrowseModel.getMinMaxValForSlidersIntervals(profilsOrder);
 				})
@@ -303,6 +315,10 @@ class BrowseController {
 					);
 				})
 				.then((profilsOrder) => {
+					debugger;
+					profilsOrder.map((profil) => {
+						profil.id = profil.id_user;
+					});
 					profils.profilsOrder = profilsOrder;
 					const response = {
 						infos: profils.infos,

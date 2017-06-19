@@ -12,8 +12,8 @@ class SocketModel {
 						photoProfilSrc = res[0].src_photo;
 					}
 					sql =
-						'INSERT INTO user_visits(photo_user_visit, id_user, login_user_visit, id_user_visit, date_visit) VALUES(?, ?, ?, ?, NOW())';
-					connection.query(sql, [ photoProfilSrc, idUserToVisit, myLogin, myId ], (err) => {
+						'INSERT INTO user_notifications(photo_user_visit, id_user, login_user_visit, id_user_visit, date_visit, action) VALUES(?, ?, ?, ?, NOW(), ?)';
+					connection.query(sql, [ photoProfilSrc, idUserToVisit, myLogin, myId, 'visit' ], (err) => {
 						if (err) {
 							reject(err);
 						} else {
@@ -47,9 +47,9 @@ class SocketModel {
 
 	static getNotificationsInDb(id_user) {
 		return new Promise((resolve, reject) => {
-			let notifs = {},
+			let notifs = [],
 				sql =
-					'SELECT login_user_visit, date_visit, photo_user_visit FROM user_visits ' +
+					'SELECT id_user_visit, login_user_visit, date_visit, photo_user_visit, action FROM user_notifications ' +
 					'WHERE id_user = ? ORDER BY date_visit DESC';
 
 			connection.query(sql, [ id_user ], (err, res) => {
@@ -57,23 +57,29 @@ class SocketModel {
 					reject(err);
 				} else {
 					if (res.length) {
-						console.log(res.length);
-						notifs.visits = res;
+						notifs = res;
 					}
-					sql =
-						'SELECT login_user_like, date_visit, photo_user_like FROM user_likes ' +
-						'WHERE id_user = ? ORDER BY date_visit DESC';
+					resolve(notifs);
+				}
+			});
+		});
+	}
 
-					connection.query(sql, [ id_user ], (err, res) => {
+	static removeNotificationsInDb(id_user) {
+		return new Promise((resolve, reject) => {
+			let sql = 'DELETE FROM user_notifications WHERE id_user = ?';
+
+			connection.query(sql, id_user, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					sql = 'UPDATE users SET notifications = 0 WHERE id = ?';
+
+					connection.query(sql, id_user, (err) => {
 						if (err) {
 							reject(err);
-						} else {
-							if (res.length) {
-								console.log(res.length);
-								notifs.likes = res;
-							}
-							resolve(notifs);
 						}
+						resolve();
 					});
 				}
 			});

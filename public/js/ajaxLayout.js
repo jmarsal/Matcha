@@ -1,50 +1,98 @@
+// const moment = require('moment');
+
+$('body').on('click', function(e) {
+	if (
+		e.target.classList.contains('container-Notifs') ||
+		e.target.classList.contains('containerOneNotifs') ||
+		e.target.classList.contains('notif-img') ||
+		e.target.classList.contains('notif') ||
+		e.target.classList.contains('remove-Notifs')
+	) {
+		return false;
+	}
+	removeNotif();
+});
+
 function displayNotifs() {
 	$.post('/notifications', {}, function(data, textStatus, jqXHR) {
 		var dataRes = JSON.parse(jqXHR.responseText);
 
-		if (
-			(dataRes.response.visits && dataRes.response.visits.length) ||
-			(dataRes.response.likes && dataRes.response.likes.length)
-		) {
-			// let data = dataRes.response,
-			// 	newArray = [],
-			// 	count = 0;
-
-			// console.log(data);
-			// if (data.likes && data.visits) {
-			// 	for (let i = 0; i < data.likes.length; i++) {
-			// 		console.log(count);
-			// if (i < data.visits.length && data.likes[i].date_visit > data.visits[i].date_visit) {
-			// 	newArray.push(data.likes[i]);
-			// 	newArray.push(data.visits[i]);
-			// } else if (i < data.visits.length && data.likes[i].date_visit < data.visits[i].date_visit) {
-			// 	newArray.push(data.visits[i]);
-			// 	newArray.push(data.likes[i]);
+		if (dataRes.response.notifs && dataRes.response.notifs.length) {
+			let data = dataRes.response.notifs;
+			// if (!$('#developpe-notif').is(':visible')) {
+			// 	alert('none');
 			// } else {
-			// 	newArray.push(data.likes[i]);
-			// }
-			// 	count++;
+			// 	alert(check);
 			// }
 
-			// console.log(newArray);
+			$('#developpe-notif').css('display', 'block');
+			$('<div/>', {
+				id: 'containerNotifs',
+				class: 'container-Notifs',
+				appendTo: $('#developpe-notif')
+			});
+			$('<div/>', {
+				id: 'removeNotifs',
+				class: 'remove-Notifs',
+				on: {
+					click: function() {
+						removeHistoryNotifs();
+					}
+				},
+				appendTo: $('#developpe-notif')
+			}).text("Supprimer l'historique");
+			data.map((notif, index) => {
+				let login = notif.login_user_visit,
+					action = notif.action === 'visit' ? ' a visité votre profil le ' : ' a liké votre profil le ',
+					date = notif.date_visit,
+					phrase = login + action + date;
 
-			// if (count < data.visits.length) {
-			// 	while (count < data.visits.length) {
-			// 		newArray.push(data.visits[count]);
-			// 		count++;
-			// 	}
-			// }
-
-			// newArray.map((elem) => {
-			// 	console.log(elem.date_visit);
-			// });
-			// }
-
-			let createContaint = $('#developpe-notif');
-
-			// if (dataRes) for (let i = 0; i < dataRes.response.length; i++) {}
-			console.log(dataRes);
+				$('<div/>', {
+					id: 'containerOneNotifs' + index,
+					class: index % 2 == 0 ? 'first containerOneNotifs' : 'containerOneNotifs',
+					on: {
+						click: function() {
+							printDetailsProfils(notif.id_user_visit);
+						}
+					},
+					appendTo: $('#containerNotifs')
+				});
+				$('<div/>', {
+					class: 'notif-img',
+					id: 'notif-img' + index,
+					css: {
+						'background-image': 'url(' + notif.photo_user_visit + ')'
+					},
+					appendTo: $('#containerOneNotifs' + index)
+				});
+				$('<div/>', {
+					id: 'notif' + index,
+					class: 'notif',
+					appendTo: $('#containerOneNotifs' + index)
+				}).text(phrase);
+			});
 		}
-		console.log(dataRes);
+	});
+}
+
+function removeNotif() {
+	$('#containerNotifs').remove();
+	$('#removeNotifs').remove();
+}
+
+function printDetailsProfils(idUser) {
+	socketClient.visit(idUser);
+	window.location.replace('/browse/profil' + encodeURI('?user=' + idUser));
+}
+
+function removeHistoryNotifs() {
+	// alert(myId);
+	// Post pour supprimer l'historique des notifs
+
+	$.post('/remove-notifications', {}, function(data, textStatus, jqXHR) {
+		var dataRes = JSON.parse(jqXHR.responseText);
+
+		removeNotif();
+		$('#round-nb').css('display', 'none');
 	});
 }

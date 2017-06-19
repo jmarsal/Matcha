@@ -20,13 +20,32 @@ class BrowseModel {
 
 	static getAllPhotosProfils(idUserSession) {
 		return new Promise((resolve, reject) => {
-			let sql = 'SELECT id_user, src_photo FROM users_photos_profils WHERE id_user != ? && photo_profil = 1';
+			let sql =
+				'SELECT id_user, src_photo, photo_profil FROM  users_photos_profils WHERE id_user != ? && photo_profil = 1';
 
 			connection.query(sql, [ idUserSession ], (err, res) => {
-				resolve(res);
 				if (err) {
 					reject(err);
 				}
+				let ret = res;
+
+				sql = 'SELECT DISTINCT id_user, src_photo FROM users_photos_profils WHERE id != ?';
+
+				connection.query(sql, idUserSession, (err, res) => {
+					for (let i = 0; i < res.length; i++) {
+						let check = false;
+
+						for (let j = 0; j < ret.length; j++) {
+							if (ret[j].id_user == res[i].id_user) {
+								check = true;
+							}
+						}
+						if (check == false) {
+							ret.push(res[i]);
+						}
+					}
+					resolve(ret);
+				});
 			});
 		});
 	}
@@ -429,17 +448,18 @@ class BrowseModel {
 				if (err) {
 					reject(err);
 				}
+				console.log(tagsArray.length);
 				if (res.length) {
 					let retTab = [],
 						i = 0;
 
 					newTabUsers.map((user) => {
 						res.map((id_user) => {
-							if (id_user.id_user == user.id) {
+							if (id_user.id_user == user.id_user) {
 								let check = true;
 
 								retTab.map((retUser) => {
-									if (retUser.id == id_user.id_user) {
+									if (retUser.id_user == id_user.id_user) {
 										check = false;
 									}
 								});
@@ -450,7 +470,10 @@ class BrowseModel {
 							}
 						});
 					});
-					retTab = BrowseModel.removeDuplicateRow(retTab);
+					retTab.map((user) => {
+						user.id = user.id_user;
+					});
+					// retTab = BrowseModel.removeDuplicateRow(retTab);
 					resolve(retTab);
 				} else {
 					resolve(false);
@@ -731,12 +754,6 @@ class BrowseModel {
 				}
 				resolve(res);
 			});
-		});
-	}
-
-	static getAllUsersByTags(idUser, tabArray) {
-		return new Promise((resolve, reject) => {
-			let sql = 'SELECT * users';
 		});
 	}
 }
