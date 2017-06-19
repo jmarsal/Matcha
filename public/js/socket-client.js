@@ -11,12 +11,21 @@ const socketClient = {
 			$('#round-nb').css('display', 'inline-flex');
 			$('#nb').text(notif);
 		});
+		this.webSocket.on('like', (like) => {
+			alert('like');
+		});
 	},
 	visit: (idUserProfil) => {
 		if (!webSocket) {
 			return false;
 		}
 		this.webSocket.emit('visit', idUserProfil);
+	},
+	like: (idUserProfil) => {
+		if (!webSocket) {
+			return false;
+		}
+		this.webSocket.emit('like', idUserProfil);
 	},
 	message: (userId, message) => {
 		if (!webSocket) {

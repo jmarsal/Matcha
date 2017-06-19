@@ -13,17 +13,22 @@ $('body').on('click', function(e) {
 	removeNotif();
 });
 
+$('#imgNotifs').click((e) => {
+	if (e.target.classList.contains('expend')) {
+		return false;
+	}
+	displayNotifs();
+	$('#imgNotifs').addClass('expend');
+});
+
 function displayNotifs() {
+	let check = $('#developpe-notif').css('display');
+
 	$.post('/notifications', {}, function(data, textStatus, jqXHR) {
 		var dataRes = JSON.parse(jqXHR.responseText);
 
 		if (dataRes.response.notifs && dataRes.response.notifs.length) {
 			let data = dataRes.response.notifs;
-			// if (!$('#developpe-notif').is(':visible')) {
-			// 	alert('none');
-			// } else {
-			// 	alert(check);
-			// }
 
 			$('#developpe-notif').css('display', 'block');
 			$('<div/>', {
@@ -39,7 +44,7 @@ function displayNotifs() {
 						removeHistoryNotifs();
 					}
 				},
-				appendTo: $('#developpe-notif')
+				prependTo: $('#containerNotifs')
 			}).text("Supprimer l'historique");
 			data.map((notif, index) => {
 				let login = notif.login_user_visit,
@@ -78,6 +83,7 @@ function displayNotifs() {
 function removeNotif() {
 	$('#containerNotifs').remove();
 	$('#removeNotifs').remove();
+	$('#imgNotifs').removeClass('expend');
 }
 
 function printDetailsProfils(idUser) {

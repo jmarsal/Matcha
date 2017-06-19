@@ -115,7 +115,6 @@ class Database {
 				'id INT PRIMARY KEY AUTO_INCREMENT,' +
 				'id_user INT NOT NULL,' +
 				'id_user_like INT NOT NULL,' +
-				'photo_user_like VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
 				'matcha_like BOOLEAN DEFAULT false' +
 				')';
 			connection.query(users, (err) => {

@@ -40,7 +40,6 @@ class BrowseController {
 					})
 					.then((infosUserSession) => {
 						profils.infosUserSession = infosUserSession;
-						console.log(profils.infosUserSession);
 						return BrowseModel.updateDistanceFromUserAndtheOther(
 							req.session.user.id,
 							profils.infos,
@@ -91,11 +90,15 @@ class BrowseController {
 					.then((infosUserSession) => {
 						infos.infos = infosUserSession;
 
-						console.log(infos.infos);
 						return BrowseModel.getInfosUserSession(req.session.user.id);
 					})
 					.then((infosUserLog) => {
 						infos.me = infosUserLog;
+
+						return BrowseModel.getIfLikeUser(user, req.session.user.id);
+					})
+					.then((like) => {
+						infos.like = like;
 
 						return BrowseModel.getAllPhotoUser(user);
 					})
@@ -138,7 +141,8 @@ class BrowseController {
 							lat: infos.infos[0].lat,
 							lng: infos.infos[0].lng,
 							photoFav: infos.photosProfil ? infos.photosProfil : '',
-							nbNotif: infos.me[0].notifications
+							nbNotif: infos.me[0].notifications,
+							like: infos.like
 						});
 					})
 					.catch((err) => {

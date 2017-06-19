@@ -359,7 +359,6 @@ class BrowseModel {
 						BrowseModel.filterBySelectedTags(newTabUsers, tagsArray, infosUserSession, idUserSession)
 							.then((users) => {
 								newTabUsers = users;
-								// console.log(newTabUsers);
 								resolve(newTabUsers);
 							})
 							.catch((err) => {
@@ -448,7 +447,6 @@ class BrowseModel {
 				if (err) {
 					reject(err);
 				}
-				console.log(tagsArray.length);
 				if (res.length) {
 					let retTab = [],
 						i = 0;
@@ -753,6 +751,23 @@ class BrowseModel {
 					reject(err);
 				}
 				resolve(res);
+			});
+		});
+	}
+
+	static getIfLikeUser(userId, myId) {
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT matcha_like FROM user_likes WHERE id_user = ? && id_user_like = ?';
+
+			connection.query(sql, [ userId, myId ], (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				if (res.length) {
+					resolve(true);
+				} else {
+					resolve(false);
+				}
 			});
 		});
 	}

@@ -399,3 +399,7 @@ function removeCheckTags() {
 		}
 	);
 }
+
+function userLike(idUser) {
+	socketClient.like(idUser);
+}

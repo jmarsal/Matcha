@@ -11,15 +11,20 @@ function submitPhoto() {
 
 function showResponse(responseText, statusText, xhr, $form) {
 	let dataRes = JSON.parse(xhr.responseText),
-		divError = $('#error');
+		divError = $('#error'),
+		countElems = 0;
 
-	if (dataRes.isErr === 0) {
-		let countElems = 0;
+	if (dataRes.isErr == 0) {
 		$('.div-photo-user').each((index) => {
 			countElems++;
 		});
-		if (countElems === 1) {
-			$('.div-photo-user').remove();
+		if (countElems == 1) {
+			if (
+				$('.div-photo-user').css('background-image') ===
+				'url("http://localhost:3000/images/upload/default-user.png")'
+			) {
+				$('.div-photo-user').remove();
+			}
 		}
 	}
 	$('<div/>', {
@@ -35,6 +40,14 @@ function showResponse(responseText, statusText, xhr, $form) {
 			}
 		}
 	});
+	if (dataRes.response.fav) {
+		let imgStar = $('<img/>', {
+			id: 'imgStar',
+			class: 'imgStar profilStar',
+			src: '/images/tools/star.png'
+		});
+		$('#' + dataRes.response.idPhoto).addClass('star').after(imgStar);
+	}
 	if ($('.div-photo-user').length >= 5) {
 		$('.input-file-trigger').css('display', 'none');
 	}
@@ -92,45 +105,54 @@ function interactPhoto(photoId) {
 
 function removePhoto(idPhoto) {
 	const testIfStar = $('#' + idPhoto)[0].classList.contains('star');
-	if (testIfStar) {
-		var divError = $('#error');
 
-		divError.removeClass('red green');
-		divError.addClass('red');
-		divError.text('Selectionne une autre photo de profil afin de pouvoir supprimer celle-ci !');
-	} else {
-		$.post(
-			'/account/Delete',
-			{
-				id: idPhoto
-			},
-			function(data, textStatus, jqXHR) {
-				var dataRes = JSON.parse(jqXHR.responseText),
-					divError = $('#error');
+	$.post(
+		'/account/Delete',
+		{
+			id: idPhoto
+		},
+		function(data, textStatus, jqXHR) {
+			var dataRes = JSON.parse(jqXHR.responseText),
+				divError = $('#error');
 
-				divError.removeClass('red green');
-				dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
+			divError.removeClass('red green');
+			dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
 
-				divError.text(dataRes.response);
-				$('#' + idPhoto).remove();
-				if ($('.div-photo-user').length <= 5) {
-					$('.input-file-trigger').css('display', 'inline-block');
-				}
-				if ($('.div-photo-user').length < 1) {
-					$('<div/>', {
-						id: 'noPhotoUpload',
-						class: 'div-photo-user',
-						css: {
-							'background-image': 'url("/images/upload/default-user.png")',
-							cursor: 'initial'
-						},
-						prependTo: $('#photos-user-account')
-					});
-				}
-				reduceInteract();
+			divError.text(dataRes.response);
+			$('#' + idPhoto).remove();
+			if ($('.div-photo-user').length <= 5) {
+				$('.input-file-trigger').css('display', 'inline-block');
 			}
-		);
-	}
+			if ($('.div-photo-user').length < 1) {
+				$('<div/>', {
+					id: 'noPhotoUpload',
+					class: 'div-photo-user',
+					css: {
+						'background-image': 'url("/images/upload/default-user.png")',
+						cursor: 'initial'
+					},
+					prependTo: $('#photos-user-account')
+				});
+			}
+			if (testIfStar) {
+				let count = 0;
+
+				$('#imgStar').remove();
+
+				if (dataRes.isErr == 0) {
+					$('.div-photo-user').each((index, val) => {
+						let style = val.style;
+
+						if (style.backgroundImage !== '/images/upload/default-user.png' && count == 0) {
+							addFavoritePhoto(val.id);
+							count++;
+						}
+					});
+					reduceInteract();
+				}
+			}
+		}
+	);
 }
 
 function addFavoritePhoto(idPhoto) {

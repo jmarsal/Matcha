@@ -227,15 +227,20 @@ html {
 //    }
 //}
 .container-Notifs {
+	display: block;
 	position: absolute;
 	margin: 0 auto;
 	left: 40%;
 	height: 410%;
 	overflow-y: auto;
 	overflow-x: hidden;
-	top: 136px;
+	// top: 136px;
+	font-size: 0.5rem;
 }
 .containerOneNotifs {
+	top: 70px;
+	position: relative;
+	display: block;
 	cursor: pointer;
 	// width: 100%;
 	padding: 0 40;
@@ -265,12 +270,14 @@ html {
 }
 
 .remove-Notifs {
+	top: 0px;
+	width: 99%;
 	text-align: center;
-	width: 50%;
+	// width: 27.5%;
 	margin: 0 auto;
-	position: relative;
-	left: 15%;
-	top: 510%;
+	position: absolute;
+	// left: 40%;
+	// top: 510%;
 	background-color: darken($primary-color, 20);
 	// padding: 0 15.6%;
 	border-left: 2px solid white;

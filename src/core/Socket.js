@@ -33,6 +33,18 @@ class SocketIo {
 						});
 				});
 
+				socket.on('like', (idUserProfil) => {
+					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
+						.then(() => {
+							if (this.clientsList[idUserProfil]) {
+								this.clientsList[idUserProfil].emit('like', user.login);
+							}
+						})
+						.catch((err) => {
+							console.error(err);
+						});
+				});
+
 				socket.on('message', (data) => {
 					this.clientsList[data.userId].emit('message', data.message);
 				});

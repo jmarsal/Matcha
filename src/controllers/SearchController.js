@@ -397,7 +397,6 @@ class SearchController {
 						photos: profils.photos,
 						profilsOrder: profilsOrder
 					};
-					// console.log(response);
 
 					if (profilsOrder !== false && profilsOrder.length > 0) {
 						Helper.sendResponseToClient(response, 0, res);

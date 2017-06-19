@@ -38,9 +38,8 @@ html(lang='fr')
                                         )
                             a(href='#', class="is_active" id="notifs") 
                                 div(
-                                        class=("notif-img") id="default-img-user"
+                                        class=("notif-img") id="imgNotifs"
                                         style=(nbNotif == 0 || !nbNotif) ? 'left: 15px ; background-image: url("/images/notifs/notification.png")' : 'background-image: url("/images/notifs/notification.png")'
-                                        onclick="displayNotifs()"
                                         )
                                     div(class="round-nb" id="round-nb" style=(nbNotif == 0 || !nbNotif) ?"display:none" : "display:inline-flex")
                                         div(class="nb" id="nb") #{nbNotif}

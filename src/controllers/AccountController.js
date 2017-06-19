@@ -129,27 +129,31 @@ class AccountController {
 					if (!req.file) {
 						Helper.sendResponseToClient('Il faut choisir une photo avant !', 1, res);
 					} else {
-						const src_photo = req.file.destination.replace('./public', '') + '/' + req.file.filename;
-						const data = {
-							id_user: req.session.user.id,
-							src_photo: src_photo
-						};
+						const src_photo = req.file.destination.replace('./public', '') + '/' + req.file.filename,
+							data = {
+								id_user: req.session.user.id,
+								src_photo: src_photo
+							};
+						let id_user = '';
 						UserModel.addPhotoProfil(data)
 							.then(() => {
-								UserModel.getIdPhotoProfil(src_photo)
-									.then((id) => {
-										if (id !== false) {
-											const response = {
-												mess: 'La photo est enregistrée!',
-												srcPhoto: src_photo,
-												idPhoto: id[0].id
-											};
-											Helper.sendResponseToClient(response, 0, res);
-										}
-									})
-									.catch((err) => {
-										console.error(err);
-									});
+								return UserModel.getIdPhotoProfil(src_photo);
+							})
+							.then((id) => {
+								id_user = id;
+
+								return UserModel.checkIfNeedingToPutPhotoFav(req.session.user.id);
+							})
+							.then((status) => {
+								if (id_user !== false) {
+									const response = {
+										mess: 'La photo est enregistrée!',
+										srcPhoto: src_photo,
+										idPhoto: id_user[0].id,
+										fav: status === true ? 1 : 0
+									};
+									Helper.sendResponseToClient(response, 0, res);
+								}
 							})
 							.catch((err) => {
 								if (err) {
@@ -173,9 +177,15 @@ class AccountController {
 				});
 		});
 		this.router.post('/account/Favorite', (req, res) => {
+			let favorite = [];
+
 			UserModel.updateFavoritePhotoById(req.body.id, req.session.user.id)
 				.then((fav) => {
-					Helper.sendResponseToClient(fav, 0, res);
+					favorite = fav;
+					return UserModel.modifyPhotoForNotifications(req.session.user.id, favorite);
+				})
+				.then(() => {
+					Helper.sendResponseToClient(favorite, 0, res);
 				})
 				.catch((err) => {
 					console.error(err);
