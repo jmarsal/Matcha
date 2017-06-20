@@ -840,20 +840,17 @@ class BrowseModel {
 													if (err) {
 														reject(err);
 													} else {
-														let total = res[0].nbUsersMatch;
+														let total = res[0].nbUsersMatch,
+															pop = vues / total * 100;
 
 														sql = 'UPDATE users SET popularity = ? WHERE id = ?';
-														console.log(vues + ' ' + total);
-														connection.query(
-															sql,
-															[ total / vues * 100, idUserVisit ],
-															(err) => {
-																if (err) {
-																	reject(err);
-																}
+														connection.query(sql, [ pop, idUserVisit ], (err) => {
+															if (err) {
+																reject(err);
+															} else {
 																resolve();
 															}
-														);
+														});
 													}
 												});
 											}

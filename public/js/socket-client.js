@@ -7,6 +7,7 @@ const socketClient = {
 		this.webSocket.on('message', (message) => {
 			alert(message);
 		});
+		// m'affiche que l'user vu est connecter sur browse/profil
 		this.webSocket.on('online', (classColor) => {
 			if (classColor.class === 'green') {
 				$('#lastConnect').remove();
@@ -24,6 +25,7 @@ const socketClient = {
 				}).text('Deconnecté depuis le : ' + disconnect);
 			}
 		});
+		// Affiche aux autres que je suis connecter
 		this.webSocket.on('onlineMe', (connected) => {
 			if (connected.status === 'connected') {
 				$('#lastConnect').remove();
@@ -32,6 +34,7 @@ const socketClient = {
 			} else if (connected.status === 'disconnect') {
 				let disconnect = connected.disconnect;
 
+				$('#lastConnect').remove();
 				$('#online').removeClass('green');
 				$('#online').addClass('red');
 				if (disconnect) {
@@ -52,7 +55,8 @@ const socketClient = {
 			$('#nb').text(like.nbNotifs);
 		});
 		this.webSocket.on('likeSession', (like) => {
-			if (like.status) {
+			console.log(like);
+			if (like.status || like === true) {
 				$('#like-profil').css('background-image', 'url("/images/like/like.png")');
 			} else {
 				$('#like-profil').css('background-image', 'url("/images/like/unlike.png")');

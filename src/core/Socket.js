@@ -24,8 +24,10 @@ class SocketIo {
 				socket.on('visit', (idUserProfil) => {
 					SocketModel.addNewVisitToDb(user.id, user.login, idUserProfil)
 						.then((nbNotifs) => {
-							if (this.clientsList[idUserProfil]) {
-								this.clientsList[idUserProfil].emit('visit', nbNotifs);
+							if (nbNotifs !== false) {
+								if (this.clientsList[idUserProfil]) {
+									this.clientsList[idUserProfil].emit('visit', nbNotifs);
+								}
 							}
 						})
 						.catch((err) => {
@@ -36,11 +38,12 @@ class SocketIo {
 				socket.on('like', (idUserProfil) => {
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
 						.then((response) => {
+							console.log(response);
 							if (response.error) {
 								this.clientsList[user.id].emit('likeSessionError', response.error);
-							} else {
+							} else if (!response.error) {
 								this.clientsList[user.id].emit('likeSession', response);
-								if (this.clientsList[idUserProfil]) {
+								if (response.nbNotifs && this.clientsList[idUserProfil]) {
 									this.clientsList[idUserProfil].emit('like', response);
 								}
 							}

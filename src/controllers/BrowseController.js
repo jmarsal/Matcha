@@ -86,12 +86,12 @@ class BrowseController {
 				let user = req.query.user,
 					infos = {};
 
-				BrowseModel.getInfosUserSession(user)
-					.then((infosUserSession) => {
-						infos.infos = infosUserSession;
-						return BrowseModel.setPopToDb(req.session.user.id, user);
-					})
+				BrowseModel.setPopToDb(req.session.user.id, user)
 					.then(() => {
+						return BrowseModel.getInfosUserSession(user);
+					})
+					.then((infosUserprofil) => {
+						infos.infos = infosUserprofil;
 						return BrowseModel.getInfosUserSession(req.session.user.id);
 					})
 					.then((infosUserLog) => {
