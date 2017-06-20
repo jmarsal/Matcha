@@ -407,6 +407,14 @@ function initialize(lat, lng) {
 				alert('Votre navigateur ne prend pas en compte la géolocalisation HTML5');
 			}
 		}
+
+		//connection online de l'utilisateur visite dans browse/profil
+		let id_user_visit = $('#online-hidden').text();
+
+		if (id_user_visit) {
+			socketClient.online(id_user_visit);
+		}
+		socketClient.onlineMe();
 	}
 
 	function successCallback(position) {

@@ -179,8 +179,8 @@
 .online {
 	display: inline-flex;
 	margin-right: 15px;
-	width: 3%;
-	height: 3%;
+	width: 20px;
+	height: 20px;
 	border-radius: 100%;
 	border: 1px solid white;
 
@@ -189,5 +189,30 @@
 	}
 	&.red {
 		background-color: $mess-error-color-rgba;
+	}
+}
+
+.report {
+	display: inline-block;
+	position: relative;
+	margin: 0 auto;
+	text-align: center;
+	transition: background-color 2s, color 2s;
+
+	&:hover {
+		background-color: $primary-color-light;
+		color: black;
+	}
+}
+.lock {
+	position: relative;
+	display: inline-block;
+	margin-left: 50px;
+	text-align: center;
+	transition: background-color 2s, color 2s;
+
+	&:hover {
+		background-color: $primary-color-light;
+		color: black;
 	}
 }

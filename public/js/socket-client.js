@@ -8,12 +8,39 @@ const socketClient = {
 			alert(message);
 		});
 		this.webSocket.on('online', (classColor) => {
-			if ((classColor.class = green)) {
+			if (classColor.class === 'green') {
+				$('#lastConnect').remove();
 				$('#online').removeClass('red');
 				$('#online').addClass('green');
 			} else {
+				let disconnect = classColor.disconnect;
+
 				$('#online').removeClass('green');
 				$('#online').addClass('red');
+				$('<div/>', {
+					id: 'lastConnect',
+					class: 'lastConnect',
+					appendTo: $('#text1-account')
+				}).text('Deconnecté depuis le : ' + disconnect);
+			}
+		});
+		this.webSocket.on('onlineMe', (connected) => {
+			if (connected.status === 'connected') {
+				$('#lastConnect').remove();
+				$('#online').removeClass('red');
+				$('#online').addClass('green');
+			} else if (connected.status === 'disconnect') {
+				let disconnect = connected.disconnect;
+
+				$('#online').removeClass('green');
+				$('#online').addClass('red');
+				if (disconnect) {
+					$('<div/>', {
+						id: 'lastConnect',
+						class: 'lastConnect',
+						appendTo: $('#text1-account')
+					}).text('Deconnecté depuis le : ' + disconnect);
+				}
 			}
 		});
 		this.webSocket.on('visit', (visit) => {
@@ -58,8 +85,13 @@ const socketClient = {
 		if (!webSocket) {
 			return false;
 		}
-		alert('je suis dans la socket client');
 		this.webSocket.emit('online', idUserProfil);
+	},
+	onlineMe: () => {
+		if (!webSocket) {
+			return false;
+		}
+		this.webSocket.emit('onlineMe', {});
 	}
 };
 

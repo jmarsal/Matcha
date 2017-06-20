@@ -36,7 +36,6 @@ class SocketIo {
 				socket.on('like', (idUserProfil) => {
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
 						.then((response) => {
-							console.log(response);
 							if (response.error) {
 								this.clientsList[user.id].emit('likeSessionError', response.error);
 							} else {
@@ -59,13 +58,27 @@ class SocketIo {
 					if (this.clientsList[idUserProfil]) {
 						this.clientsList[user.id].emit('online', { class: 'green' });
 					} else {
-						this.clientsList[user.id].emit('online', { class: 'red' });
+						SocketModel.getDateOfLastConnectedUser(idUserProfil)
+							.then((date) => {
+								this.clientsList[user.id].emit('online', { class: 'red', disconnect: date });
+							})
+							.catch((err) => {
+								console.error(err);
+							});
 					}
+				});
+
+				socket.on('onlineMe', () => {
+					socket.broadcast.emit('onlineMe', { status: 'connected' });
 				});
 
 				socket.on('disconnect', () => {
 					SocketModel.addDisconnectToDb(user.id)
 						.then(() => {
+							return SocketModel.getDateOfLastConnectedUser(user.id);
+						})
+						.then((date) => {
+							socket.broadcast.emit('onlineMe', { status: 'disconnect', disconnect: date });
 							delete this.clientsList[user.id];
 						})
 						.catch((err) => {

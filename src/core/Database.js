@@ -64,8 +64,9 @@ class Database {
 				'country VARCHAR(150) DEFAULT NULL,' +
 				'popularity INT DEFAULT 0,' +
 				'notifications INT DEFAULT 0,' +
-				'likes_of_other INT DEFAULT 0,' +
-				'disconnect DATETIME DEFAULT NULL' +
+				'vues INT DEFAULT 0,' +
+				'disconnect DATETIME DEFAULT NOW(),' +
+				'nbUsersMatch INT DEFAULT 0' +
 				')';
 			const userPhotos =
 				'CREATE TABLE IF NOT EXISTS users_photos_profils' +
@@ -96,7 +97,9 @@ class Database {
 				'id_user INT NOT NULL,' +
 				'distanceFromUser INT DEFAULT NULL,' +
 				'distanceFromUserKm INT DEFAULT NULL,' +
-				'tagsCommun INT DEFAULT 0' +
+				'tagsCommun INT DEFAULT 0,' +
+				'locked BOOLEAN DEFAULT false,' +
+				'vue BOOLEAN DEFAULT false' +
 				')';
 			const userNotifications =
 				'CREATE TABLE IF NOT EXISTS user_notifications' +
@@ -117,6 +120,14 @@ class Database {
 				'id_user INT NOT NULL,' +
 				'id_user_like INT NOT NULL,' +
 				'matcha_like BOOLEAN DEFAULT false' +
+				')';
+			const reportLock =
+				'CREATE TABLE IF NOT EXISTS report_lock' +
+				'(' +
+				'id INT PRIMARY KEY AUTO_INCREMENT,' +
+				'id_user INT NOT NULL,' +
+				'id_user_lock INT NOT NULL,' +
+				'action VARCHAR(16) NOT NULL' +
 				')';
 			connection.query(users, (err) => {
 				if (err) {
@@ -146,7 +157,13 @@ class Database {
 																if (err) {
 																	reject(err);
 																} else {
-																	resolve();
+																	connection.query(reportLock, (err) => {
+																		if (err) {
+																			reject(err);
+																		} else {
+																			resolve();
+																		}
+																	});
 																}
 															});
 														}

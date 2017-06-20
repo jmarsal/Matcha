@@ -24,7 +24,7 @@ let paths = [
 		'http://cdn2-public.ladmedia.fr/var/public/storage/images/dossiers/musique-cine-series/news/vianney-son-rendez-vous-manque-avec-celine-dion-1239143/17977913-1-fre-FR/Vianney-Son-rendez-vous-manque-avec-Celine-Dion_portrait_w674.jpg',
 		'http://static.lexpress.fr/medias_10691/w_960,h_537,c_crop,x_0,y_304/w_640,h_360,c_fill,g_north/v1448972249/vianney-selfie_5474264.jpg',
 		'http://resize-parismatch.ladmedia.fr/r/901,,forcex/img/var/news/storage/images/paris-match/people/insta-story-vianney-1189331/node_1189334/20215136-1-fre-FR/_1.jpg',
-		'http://img2.closermag.fr/var/closermag/storage/images/media/images-des-contenus/article/2017-04-15-vianney-fait-reagir-les-internautes-en-parodiant-emmanuel-macron-sur-twitter/vianney/5655683-1-fre-FR/Vianney_exact1024x768_l.jpg'
+		'https://img1.closermag.fr/var/closermag/storage/images/article/baccalaureat-les-lyceens-s-inspire-de-vianney-qui-a-eu-5-20-727259/5706253-2-fre-FR/Baccalaureat-les-lyceens-s-inspirent-de-Vianney-qui-a-eu-5-20_exact540x405_l.jpg'
 	],
 	[
 		// Frederic Lopez

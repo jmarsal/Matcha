@@ -62,9 +62,7 @@ class SocketModel {
 				if (err) {
 					reject(err);
 				} else {
-					console.log(res);
 					if (!res.length) {
-						console.log('pas de photo donc resolve avec error');
 						resolve({ error: "Tu a besoin d'une photo de profil afin de pouvoir liker un utilisateur !" });
 					} else if (res[0] && (res[0].src_photo !== photoProfilSrc || res[0].src_photo !== '')) {
 						photoProfilSrc = res[0].src_photo;
@@ -196,6 +194,19 @@ class SocketModel {
 						resolve();
 					});
 				}
+			});
+		});
+	}
+
+	static getDateOfLastConnectedUser(idUserProfil) {
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT disconnect FROM users WHERE id = ?';
+
+			connection.query(sql, idUserProfil, (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				resolve(res[0].disconnect.toLocaleString('fr-FR', { hour12: false }));
 			});
 		});
 	}

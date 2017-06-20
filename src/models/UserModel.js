@@ -360,7 +360,6 @@ class UserModel {
 					reject(err);
 				} else {
 					if (res.length) {
-						console.log(res);
 						let fav = {
 							favorite: res[0].photo_profil == 0 ? 1 : 0,
 							src: res[0].src_photo

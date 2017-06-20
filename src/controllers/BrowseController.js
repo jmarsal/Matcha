@@ -89,7 +89,9 @@ class BrowseController {
 				BrowseModel.getInfosUserSession(user)
 					.then((infosUserSession) => {
 						infos.infos = infosUserSession;
-
+						return BrowseModel.setPopToDb(req.session.user.id, user);
+					})
+					.then(() => {
 						return BrowseModel.getInfosUserSession(req.session.user.id);
 					})
 					.then((infosUserLog) => {
@@ -336,6 +338,17 @@ class BrowseController {
 						response.mess = 'Aucun utilisateurs trouvé avec ces intervals !';
 						Helper.sendResponseToClient(response, 1, res);
 					}
+				})
+				.catch((err) => {
+					console.error(err);
+					Helper.sendResponseToClient('Something went wrong!', 1, res);
+				});
+		});
+
+		this.router.post('/browse/reportLockUser', (req, res) => {
+			BrowseModel.setUserReportLockInDb(req.session.user.id, req.body.user, req.body.action)
+				.then(() => {
+					Helper.sendResponseToClient('', 0, res);
 				})
 				.catch((err) => {
 					console.error(err);

@@ -821,11 +821,31 @@ input:checked + .slider:before {
 .online {
   display: inline-flex;
   margin-right: 15px;
-  width: 3%;
-  height: 3%;
+  width: 20px;
+  height: 20px;
   border-radius: 100%;
   border: 1px solid white; }
   .online.green {
     background-color: rgba(128, 252, 169, 0.8); }
   .online.red {
     background-color: rgba(255, 0, 0, 0.6); }
+
+.report {
+  display: inline-block;
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  transition: background-color 2s, color 2s; }
+  .report:hover {
+    background-color: #F8BBD0;
+    color: black; }
+
+.lock {
+  position: relative;
+  display: inline-block;
+  margin-left: 50px;
+  text-align: center;
+  transition: background-color 2s, color 2s; }
+  .lock:hover {
+    background-color: #F8BBD0;
+    color: black; }

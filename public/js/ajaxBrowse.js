@@ -358,7 +358,6 @@ function searchWithTags(tag) {
 	});
 
 	arrayTags = cleanArray(arrayTags);
-	// debugger;
 	$.post(
 		'/search/Click-tag',
 		{
@@ -406,7 +405,6 @@ function userLike(idUser) {
 
 // function getStatusOnline(idUser) {}
 document.addEventListener('load', () => {
-	alert('dans getStatusOnline !');
 	let id_user_visit = $('#online-hidden').text();
 
 	if (id_user_visit) {
@@ -414,9 +412,38 @@ document.addEventListener('load', () => {
 	}
 });
 
-// $('body').on('click', (e) => {
-// 	if (e.target.classList.contains('active')) {
-// 		return false;
-// 	}
-// 	displayNormalise();
-// });
+function userConnected() {
+	if ($('#online')[0].classList.contains('green')) {
+		$('#online')[0].title = 'Utilisateur en ligne !';
+	} else {
+		$('#online')[0].title = 'Utilisateur Déconnecté !';
+	}
+}
+
+function reportLockUser(action) {
+	let id_user_visit = $('#online-hidden').text();
+
+	if (id_user_visit) {
+		$.post(
+			'/browse/reportLockUser',
+			{
+				user: id_user_visit,
+				action: action
+			},
+			function(data, textStatus, jqXHR) {
+				var dataRes = JSON.parse(jqXHR.responseText),
+					divError = $('#error');
+				divError.removeClass('red green');
+				dataRes.isErr == 1 ? divError.addClass('red') : divError.addClass('green');
+				dataRes.isErr == 1 ? divError.text(dataRes.response.mess) : '';
+				if (dataRes.isErr == 0) {
+					divError.text(
+						action === 'report'
+							? "L'Utilisateur est reporté comme un faux compte !"
+							: "L'Utilisateur est bloqué !"
+					);
+				}
+			}
+		);
+	}
+}

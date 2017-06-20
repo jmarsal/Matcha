@@ -248,7 +248,7 @@ class BrowseModel {
 					'FROM users ' +
 					'INNER JOIN user_interacts ' +
 					'ON users.id = user_interacts.id_user ' +
-					'WHERE users.id != ? && ',
+					'WHERE users.id != ? && (locked != true) && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
 			if (orientation == 3 && sex == 1) {
@@ -297,17 +297,24 @@ class BrowseModel {
 						option = 'zone';
 					}
 					res = BrowseModel.removeDuplicateRow(res);
-					BrowseModel.engineFilterUsers(
-						res,
-						option,
-						zoneSize,
-						orderBy,
-						trie,
-						tagsArray,
-						infosUserSession,
-						idUserSession
-					).then((newTabUsers) => {
-						resolve(newTabUsers);
+
+					sql = 'UPDATE users SET nbUsersMatch = ? WHERE id = ?';
+					connection.query(sql, [ res.length, idUserSession ], (err) => {
+						if (err) {
+							reject(err);
+						}
+						BrowseModel.engineFilterUsers(
+							res,
+							option,
+							zoneSize,
+							orderBy,
+							trie,
+							tagsArray,
+							infosUserSession,
+							idUserSession
+						).then((newTabUsers) => {
+							resolve(newTabUsers);
+						});
 					});
 				}
 			});
@@ -767,6 +774,96 @@ class BrowseModel {
 					resolve(true);
 				} else {
 					resolve(false);
+				}
+			});
+		});
+	}
+
+	static setUserReportLockInDb(idUser, idUserTolock, action) {
+		return new Promise((resolve, reject) => {
+			let sql = 'INSERT INTO report_lock(id_user, id_user_lock, action) VALUES(?, ?, ?)';
+
+			connection.query(sql, [ idUser, idUserTolock, action ], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					sql = 'UPDATE user_interacts SET locked = ? WHERE id_user_session = ? && id_user = ?';
+
+					connection.query(sql, [ true, idUser, idUserTolock ], (err) => {
+						if (err) {
+							reject(err);
+						} else {
+							resolve();
+						}
+					});
+				}
+			});
+		});
+	}
+
+	static setPopToDb(myId, idUserVisit) {
+		// Insert l'utilisateur en cours comme ayant vu le profil
+		// Incremente le nb de vue pour ce profil
+		// Recupere le nb total d'utilisateurs qui match avec ce profil
+		// Insert dans le db le score nb-total-users / nb-de-vus
+
+		return new Promise((resolve, reject) => {
+			let sql = 'SELECT id FROM user_interacts WHERE id_user_session = ? && id_user = ? && vue = ?';
+
+			connection.query(sql, [ myId, idUserVisit, 0 ], (err, res) => {
+				if (err) {
+					reject(err);
+				} else {
+					if (res.length) {
+						sql = 'UPDATE user_interacts SET vue = true WHERE id_user_session = ? && id_user = ?';
+
+						connection.query(sql, [ myId, idUserVisit ], (err) => {
+							if (err) {
+								reject(err);
+							} else {
+								sql = 'UPDATE users SET vues = vues + 1 WHERE id = ?';
+
+								connection.query(sql, idUserVisit, (err) => {
+									if (err) {
+										reject(err);
+									} else {
+										sql = 'SELECT vues FROM users WHERE id = ?';
+
+										connection.query(sql, [ idUserVisit ], (err, res) => {
+											if (err) {
+												reject(err);
+											} else {
+												let vues = res[0].vues;
+
+												sql = 'SELECT nbUsersMatch FROM users WHERE id = ?';
+												connection.query(sql, [ myId ], (err, res) => {
+													if (err) {
+														reject(err);
+													} else {
+														let total = res[0].nbUsersMatch;
+
+														sql = 'UPDATE users SET popularity = ? WHERE id = ?';
+														console.log(vues + ' ' + total);
+														connection.query(
+															sql,
+															[ total / vues * 100, idUserVisit ],
+															(err) => {
+																if (err) {
+																	reject(err);
+																}
+																resolve();
+															}
+														);
+													}
+												});
+											}
+										});
+									}
+								});
+							}
+						});
+					}
+					resolve();
 				}
 			});
 		});
