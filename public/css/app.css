@@ -817,3 +817,15 @@ input:checked + .slider:before {
 
 .login {
   display: inline-flex; }
+
+.online {
+  display: inline-flex;
+  margin-right: 15px;
+  width: 3%;
+  height: 3%;
+  border-radius: 100%;
+  border: 1px solid white; }
+  .online.green {
+    background-color: rgba(128, 252, 169, 0.8); }
+  .online.red {
+    background-color: rgba(255, 0, 0, 0.6); }

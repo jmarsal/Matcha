@@ -359,28 +359,31 @@ class UserModel {
 				if (err) {
 					reject(err);
 				} else {
-					let fav = {
-						favorite: res[0].photo_profil == 0 ? 1 : 0,
-						src: res[0].src_photo
-					};
+					if (res.length) {
+						console.log(res);
+						let fav = {
+							favorite: res[0].photo_profil == 0 ? 1 : 0,
+							src: res[0].src_photo
+						};
 
-					if (fav.favorite === 1) {
-						sql =
-							'UPDATE `users_photos_profils` SET `photo_profil` = 0 WHERE id_user = ? && `photo_profil` = 1';
-						connection.query(sql, [ id_user ], (err) => {
-							if (err) {
-								reject(err);
-							} else {
-								sql = 'UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?';
-								connection.query(sql, [ fav.favorite, idPhoto ], (err) => {
-									if (err) {
-										reject(err);
-									} else {
-										resolve(fav);
-									}
-								});
-							}
-						});
+						if (fav.favorite == 1) {
+							sql =
+								'UPDATE `users_photos_profils` SET `photo_profil` = 0 WHERE id_user = ? && `photo_profil` = 1';
+							connection.query(sql, [ id_user ], (err) => {
+								if (err) {
+									reject(err);
+								} else {
+									sql = 'UPDATE `users_photos_profils` SET `photo_profil` = ? WHERE id = ?';
+									connection.query(sql, [ fav.favorite, idPhoto ], (err) => {
+										if (err) {
+											reject(err);
+										} else {
+											resolve(fav);
+										}
+									});
+								}
+							});
+						}
 					}
 				}
 			});
@@ -661,15 +664,23 @@ class UserModel {
 				if (err) {
 					reject(err);
 				}
-				debugger;
 				if (res.length == 1) {
+					const imgFav = { src: res[0].src_photo };
 					sql = 'UPDATE users_photos_profils SET photo_profil = 1 WHERE id_user = ?';
 
 					connection.query(sql, id_user, (err) => {
 						if (err) {
 							reject(err);
+						} else {
+							UserModel.modifyPhotoForNotifications(id_user, imgFav)
+								.then(() => {
+									resolve(true);
+								})
+								.catch((err) => {
+									resolve(true);
+									reject(err);
+								});
 						}
-						resolve(true);
 					});
 				} else {
 					resolve(false);

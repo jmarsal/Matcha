@@ -47,8 +47,16 @@ function displayNotifs() {
 				prependTo: $('#containerNotifs')
 			}).text("Supprimer l'historique");
 			data.map((notif, index) => {
+				let action = '';
+
+				if (notif.action === 'visit') {
+					action = ' a visité votre profil le ';
+				} else if (notif.action === 'like') {
+					action = notif.likeUnlike == true
+						? ' a liké votre profil le '
+						: ' ne like plus votre profil depuis le ';
+				}
 				let login = notif.login_user_visit,
-					action = notif.action === 'visit' ? ' a visité votre profil le ' : ' a liké votre profil le ',
 					date = notif.date_visit,
 					phrase = login + action + date;
 
@@ -92,9 +100,6 @@ function printDetailsProfils(idUser) {
 }
 
 function removeHistoryNotifs() {
-	// alert(myId);
-	// Post pour supprimer l'historique des notifs
-
 	$.post('/remove-notifications', {}, function(data, textStatus, jqXHR) {
 		var dataRes = JSON.parse(jqXHR.responseText);
 

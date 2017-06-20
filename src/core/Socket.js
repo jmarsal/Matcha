@@ -23,9 +23,9 @@ class SocketIo {
 
 				socket.on('visit', (idUserProfil) => {
 					SocketModel.addNewVisitToDb(user.id, user.login, idUserProfil)
-						.then(() => {
+						.then((nbNotifs) => {
 							if (this.clientsList[idUserProfil]) {
-								this.clientsList[idUserProfil].emit('visit', user.login);
+								this.clientsList[idUserProfil].emit('visit', nbNotifs);
 							}
 						})
 						.catch((err) => {
@@ -35,9 +35,15 @@ class SocketIo {
 
 				socket.on('like', (idUserProfil) => {
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
-						.then(() => {
-							if (this.clientsList[idUserProfil]) {
-								this.clientsList[idUserProfil].emit('like', user.login);
+						.then((response) => {
+							console.log(response);
+							if (response.error) {
+								this.clientsList[user.id].emit('likeSessionError', response.error);
+							} else {
+								this.clientsList[user.id].emit('likeSession', response);
+								if (this.clientsList[idUserProfil]) {
+									this.clientsList[idUserProfil].emit('like', response);
+								}
 							}
 						})
 						.catch((err) => {
@@ -47,6 +53,14 @@ class SocketIo {
 
 				socket.on('message', (data) => {
 					this.clientsList[data.userId].emit('message', data.message);
+				});
+
+				socket.on('online', (idUserProfil) => {
+					if (this.clientsList[idUserProfil]) {
+						this.clientsList[user.id].emit('online', { class: 'green' });
+					} else {
+						this.clientsList[user.id].emit('online', { class: 'red' });
+					}
 				});
 
 				socket.on('disconnect', () => {

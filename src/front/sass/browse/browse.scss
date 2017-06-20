@@ -175,3 +175,19 @@
 .login {
 	display: inline-flex;
 }
+
+.online {
+	display: inline-flex;
+	margin-right: 15px;
+	width: 3%;
+	height: 3%;
+	border-radius: 100%;
+	border: 1px solid white;
+
+	&.green {
+		background-color: $mess-accept-color-rgba;
+	}
+	&.red {
+		background-color: $mess-error-color-rgba;
+	}
+}

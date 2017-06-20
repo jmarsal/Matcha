@@ -22,8 +22,16 @@ class SocketModel {
 							connection.query(sql, [ idUserToVisit ], (err) => {
 								if (err) {
 									reject(err);
+								} else {
+									sql = 'SELECT notifications FROM users WHERE id = ?';
+
+									connection.query(sql, idUserToVisit, (err, res) => {
+										if (err) {
+											reject(err);
+										}
+										resolve(res[0].notifications);
+									});
 								}
-								resolve();
 							});
 						}
 					});
@@ -54,7 +62,11 @@ class SocketModel {
 				if (err) {
 					reject(err);
 				} else {
-					if (res[0] && (res[0].src_photo !== '/images/upload/default-user.png' || res[0].src_photo !== '')) {
+					console.log(res);
+					if (!res.length) {
+						console.log('pas de photo donc resolve avec error');
+						resolve({ error: "Tu a besoin d'une photo de profil afin de pouvoir liker un utilisateur !" });
+					} else if (res[0] && (res[0].src_photo !== photoProfilSrc || res[0].src_photo !== '')) {
 						photoProfilSrc = res[0].src_photo;
 					}
 					sql =
@@ -81,8 +93,29 @@ class SocketModel {
 											connection.query(sql, [ idUserToVisit, myId ], (err) => {
 												if (err) {
 													reject(err);
+												} else {
+													let res = false;
+													sql =
+														'UPDATE user_notifications SET likeUnlike = ? WHERE id_user = ? && id_user_visit = ? ORDER BY id DESC LIMIT 1';
+
+													connection.query(sql, [ res, idUserToVisit, myId ], (err) => {
+														if (err) {
+															reject(err);
+														} else {
+															sql = 'SELECT notifications FROM users WHERE id = ?';
+
+															connection.query(sql, idUserToVisit, (err, res) => {
+																if (err) {
+																	reject(err);
+																}
+																resolve({
+																	nbNotifs: res[0].notifications,
+																	status: false
+																});
+															});
+														}
+													});
 												}
-												resolve();
 											});
 										} else {
 											sql =
@@ -91,8 +124,16 @@ class SocketModel {
 											connection.query(sql, [ idUserToVisit, myId, true ], (err) => {
 												if (err) {
 													reject(err);
+												} else {
+													sql = 'SELECT notifications FROM users WHERE id = ?';
+
+													connection.query(sql, idUserToVisit, (err, res) => {
+														if (err) {
+															reject(err);
+														}
+														resolve({ nbNotifs: res[0].notifications, status: true });
+													});
 												}
-												resolve();
 											});
 										}
 									});
@@ -122,7 +163,7 @@ class SocketModel {
 		return new Promise((resolve, reject) => {
 			let notifs = [],
 				sql =
-					'SELECT id_user_visit, login_user_visit, date_visit, photo_user_visit, action FROM user_notifications ' +
+					'SELECT id_user_visit, login_user_visit, date_visit, photo_user_visit, action, likeUnlike FROM user_notifications ' +
 					'WHERE id_user = ? ORDER BY date_visit DESC';
 
 			connection.query(sql, [ id_user ], (err, res) => {

@@ -15,19 +15,8 @@ class NotifsController {
 	}
 
 	notifsRoutes() {
-		// this.notifierRoute();
 		this.notifierPostRoute();
 	}
-
-	// notifierRoute() {
-	// 	this.router.get('/notifications', (req, res) => {
-	// 		if (req.session.start) {
-	// 			res.render('./views/notifs/notifsContent', {
-	// 				title: 'Voici les notifications ...'
-	// 			});
-	// 		}
-	// 	});
-	// }
 
 	notifierPostRoute() {
 		this.router.post('/notifications', (req, res) => {

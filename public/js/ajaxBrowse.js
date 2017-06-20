@@ -403,3 +403,20 @@ function removeCheckTags() {
 function userLike(idUser) {
 	socketClient.like(idUser);
 }
+
+// function getStatusOnline(idUser) {}
+document.addEventListener('load', () => {
+	alert('dans getStatusOnline !');
+	let id_user_visit = $('#online-hidden').text();
+
+	if (id_user_visit) {
+		socketClient.online(id_user_visit);
+	}
+});
+
+// $('body').on('click', (e) => {
+// 	if (e.target.classList.contains('active')) {
+// 		return false;
+// 	}
+// 	displayNormalise();
+// });

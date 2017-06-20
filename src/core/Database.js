@@ -107,7 +107,8 @@ class Database {
 				'id_user_visit INT NOT NULL,' +
 				'photo_user_visit VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
 				'date_visit DATETIME NOT NULL,' +
-				'action VARCHAR(16) NOT NULL' +
+				'action VARCHAR(16) NOT NULL,' +
+				'likeUnlike BOOLEAN DEFAULT true' +
 				')';
 			const userLikes =
 				'CREATE TABLE IF NOT EXISTS user_likes' +
