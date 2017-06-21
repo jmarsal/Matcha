@@ -247,7 +247,7 @@ class BrowseModel {
 					'SELECT DISTINCT * ' +
 					'FROM users ' +
 					'INNER JOIN user_interacts ' +
-					'ON users.id = user_interacts.id_user ' +
+					'ON user_interacts.id_user = users.id ' +
 					'WHERE users.id != ? && (locked != true) && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
@@ -329,10 +329,17 @@ class BrowseModel {
 		while (i < data.length) {
 			if (data[i].id != data[i].id_user) {
 				debugger;
-				data.splice(i, 1);
-				i = 0;
-			} else {
-				i++;
+				data[i].id = data[i].id_user;
+			}
+			i++;
+		}
+		for (let i = 0; i < data.length; i++) {
+			for (let j = i + 1; j < data.length; j++) {
+				if (j < data.length) {
+					if (data[j].id === data[i].id) {
+						data.splice(j, 1);
+					}
+				}
 			}
 		}
 		return data;
