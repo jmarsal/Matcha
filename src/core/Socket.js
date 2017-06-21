@@ -18,6 +18,7 @@ class SocketIo {
 
 			if (user) {
 				this.clientsList[user.id] = socket;
+				socket.broadcast.emit('onlineMe', { status: 'connected' });
 				console.log('Un client est connecté');
 				console.log(Object.keys(this.clientsList));
 
@@ -38,7 +39,6 @@ class SocketIo {
 				socket.on('like', (idUserProfil) => {
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
 						.then((response) => {
-							console.log(response);
 							if (response.error) {
 								this.clientsList[user.id].emit('likeSessionError', response.error);
 							} else if (!response.error) {

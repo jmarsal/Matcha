@@ -7,7 +7,7 @@ const socketClient = {
 		this.webSocket.on('message', (message) => {
 			alert(message);
 		});
-		// m'affiche que l'user vu est connecter sur browse/profil
+		// m'affiche que l'user vu est connecter ou pas sur browse/profil
 		this.webSocket.on('online', (classColor) => {
 			if (classColor.class === 'green') {
 				$('#lastConnect').remove();
@@ -25,7 +25,7 @@ const socketClient = {
 				}).text('Deconnecté depuis le : ' + disconnect);
 			}
 		});
-		// Affiche aux autres que je suis connecter
+		// Affiche aux autres que je suis connecter ou pas
 		this.webSocket.on('onlineMe', (connected) => {
 			if (connected.status === 'connected') {
 				$('#lastConnect').remove();

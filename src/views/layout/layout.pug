@@ -23,7 +23,7 @@ html(lang='fr')
                     a(class="header__logo" href="#") MATCHA
                     nav(class="menu")
                         if !noheader
-                            a(href="../browse", "class"=(page == "browse" ? "is-active" : "")) Parcourir
+                            a(href="../browse", "class"=(page == "browse" ? "is-active" : "" )) Parcourir
                             a(href="../search", "class"=(page == "search" ? "is-active" : "")) Rechercher
                             a(href="../account", "class"=(page == "account" ? "is-active" : "")) Mon Compte
                                 if (locals.photoFav)
@@ -49,7 +49,7 @@ html(lang='fr')
                             a(href="../logon", "class"=(page == "logon" ? "is-active" : "")) créer un compte
                     div(class="developpe-notif" id="developpe-notif"
                         style="display='none'")
-                div(class="post")
+                div(class="post" onload=(page === "browse" || page ==="search" || page === "account") ? 'getConnectWithOthers()' : '')
                     div(class="content" id="app")
                         block content
                         div(class="footer")

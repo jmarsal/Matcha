@@ -204,8 +204,6 @@ class SocketModel {
 										} else {
 											if (res.length) {
 												let match = res[0].matcha_like;
-												console.log('match = ');
-												console.log(match);
 												if (match) {
 													sql =
 														'UPDATE user_likes SET matcha_like = ? WHERE id_user = ? && id_user_like = ?';
