@@ -403,7 +403,6 @@ function userLike(idUser) {
 	socketClient.like(idUser);
 }
 
-// function getStatusOnline(idUser) {}
 document.addEventListener('load', () => {
 	let id_user_visit = $('#online-hidden').text();
 

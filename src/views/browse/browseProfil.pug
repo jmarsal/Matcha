@@ -20,8 +20,9 @@ block content
             div(class="welcome-text-account" id="welcomeTextAccount")
                 div(class="welcome-account" id="welcome-account")
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
-                div(class="report button" onclick="reportLockUser('report')") Faux Compte
-                div(class="lock button" onclick="reportLockUser('lock')") Bloquer Compte
+                div(class="report button" onclick="reportLockUser('report')" title="Nous reporter ce compte comme faux...") Faux Compte
+                div(class="lock button" onclick="reportLockUser('lock')" title="tu ne verra plus et recevra plus de notifications de cet utilisateur ...") Bloquer Compte
+                div(id="connect-users" class=connect ? "connected_users con": "connected_users" title="Tu peut maintenant engager la conversation dans l'onglet messenger avec cet utilisateur !" style='background-image: url("/images/connect/connect.png")')
                 div(class="text1-account" id="text1-account"): p #{title}
                 div(class="online" id="online" onmouseover="userConnected()")
                 div(class="online-hidden" id="online-hidden" style="display:none") #{profil.id}

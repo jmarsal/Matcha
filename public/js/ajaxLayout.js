@@ -17,6 +17,7 @@ $('#imgNotifs').click((e) => {
 	if (e.target.classList.contains('expend')) {
 		return false;
 	}
+	$('#round-nb').css('display', 'none');
 	displayNotifs();
 	$('#imgNotifs').addClass('expend');
 });

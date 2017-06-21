@@ -87,6 +87,10 @@ class BrowseController {
 
 				BrowseModel.setPopToDb(req.session.user.id, user)
 					.then(() => {
+						return BrowseModel.getConnectUsers(req.session.user.id, user);
+					})
+					.then((connect) => {
+						infos.connectUsers = connect;
 						return BrowseModel.getInfosUserSession(user);
 					})
 					.then((infosUserprofil) => {
@@ -143,7 +147,8 @@ class BrowseController {
 							lng: infos.infos[0].lng,
 							photoFav: infos.photosProfil ? infos.photosProfil : '',
 							nbNotif: infos.me[0].notifications,
-							like: infos.like
+							like: infos.like,
+							connect: infos.connectUsers
 						});
 					})
 					.catch((err) => {

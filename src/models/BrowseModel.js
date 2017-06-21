@@ -876,5 +876,22 @@ class BrowseModel {
 			});
 		});
 	}
+
+	static getConnectUsers(myId, userIdVisit) {
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT id FROM connect_users WHERE id_user1 = ? && id_user2 = ?';
+
+			connection.query(sql, [ myId, userIdVisit ], (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				if (res.length) {
+					resolve(true);
+				} else {
+					resolve(false);
+				}
+			});
+		});
+	}
 }
 module.exports = BrowseModel;

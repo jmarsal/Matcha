@@ -129,6 +129,17 @@ class Database {
 				'id_user_lock INT NOT NULL,' +
 				'action VARCHAR(16) NOT NULL' +
 				')';
+			const connectUsers =
+				'CREATE TABLE IF NOT EXISTS connect_users' +
+				'(' +
+				'id INT PRIMARY KEY AUTO_INCREMENT,' +
+				'id_user1 INT NOT NULL,' +
+				'login_user1 VARCHAR(16) NOT NULL,' +
+				'photo_user1 VARCHAR(255) DEFAULT "/images/upload/default-user.png",' +
+				'id_user2 INT NOT NULL,' +
+				'login_user2 VARCHAR(16) NOT NULL,' +
+				'photo_user2 VARCHAR(255) DEFAULT "/images/upload/default-user.png"' +
+				')';
 			connection.query(users, (err) => {
 				if (err) {
 					reject(err);
@@ -161,7 +172,13 @@ class Database {
 																		if (err) {
 																			reject(err);
 																		} else {
-																			resolve();
+																			connection.query(connectUsers, (err) => {
+																				if (err) {
+																					reject(err);
+																				} else {
+																					resolve();
+																				}
+																			});
 																		}
 																	});
 																}

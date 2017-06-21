@@ -53,12 +53,21 @@ const socketClient = {
 		this.webSocket.on('like', (like) => {
 			$('#round-nb').css('display', 'inline-flex');
 			$('#nb').text(like.nbNotifs);
+			if (like.connected) {
+				$('#connect-users').addClass('con');
+			} else {
+				$('#connect-users').removeClass('con');
+			}
 		});
 		this.webSocket.on('likeSession', (like) => {
 			if (like.status || like === true) {
 				$('#like-profil').css('background-image', 'url("/images/like/like.png")');
+				if (like.connected) {
+					$('#connect-users').addClass('con');
+				}
 			} else {
 				$('#like-profil').css('background-image', 'url("/images/like/unlike.png")');
+				$('#connect-users').removeClass('con');
 			}
 		});
 		this.webSocket.on('likeSessionError', (error) => {
