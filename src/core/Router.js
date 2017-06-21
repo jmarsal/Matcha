@@ -12,6 +12,7 @@ const BrowseController = require('../controllers/BrowseController');
 const ProfilUserController = require('../controllers/ProfilUserController');
 const SearchController = require('../controllers/SearchController');
 const NotifsController = require('../controllers/NotifsController');
+const ChatController = require('../controllers/ChatController');
 
 class Router {
 	constructor() {
@@ -30,6 +31,7 @@ class Router {
 		new ProfilUserController();
 		new SearchController();
 		new NotifsController();
+		new ChatController();
 		new Error404();
 	}
 }

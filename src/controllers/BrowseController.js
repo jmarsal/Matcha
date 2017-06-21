@@ -64,7 +64,6 @@ class BrowseController {
 						);
 					})
 					.then((profilsOrder) => {
-						debugger;
 						res.render('./views/browse/browseContent', {
 							title: 'Voici quelques profils qui pourraient te convenir ...',
 							profils: profilsOrder,
@@ -321,7 +320,6 @@ class BrowseController {
 					);
 				})
 				.then((profilsOrder) => {
-					debugger;
 					profilsOrder.map((profil) => {
 						profil.id = profil.id_user;
 					});

@@ -290,6 +290,7 @@ class BrowseModel {
 
 			sql += ' ORDER BY distanceFromUser ' + orderBy;
 			connection.query(sql, [ idUserSession, idUserSession ], (err, res) => {
+				let result1stQuery = res;
 				if (err) {
 					reject(err);
 				} else {
@@ -297,6 +298,7 @@ class BrowseModel {
 						option = 'zone';
 					}
 					res = BrowseModel.removeDuplicateRow(res);
+					let resultAfterRemoveDuplicateRow = res;
 
 					sql = 'UPDATE users SET nbUsersMatch = ? WHERE id = ?';
 					connection.query(sql, [ res.length, idUserSession ], (err) => {
@@ -322,13 +324,15 @@ class BrowseModel {
 	}
 
 	static removeDuplicateRow(data) {
-		for (let i = 0; i < data.length; i++) {
-			for (let j = i + 1; j < data.length; j++) {
-				if (data[i].login === data[j].login) {
-					let remove = data[i].id > data[j].id ? i : j;
-					data.splice(remove, 1);
-					i = 0;
-				}
+		let i = 0;
+
+		while (i < data.length) {
+			if (data[i].id != data[i].id_user) {
+				debugger;
+				data.splice(i, 1);
+				i = 0;
+			} else {
+				i++;
 			}
 		}
 		return data;

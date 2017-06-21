@@ -55,7 +55,6 @@ const socketClient = {
 			$('#nb').text(like.nbNotifs);
 		});
 		this.webSocket.on('likeSession', (like) => {
-			console.log(like);
 			if (like.status || like === true) {
 				$('#like-profil').css('background-image', 'url("/images/like/like.png")');
 			} else {

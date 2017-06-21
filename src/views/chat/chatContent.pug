@@ -1,0 +1,13 @@
+extends ../layout/layout
+
+block var
+    - page = "messenger";
+
+block content
+    div(class="container-account-user")
+        div(class="content-account-user" id="contentAccountUser")
+            div(class="welcome-text-account" id="welcomeTextAccount")
+                div(class="welcome-account" id="welcome-account")
+                div(class="text1-account"): p #{title}
+                    br
+                div(error): p #{error}
