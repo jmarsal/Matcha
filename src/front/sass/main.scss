@@ -1,33 +1,43 @@
-a, a:active, a:focus,
-button, button:focus, button:active,
-.btn, .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn.focus:active, .btn.active.focus {
-    outline: none;
-    outline: 0;
+a,
+a:active,
+a:focus,
+button,
+button:focus,
+button:active,
+.btn,
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn.active.focus {
+	outline: none;
+	outline: 0;
 }
 
 @import 'node_modules/foundation-sites/scss/foundation';
 
 @font-face {
-    font-family: "Indie Flower";
-    src: url("../fonts/Indie_Flower/IndieFlower.ttf");
+	font-family: "Indie Flower";
+	src: url("../fonts/Indie_Flower/IndieFlower.ttf");
 }
 @font-face {
-    font-family: "Raleway";
-    src: url("../fonts/Raleway/Raleway-black.ttf");
-}
-
-@font-face {
-    font-family: "Kurale";
-    src: url("../fonts/Kurale/Kurale-Regular.ttf");
+	font-family: "Raleway";
+	src: url("../fonts/Raleway/Raleway-black.ttf");
 }
 
 @font-face {
-    font-family: "Lato-regular";
-    src: url("../fonts/lato/Lato-Regular.ttf");
+	font-family: "Kurale";
+	src: url("../fonts/Kurale/Kurale-Regular.ttf");
+}
+
+@font-face {
+	font-family: "Lato-regular";
+	src: url("../fonts/lato/Lato-Regular.ttf");
 }
 
 input::-moz-focus-inner {
-    border: 0;
+	border: 0;
 }
 
 /*
@@ -54,3 +64,6 @@ input::-moz-focus-inner {
 
 // Browse
 @import "browse/browse";
+
+// chat
+@import "chat/chat";

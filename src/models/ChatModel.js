@@ -1,20 +1,21 @@
 class ChatModel {
 	static getUsersForChat(idUser) {
 		return new Promise((resolve, reject) => {
-			// recupere les id des personnes que l'utilisateur courant a like
-			let sql = 'SELECT id_user_like FROM user_like WHERE matcha_like = 1 && id_user = ?';
+			// recupere les id des personnes que l'utilisateur courant a like ainsi que les infos necessaire a l'affichage dans le chat
+			let sql = 'SELECT * FROM connect_users WHERE id_user1 = ?';
 
 			connection.query(sql, [ idUser ], (err, res) => {
 				if (err) {
 					reject(err);
 				} else {
-					let likesOfUserSession = res;
-					// connection.query;
+					// Il y a bien des personnes qui like l'user en retour
+					if (res.length) {
+						resolve(res);
+					} else {
+						resolve(false);
+					}
 				}
-				resolve(res);
 			});
-			// recupere id, login, photo profil dans la table users, usersPhotoProfil
-			// recupere historique des messages
 		});
 	}
 }

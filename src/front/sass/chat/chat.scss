@@ -1,0 +1,32 @@
+.photo-user {
+	float: left;
+	width: 40px;
+	height: 40px;
+	background-position: center;
+	background-size: cover;
+	border: 2px solid white;
+	border-radius: 50%;
+	margin-left: 15px;
+	cursor: pointer;
+	&.select {
+		border: 2px solid yellowgreen;
+	}
+	&.offline {
+		border: 2px solid red;
+		filter: grayscale(100%);
+	}
+}
+
+.container-chat {
+	margin: 0 auto;
+	margin-left: 80px;
+	border: 1px solid white;
+	width: 80%;
+	height: 75%;
+	background-color: rgba(whitesmoke, 0.4);
+}
+
+.input-chat {
+	margin: 20px auto 20px;
+	width: 60%;
+}

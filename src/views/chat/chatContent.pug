@@ -11,3 +11,18 @@ block content
                 div(class="text1-account"): p #{title}
                     br
                 div(error): p #{error}
+                div(class="container-users")
+                    if (users)
+                        - index = 0;
+                        for user in users
+                            div(
+                                class=(index) ? "photo-user" : "photo-user select" 
+                                id=user.id_user2
+                                style='background-image: url("' + user.photo_user2 + '")'
+                                title=user.login_user2
+                                )
+                            - index++;
+
+            div(class="container-profils-browse" id="containerProfilsBrowse")
+                div(class="container-chat")
+                input(class="tags-input-account input-chat" type="text" placeholder="Tape ton texte et appuis sur la touche entrée...")

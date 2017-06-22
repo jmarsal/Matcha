@@ -1,5 +1,5 @@
 const express = require('express'),
-	ChatModel = require('../models/UserModel'),
+	ChatModel = require('../models/ChatModel'),
 	Helper = require('../core/Helpers');
 
 class ChatController {
@@ -22,10 +22,28 @@ class ChatController {
 	messengerRoute() {
 		this.router.get('/messenger', (req, res) => {
 			if (req.session.start) {
-				res.render('./views/chat/chatContent', {
-					title: 'Messenger',
-					error: 'Aucun utilisateurs liké ne vous like en retour pour le moment... Le chat est donc fermé !'
-				});
+				let data = {};
+
+				ChatModel.getUsersForChat(req.session.user.id)
+					.then((users) => {
+						data.users = users;
+						if (data.users.length) {
+							res.render('./views/chat/chatContent', {
+								title: data.users[0].login_user2,
+								users: data.users
+							});
+						} else {
+							res.render('./views/chat/chatContent', {
+								title: 'Messenger',
+								error:
+									'Aucun utilisateurs liké ne vous like en retour pour le moment... Le chat est donc fermé !'
+							});
+						}
+						// plus tard return historique des conversations en lien avec les users recuperer precedement
+					})
+					.catch((err) => {
+						console.error(err);
+					});
 			} else {
 				res.redirect('../accueil');
 			}
