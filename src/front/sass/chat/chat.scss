@@ -1,3 +1,7 @@
+.container-users {
+	width: 15%;
+}
+
 .photo-user {
 	float: left;
 	width: 40px;
@@ -7,9 +11,12 @@
 	border: 2px solid white;
 	border-radius: 50%;
 	margin-left: 15px;
+	margin-top: 15px;
 	cursor: pointer;
+
 	&.select {
 		border: 2px solid yellowgreen;
+		margin-top: 0;
 	}
 	&.offline {
 		border: 2px solid red;
@@ -24,9 +31,103 @@
 	width: 80%;
 	height: 75%;
 	background-color: rgba(whitesmoke, 0.4);
+	overflow-x: none;
+	overflow-y: auto;
 }
 
 .input-chat {
 	margin: 20px auto 20px;
 	width: 60%;
+}
+
+.talk-bubble {
+	margin: 40px;
+	display: block;
+	position: relative;
+	width: 200px;
+	height: auto;
+	background-color: rgba($primary-color-dark, 0.5);
+	color: $primary-color-text;
+
+	&.me {
+		margin-left: 335px;
+		background-color: rgba($primary-color, 0.5);
+		color: $primary-text-color;
+	}
+}
+.border {
+	border: 8px solid #666;
+}
+.round {
+	border-radius: 30px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+}
+
+/* Right triangle, left side slightly down */
+.tri-right.border.left-in:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: -40px;
+	right: auto;
+	top: 30px;
+	bottom: auto;
+	border: 20px solid;
+	border-color: #666 #666 transparent transparent;
+}
+.tri-right.left-in:after {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: -24px;
+	right: auto;
+	top: 38px;
+	bottom: auto;
+	border: 12px solid;
+	border-color: rgba($primary-color-dark, 0.5) rgba($primary-color-dark, 0.5) transparent transparent;
+	// border-color: rgba($primary-color, 0.5) rgba($primary-color, 0.5) transparent transparent;
+}
+
+/* Right triangle, right side slightly down*/
+.tri-right.border.right-in:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: auto;
+	right: -40px;
+	top: 30px;
+	bottom: auto;
+	border: 20px solid;
+	border-color: #666 transparent transparent #666;
+}
+.tri-right.right-in:after {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: auto;
+	right: -24px;
+	top: 38px;
+	bottom: auto;
+	border: 12px solid;
+	border-color: rgba($primary-color, 0.5) transparent transparent rgba($primary-color, 0.5);
+}
+
+/* talk bubble contents */
+.talktext {
+	padding: 1em;
+	text-align: left;
+	line-height: 1.5em;
+	// white-space: nowrap;
+	// overflow: hidden;
+	word-wrap: break-word;
+}
+.talktext p {
+	/* remove webkit p margins */
+	-webkit-margin-before: 0em;
+	-webkit-margin-after: 0em;
 }

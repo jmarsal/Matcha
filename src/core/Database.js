@@ -140,6 +140,16 @@ class Database {
 				'login_user2 VARCHAR(16) NOT NULL,' +
 				'photo_user2 VARCHAR(255) DEFAULT "/images/upload/default-user.png"' +
 				')';
+			const chatHistory =
+				'CREATE TABLE IF NOT EXISTS chat_history' +
+				'(' +
+				'id INT PRIMARY KEY AUTO_INCREMENT,' +
+				'id_user1 INT NOT NULL,' +
+				'id_user2 INT NOT NULL,' +
+				'from_user INT NOT NULL,' +
+				'message MEDIUMTEXT NOT NULL,' +
+				'date DATETIME NOT NULL' +
+				')';
 			connection.query(users, (err) => {
 				if (err) {
 					reject(err);
@@ -176,7 +186,13 @@ class Database {
 																				if (err) {
 																					reject(err);
 																				} else {
-																					resolve();
+																					connection.query(chatHistory, (err) => {
+																						if (err) {
+																							reject(err);
+																						} else {
+																							resolve();
+																						}
+																					});
 																				}
 																			});
 																		}

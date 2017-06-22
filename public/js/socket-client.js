@@ -5,7 +5,22 @@ const socketClient = {
 		$('#error').removeClass('red').text('');
 
 		this.webSocket.on('message', (message) => {
-			alert(message);
+			let index = parseInt($('#nbMess')[0].className),
+				classTmp = $('#nbMess')[0].className;
+
+			$('<div/>', {
+				class: 'talk-bubble tri-right round right-in me',
+				id: 'mess' + index,
+				appendTo: $('#container-chat')
+			});
+			$('<div/>', {
+				class: 'talktext',
+				appendTo: $('#mess' + index)
+			}).text(message);
+
+			$('#container-chat').animate({ scrollTop: $('#container-chat')[0].scrollHeight }, 1000);
+			$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
+			$('#input-chat').val('');
 		});
 		// m'affiche que l'user vu est connecter ou pas sur browse/profil
 		this.webSocket.on('online', (classColor) => {

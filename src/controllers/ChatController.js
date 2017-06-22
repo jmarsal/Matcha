@@ -27,10 +27,22 @@ class ChatController {
 				ChatModel.getUsersForChat(req.session.user.id)
 					.then((users) => {
 						data.users = users;
+						return ChatModel.getHistoryMessage(req.session.user.id);
+					})
+					.then((allHistory) => {
+						if (allHistory.length) {
+							return ChatModel.getHistoryForUserDefault(allHistory, data.users[0].id_user2);
+						} else {
+							return false;
+						}
+					})
+					.then((messages) => {
 						if (data.users.length) {
 							res.render('./views/chat/chatContent', {
 								title: data.users[0].login_user2,
-								users: data.users
+								users: data.users,
+								messages: messages,
+								myId: req.session.user.id
 							});
 						} else {
 							res.render('./views/chat/chatContent', {

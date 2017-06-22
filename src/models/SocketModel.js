@@ -362,5 +362,16 @@ class SocketModel {
 			});
 		});
 	}
+
+	static saveMessageOnDb(id_user1, id_user2, message, from) {
+		return new Promise((resolve, reject) => {
+			const sql = "INSERT INTO chat_history(id_user1, id_user2, message, from_user, date) VALUES(?, ?, ?, ?, NOW())"
+
+			connection.query(sql, [id_user1, id_user2, message, from], (err) => {
+				if (err) { reject(err); }
+				resolve();
+			})
+		});
+	}
 }
 module.exports = SocketModel;

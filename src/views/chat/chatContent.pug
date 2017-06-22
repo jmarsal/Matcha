@@ -1,7 +1,15 @@
 extends ../layout/layout
 
+block prepend jsHeader
+    <script src="../js/socket.io.js"></script>
+    <script src="../js/socket-client.js"></script>
+
+block append jsFooter
+    script(src="../js/ajaxChat.js")
+
 block var
     - page = "messenger";
+    - index = 0;
 
 block content
     div(class="container-account-user")
@@ -21,8 +29,15 @@ block content
                                 style='background-image: url("' + user.photo_user2 + '")'
                                 title=user.login_user2
                                 )
+                            - myLogin = user.login_user1;
                             - index++;
 
             div(class="container-profils-browse" id="containerProfilsBrowse")
-                div(class="container-chat")
-                input(class="tags-input-account input-chat" type="text" placeholder="Tape ton texte et appuis sur la touche entrée...")
+                div(id="container-chat" class="container-chat")
+                    - index = 0;
+                    for mess in messages
+                        div(id='mess'+index class=(mess.id_user1 == myId) ? "talk-bubble tri-right round right-in me" : "talk-bubble tri-right round left-in")
+                            div(class="talktext") #{mess.message}
+                        - index++;
+                div(id="nbMess" class=index)
+                input(id="input-chat" class="tags-input-account input-chat" type="text" placeholder="Tape ton texte et appuis sur la touche entrée..." autofocus=true)

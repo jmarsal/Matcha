@@ -54,7 +54,16 @@ class SocketIo {
 				});
 
 				socket.on('message', (data) => {
-					this.clientsList[data.userId].emit('message', data.message);
+					SocketModel.saveMessageOnDb(user.id, data.userId, data.message, user.id)
+						.then(() => {
+							if (this.clientsList[data.userId]) {
+								this.clientsList[data.userId].emit('message', data.message);
+							}
+							this.clientsList[user.id].emit('message', data.message);
+						})
+						.catch((err) => {
+							console.error(err);
+						});
 				});
 
 				socket.on('online', (idUserProfil) => {
