@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 class ChatModel {
 	static getUsersForChat(idUser) {
 		return new Promise((resolve, reject) => {
@@ -38,7 +40,10 @@ class ChatModel {
 
 			allHistory.map((message) => {
 				if (message.id_user1 == idOtherUser || message.id_user2 == idOtherUser) {
+					message.message = _.unescape(message.message);
+
 					messages.push(message);
+					console.log(message.message);
 				}
 			});
 			resolve(messages);

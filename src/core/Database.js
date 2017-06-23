@@ -147,7 +147,7 @@ class Database {
 				'id_user1 INT NOT NULL,' +
 				'id_user2 INT NOT NULL,' +
 				'from_user INT NOT NULL,' +
-				'message MEDIUMTEXT NOT NULL,' +
+				'message VARCHAR(255) NOT NULL,' +
 				'date DATETIME NOT NULL' +
 				')';
 			connection.query(users, (err) => {

@@ -3,25 +3,29 @@ let idUserSelect = parseInt($('#chatUser')[0].className);
 $('#container-chat' + idUserSelect).scrollTop($('#container-chat' + idUserSelect)[0].scrollHeight);
 
 window.addEventListener('load', () => {
-	let id_user_visit = $('#online-hidden').text();
+	let id_user_visit = $('#online-hidden').text(),
+		id_user_select = $('#chatUser')[0].className;
 
 	if (id_user_visit) {
 		socketClient.onlineMe(id_user_visit);
+	}
+	if (id_user_select) {
+		socketClient.getOnlineUser(id_user_select);
 	}
 });
 
 $('#input-chat').on('keydown', function search(e) {
 	if (e.keyCode == 13) {
-		let users = $('#container-users');
+		let users = $('#container-users'),
+			mess = $(this).val();
 
-		if ($(this).val() !== '') {
-			let mess = $(this).val();
-
-			users.children('div').each(function() {
-				if (this.classList.contains('select')) {
-					socketClient.message($('#' + this.id)[0].id, mess);
-				}
-			});
+		if (mess !== '') {
+			if (mess.length < 16777200)
+				users.children('div').each(function() {
+					if (this.classList.contains('select')) {
+						socketClient.message($('#' + this.id)[0].id, mess);
+					}
+				});
 		}
 	}
 });
@@ -31,7 +35,6 @@ function changeUserChat(id_user, myId) {
 		var dataRes = JSON.parse(jqXHR.responseText, (getIdUser = $('#chatUser')[0].className));
 
 		$('#chatUser').removeClass(getIdUser).addClass(id_user.toString());
-		// debugger;
 
 		let users = $('#container-users'),
 			idUserSelect = parseInt($('#chatUser')[0].className);

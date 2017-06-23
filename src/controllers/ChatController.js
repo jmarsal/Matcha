@@ -22,11 +22,12 @@ class ChatController {
 
 	messengerRoute() {
 		this.router.get('/messenger', (req, res) => {
-			if (req.session.start) {
+			if (req.session.start && req.session.user.photoFav) {
 				let data = {};
 
 				ChatModel.getUsersForChat(req.session.user.id)
 					.then((users) => {
+						debugger;
 						data.users = users;
 						return BrowseModel.getInfosUserSession(req.session.user.id);
 					})
@@ -65,7 +66,7 @@ class ChatController {
 						console.error(err);
 					});
 			} else {
-				res.redirect('../accueil');
+				res.redirect('../account');
 			}
 		});
 	}

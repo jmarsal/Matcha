@@ -26,7 +26,7 @@ block content
                         - index = 0;
                         for user in users
                             div(
-                                class=(index) ? "photo-user offline" : "photo-user select" 
+                                class=(index) ? "photo-user offline" : "photo-user select offline" 
                                 id=user.id_user2
                                 style='background-image: url("' + user.photo_user2 + '")'
                                 title=user.login_user2
@@ -39,10 +39,11 @@ block content
             div(class="container-profils-browse" id="containerProfilsBrowse")
                 div(id="container-chat"+idChat class="container-chat")
                     - index = 0;
-                    for mess in messages
-                        div(class="container-message" id="cont"+index)
-                            div(id='mess'+index class=(mess.id_user1 == myId) ? "talk-bubble tri-right round right-in me" : "talk-bubble tri-right round left-in")
-                                div(class="talktext") #{mess.message}
-                        - index++;
+                    if messages
+                        for mess in messages
+                            div(class="container-message" id="cont"+index)
+                                div(id='mess'+index class=(mess.id_user1 == myId) ? "talk-bubble tri-right round right-in me" : "talk-bubble tri-right round left-in")
+                                    div(class="talktext") #{mess.message}
+                            - index++;
                 div(id="nbMess" class=index)
                 input(id="input-chat" class="tags-input-account input-chat" type="text" placeholder="Tape ton texte et appuis sur la touche entrée..." autofocus=true)

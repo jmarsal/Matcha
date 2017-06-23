@@ -11,8 +11,8 @@ const uniqid = require('uniqid');
 const makeDir = require('make-dir');
 const path = require('path');
 const del = require('del');
-const validator = require('validator');
 const multer = require('multer');
+const _ = require('lodash');
 const Storage = multer.diskStorage({
 	destination: function(req, file, callback) {
 		callback(null, './public/profils/' + req.session.user.id);
@@ -80,16 +80,16 @@ class AccountController {
 							photosUsers: photosUsers,
 							photoFav: photos ? photos.photosProfil : '',
 							email: infosUser.email,
-							login: validator.unescape(infosUser.login),
-							name: validator.unescape(infosUser.nom),
-							firstName: validator.unescape(infosUser.prenom),
+							login: _.unescape(infosUser.login),
+							name: _.unescape(infosUser.nom),
+							firstName: _.unescape(infosUser.prenom),
 							sex: infosUser.sex,
 							orientation: infosUser.orientation,
-							bio: infosUser.bio ? validator.unescape(infosUser.bio) : '',
+							bio: infosUser.bio ? _.unescape(infosUser.bio) : '',
 							tags: retTags.tags,
 							tagsUser: retTags.tags_user,
 							check: retTags.check,
-							address: infosUser.address ? validator.unescape(infosUser.address) : '',
+							address: infosUser.address ? _.unescape(infosUser.address) : '',
 							lat: infosUser.lat,
 							lng: infosUser.lng,
 							birthday: infosUser.birthday,
@@ -168,9 +168,16 @@ class AccountController {
 		this.router.post('/account/Delete', (req, res) => {
 			UserModel.removePhotoById(req.body.id)
 				.then((srcToRemove) => {
-					del([ srcToRemove.replace('/profils', './public/profils') ]).then((path) => {
-						Helper.sendResponseToClient('photo supprimée!', 0, res);
-					});
+					del([ srcToRemove.replace('/profils', './public/profils') ])
+						.then((path) => {
+							return UserModel.modifyPhotoFavForConnect(req.session.user.id, null);
+						})
+						.then(() => {
+							Helper.sendResponseToClient('photo supprimée!', 0, res);
+						})
+						.catch((err) => {
+							console.error(err);
+						});
 				})
 				.catch((err) => {
 					console.error(err);
@@ -187,11 +194,14 @@ class AccountController {
 					return UserModel.modifyPhotoForNotifications(req.session.user.id, favorite);
 				})
 				.then(() => {
+					return UserModel.modifyPhotoForConnect(req.session.user.id, favorite);
+				})
+				.then(() => {
 					Helper.sendResponseToClient(favorite, 0, res);
 				})
 				.catch((err) => {
 					console.error(err);
-					Helper.sendResponseToClient('La suppression a rencontrée un problème!', 1, res);
+					Helper.sendResponseToClient('Problème de photo!', 1, res);
 				});
 		});
 		this.router.post('/account/Modify-Profil', (req, res) => {
@@ -200,7 +210,7 @@ class AccountController {
 
 			if (input === 'email') {
 				// check email
-				if (validator.isEmail(data)) {
+				if (Helper.isEmail(data)) {
 					let resData = {
 						mess: 'Email modifié !',
 						input: input,
@@ -224,8 +234,8 @@ class AccountController {
 				}
 			} else if (input === 'login') {
 				// check login
-				if (validator.isLength(data, { min: 3, max: 16 })) {
-					const newLogin = validator.escape(data).trim();
+				if (data.length >= 3 && data.length <= 16) {
+					const newLogin = _.escape(data).trim();
 					let resData = {
 						mess: 'Login modifié !',
 						input: input,
@@ -249,8 +259,8 @@ class AccountController {
 				}
 			} else if (input === 'name') {
 				// check lastName
-				if (validator.isLength(data, { min: 1, max: 255 })) {
-					const newName = validator.escape(data).trim();
+				if (data.length >= 1 && data.length <= 255) {
+					const newName = _.escape(data).trim();
 					let resData = {
 						mess: 'Nom modifié !',
 						input: input,
@@ -274,8 +284,8 @@ class AccountController {
 				}
 			} else if (input === 'firstName') {
 				// check firstName
-				if (validator.isLength(data, { min: 1, max: 255 })) {
-					const newFirstName = validator.escape(data).trim();
+				if (data.length >= 1 && data.length <= 255) {
+					const newFirstName = _.escape(data).trim();
 					let resData = {
 						mess: 'Prénom modifié !',
 						input: input,
@@ -323,7 +333,7 @@ class AccountController {
 				}
 			} else if (input === 'sex') {
 				// check firstName
-				if (validator.isInt(data, { min: 1, max: 2 })) {
+				if (data == 1 || data == 2) {
 					let resData = {
 						mess: data == 1 ? 'Tu es un homme 👱🏼' : 'Tu es une femme 👩🏼',
 						input: input,
@@ -341,7 +351,7 @@ class AccountController {
 				}
 			} else if (input === 'orientation') {
 				// check firstName
-				if (validator.isInt(data, { min: 1, max: 3 })) {
+				if (data >= 1 && data <= 3) {
 					UserModel.getSexByUserId(req.session.user.id)
 						.then((sex) => {
 							let mess = '';
@@ -381,8 +391,8 @@ class AccountController {
 				}
 			} else if (input === 'bio') {
 				// check bio
-				if (validator.isLength(data, { min: 1, max: 21844 })) {
-					const newBio = validator.escape(data).trim();
+				if (data.length >= 1 && data.length <= 21844) {
+					const newBio = _.escape(data).trim();
 					let resData = {
 						mess: 'Ta bio est bien modifiée !',
 						input: input,
@@ -390,7 +400,7 @@ class AccountController {
 					};
 					UserModel.modifyBioByUserId(req.session.user.id, newBio)
 						.then(() => {
-							resData.data = validator.unescape(resData.data);
+							resData.data = _.unescape(resData.data);
 							Helper.sendResponseToClient(resData, 0, res);
 						})
 						.catch((err) => {
@@ -403,8 +413,8 @@ class AccountController {
 		});
 		this.router.post('/account/Add-tag', (req, res) => {
 			const data = req.body.data;
-			if (validator.isLength(data, { min: 1, max: 150 })) {
-				const newTag = validator.escape(data).trim();
+			if (data.length >= 1 && data.length <= 150) {
+				const newTag = _.escape(data).trim();
 				let resData = {
 					mess: 'Tag ajouté !',
 					data: newTag,
@@ -414,7 +424,7 @@ class AccountController {
 					.then((retIdTag) => {
 						if (retIdTag !== false) {
 							resData.id = retIdTag;
-							resData.data = validator.unescape(resData.data);
+							resData.data = _.unescape(resData.data);
 							Helper.sendResponseToClient(resData, 0, res);
 						} else {
 							resData.mess = 'Le tag #' + newTag + ' existe déjà !';

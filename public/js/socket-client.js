@@ -28,6 +28,7 @@ const socketClient = {
 				{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
 				1000
 			);
+
 			$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
 			$('#input-chat').val('');
 		});
@@ -36,7 +37,8 @@ const socketClient = {
 			let index = parseInt($('#nbMess')[0].className),
 				classTmp = $('#nbMess')[0].className,
 				idUserSelect = data.myId,
-				testContainer = $('container-chat' + idUserSelect);
+				testContainer = $('container-chat' + idUserSelect),
+				users = $('#container-users');
 
 			$('<div/>', {
 				class: 'container-message',
@@ -52,12 +54,23 @@ const socketClient = {
 				class: 'talktext',
 				appendTo: $('#mess' + index)
 			}).text(data.message);
-
-			$('#container-chat' + idUserSelect).animate(
-				{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
-				1000
-			);
-			$('#' + idUserSelect).addClass('notifs');
+			if ($('#container-chat' + idUserSelect)[0]) {
+				$('#container-chat' + idUserSelect).animate(
+					{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
+					1000
+				);
+			}
+			let check = false;
+			users.children('div').each(function() {
+				if (this.classList.contains('select')) {
+					if ($('#' + this.id)[0].id == idUserSelect) {
+						check = true;
+					}
+				}
+			});
+			if (check == false) {
+				$('#' + idUserSelect).addClass('notifs');
+			}
 			$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
 			$('#input-chat').val('');
 		});
@@ -88,6 +101,14 @@ const socketClient = {
 					class: 'lastConnect',
 					appendTo: $('#text1-account')
 				}).text('Deconnecté depuis le : ' + disconnect);
+			}
+		});
+
+		this.webSocket.on('getOnlineUser', (classColorId) => {
+			if (classColorId.status === 'connect') {
+				$('#' + classColorId.idUser).removeClass('offline');
+			} else if (classColorId.status === 'disconnect') {
+				$('#' + classColorId.idUser).addClass('offline');
 			}
 		});
 		// Affiche aux autres que je suis connecter ou pas
@@ -174,6 +195,12 @@ const socketClient = {
 			return false;
 		}
 		this.webSocket.emit('onlineMe', {});
+	},
+	getOnlineUser: (idUserProfil) => {
+		if (!webSocket) {
+			return false;
+		}
+		this.webSocket.emit('getOnlineUser', idUserProfil);
 	}
 };
 

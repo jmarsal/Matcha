@@ -328,7 +328,6 @@ class BrowseModel {
 
 		while (i < data.length) {
 			if (data[i].id != data[i].id_user) {
-				debugger;
 				data[i].id = data[i].id_user;
 			}
 			i++;

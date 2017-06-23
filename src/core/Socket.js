@@ -1,4 +1,5 @@
 const io = require('socket.io'),
+	_ = require('lodash'),
 	SocketModel = require('../models/SocketModel'),
 	sharedsession = require('express-socket.io-session');
 
@@ -52,18 +53,18 @@ class SocketIo {
 				});
 
 				socket.on('message', (data) => {
-					SocketModel.saveMessageOnDb(user.id, data.userId, data.message, user.id)
+					SocketModel.saveMessageOnDb(user.id, data.userId, _.escape(data.message).trim(), user.id)
 						.then(() => {
 							return SocketModel.addNewNotifForMess(user.id, user.login, data.userId);
 						})
 						.then((notifs) => {
-							if (this.clientsList[data.userId]) {
-								let res = {
-									message: data.message,
-									myId: user.id,
-									otherId: data.userId
-								};
+							let res = {
+								message: _.unescape(data.message),
+								myId: user.id,
+								otherId: data.userId
+							};
 
+							if (this.clientsList[data.userId]) {
 								this.clientsList[data.userId].emit('notifMess', notifs);
 								this.clientsList[data.userId].emit('messageOtherUser', res);
 							}
@@ -92,6 +93,12 @@ class SocketIo {
 					socket.broadcast.emit('onlineMe', { status: 'connected' });
 				});
 
+				socket.on('getOnlineUser', (idUserProfil) => {
+					if (this.clientsList[idUserProfil]) {
+						this.clientsList[user.id].emit('getOnlineUser', { status: 'connect', idUser: idUserProfil });
+					}
+				});
+
 				socket.on('disconnect', () => {
 					SocketModel.addDisconnectToDb(user.id)
 						.then(() => {
@@ -99,6 +106,7 @@ class SocketIo {
 						})
 						.then((date) => {
 							socket.broadcast.emit('onlineMe', { status: 'disconnect', disconnect: date });
+							socket.broadcast.emit('getOnlineUser', { status: 'disconnect', idUser: user.id });
 							delete this.clientsList[user.id];
 						})
 						.catch((err) => {

@@ -673,10 +673,12 @@ class UserModel {
 						} else {
 							UserModel.modifyPhotoForNotifications(id_user, imgFav)
 								.then(() => {
+									return UserModel.modifyPhotoForNotifications(id_user, imgFav);
+								})
+								.then(() => {
 									resolve(true);
 								})
 								.catch((err) => {
-									resolve(true);
 									reject(err);
 								});
 						}
@@ -696,7 +698,88 @@ class UserModel {
 				if (err) {
 					reject(err);
 				}
-				resolve();
+				UserModel.modifyPhotoForConnect(idUser, favPhoto)
+					.then(() => {
+						resolve();
+					})
+					.catch((err) => {
+						console.error(err);
+					});
+			});
+		});
+	}
+
+	static modifyPhotoForConnect(idUser, favPhoto) {
+		return new Promise((resolve, reject) => {
+			let sql = 'UPDATE connect_users SET photo_user1 = ? WHERE id_user1 = ?';
+
+			connection.query(sql, [ favPhoto.src, idUser ], (err) => {
+				if (err) {
+					reject(err);
+				}
+				sql = 'UPDATE connect_users SET photo_user2 = ? WHERE id_user2 = ?';
+				connection.query(sql, [ favPhoto.src, idUser ], (err) => {
+					if (err) {
+						reject(err);
+					}
+					resolve();
+				});
+			});
+		});
+	}
+
+	static modifyPhotoFavForConnect(idUser, favPhoto) {
+		return new Promise((resolve, reject) => {
+			let sql = 'SELECT src_photo FROM users_photos_profils WHERE id = ? && photo_profil = 1';
+
+			connection.query(sql, idUser, (err, res) => {
+				if (res.length) {
+					sql = 'UPDATE connect_users SET photo_user1 = ? WHERE id_user1 = ?';
+
+					connection.query(sql, [ res[0].src_photo, idUser ], (err) => {
+						if (err) {
+							reject(err);
+						}
+						sql = 'UPDATE connect_users SET photo_user2 = ? WHERE id_user2 = ?';
+						connection.query(sql, [ res[0].src_photo, idUser ], (err) => {
+							if (err) {
+								reject(err);
+							}
+							resolve();
+						});
+					});
+				} else {
+					sql = 'UPDATE connect_users SET photo_user1 = ? WHERE id_user1 = ?';
+					if (favPhoto !== null) {
+						connection.query(sql, [ favPhoto.src, idUser ], (err) => {
+							if (err) {
+								reject(err);
+							}
+							sql = 'UPDATE connect_users SET photo_user2 = ? WHERE id_user2 = ?';
+							connection.query(sql, [ favPhoto.src, idUser ], (err) => {
+								if (err) {
+									reject(err);
+								}
+								resolve();
+							});
+						});
+					} else {
+						sql = 'UPDATE connect_users SET photo_user1 = ? WHERE id_user1 = ?';
+						connection.query(sql, [ '/images/upload/default-user.png', idUser ], (err) => {
+							if (err) {
+								reject(err);
+							} else {
+								sql = 'UPDATE connect_users SET photo_user2 = ? WHERE id_user2 = ?';
+								connection.query(sql, [ '/images/upload/default-user.png', idUser ], (err) => {
+									if (err) {
+										reject(err);
+									}
+									resolve();
+								});
+							}
+						});
+					}
+				}
 			});
 		});
 	}

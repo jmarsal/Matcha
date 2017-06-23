@@ -889,9 +889,9 @@ input:checked + .slider:before {
   margin-top: 15px;
   cursor: pointer; }
   .photo-user.offline {
-    border: 2px solid red; }
+    border: 2px solid red;
+    filter: grayscale(100%); }
   .photo-user.select {
-    border: 2px solid white;
     width: 60px;
     height: 60px;
     margin-right: 15px;
@@ -937,6 +937,10 @@ input:checked + .slider:before {
     background-color: rgba(233, 30, 99, 0.5);
     color: #212121;
     float: right; }
+  .talk-bubble.left-in {
+    left: 3px; }
+  .talk-bubble.right-in {
+    right: 5px; }
 
 .border {
   border: 8px solid #666; }

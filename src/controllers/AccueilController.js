@@ -3,8 +3,8 @@
  */
 
 const express = require('express');
-const validator = require('validator');
 const uniqid = require('uniqid');
+const _ = require('lodash');
 
 const UserModel = require('../models/UserModel');
 const Helpers = require('../core/Helpers');
@@ -355,28 +355,28 @@ class AccueilController {
 
 		if (this.checkJsonReq(req, res) == true) {
 			// check login
-			if (validator.isLength(req.body.loginRegisterInput, { min: 3, max: 16 })) {
-				this.login = validator.escape(req.body.loginRegisterInput).trim();
+			if (req.body.loginRegisterInput.length >= 3 && req.body.loginRegisterInput.length <= 16) {
+				this.login = _.escape(req.body.loginRegisterInput).trim();
 			} else {
 				Helpers.sendResponseToClient('La taille du login doit etre entre 3 et 16 caractères', 1, res);
 				return false;
 			}
 			// check lastName
-			if (validator.isLength(req.body.lastNameRegisterInput, { min: 1, max: 255 })) {
-				this.lastName = validator.escape(req.body.lastNameRegisterInput).trim();
+			if (req.body.lastNameRegisterInput.length >= 1 && req.body.lastNameRegisterInput.length <= 255) {
+				this.lastName = _.escape(req.body.lastNameRegisterInput).trim();
 			} else {
 				Helpers.sendResponseToClient('Votre nom doit être renseigné !', 1, res);
 				return false;
 			}
 			// check firstName
-			if (validator.isLength(req.body.firstNameRegisterInput, { min: 1, max: 255 })) {
-				this.firstName = validator.escape(req.body.firstNameRegisterInput).trim();
+			if (req.body.firstNameRegisterInput.length >= 1 && req.body.firstNameRegisterInput.length <= 255) {
+				this.firstName = _.escape(req.body.firstNameRegisterInput).trim();
 			} else {
 				Helpers.sendResponseToClient('Votre prénom doit être renseigné !', 1, res);
 				return false;
 			}
 			// check email
-			if (validator.isEmail(req.body.emailRegisterInput)) {
+			if (Helper.isEmail(req.body.emailRegisterInput)) {
 				this.email = req.body.emailRegisterInput;
 			} else {
 				Helpers.sendResponseToClient('Email non valide !', 1, res);
@@ -384,7 +384,8 @@ class AccueilController {
 			}
 			// check password
 			if (
-				validator.isLength(req.body.passwdRegisterInput, { min: 8, max: 255 }) &&
+				req.body.passwdRegisterInput.length >= 8 &&
+				req.body.passwdRegisterInput.length <= 255 &&
 				req.body.passwdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
 			) {
 				this.password = req.body.passwdRegisterInput;
@@ -409,23 +410,21 @@ class AccueilController {
 		res.setHeader('Content-Type', 'application/json');
 
 		if (this.checkJsonReq(req, res) == true) {
-			if (validator.isLength(req.body.loginRegisterInput, { min: 3, max: 16 })) {
-				this.login = validator.escape(req.body.loginRegisterInput).trim();
+			console.log(req.body.loginRegisterInput.length);
+			if (req.body.loginRegisterInput.length >= 3 && req.body.loginRegisterInput.length <= 16) {
+				this.login = _.escape(req.body.loginRegisterInput).trim();
 			} else {
-				Helpers.sendResponseToClient('La taille du login doit etre entre 3 et 16 caractères', 1, res);
+				Helpers.sendResponseToClient("Ce login n'existe pas !", 1, res);
 				return false;
 			}
 			if (
-				validator.isLength(req.body.passwdRegisterInput, { min: 8, max: 255 }) &&
+				req.body.passwdRegisterInput.length >= 8 &&
+				req.body.passwdRegisterInput.length <= 255 &&
 				req.body.passwdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
 			) {
 				this.password = req.body.passwdRegisterInput;
 			} else {
-				Helpers.sendResponseToClient(
-					'Mot de passe non valide ! Il doit contenir 8 caracteres avec majuscule, minuscule, numerique.',
-					1,
-					res
-				);
+				Helpers.sendResponseToClient('Mot de passe non valide !', 1, res);
 				return false;
 			}
 			return true;
@@ -442,7 +441,7 @@ class AccueilController {
 
 		if (this.checkJsonReq(req, res) == true) {
 			// check email
-			if (validator.isEmail(req.body.emailRegisterInput)) {
+			if (Helper.isEmail(req.body.emailRegisterInput)) {
 				this.email = req.body.emailRegisterInput;
 				return true;
 			} else {
@@ -457,7 +456,8 @@ class AccueilController {
 
 		if (this.checkJsonReq(req, res) == true) {
 			if (
-				validator.isLength(req.body.passwdRegisterInput, { min: 8, max: 255 }) &&
+				req.body.passwdRegisterInput.length >= 8 &&
+				req.body.passwdRegisterInput.length <= 255 &&
 				req.body.passwdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
 			) {
 				this.password = req.body.passwdRegisterInput;
@@ -470,7 +470,8 @@ class AccueilController {
 				return false;
 			}
 			if (
-				validator.isLength(req.body.repPasswdRegisterInput, { min: 8, max: 255 }) &&
+				req.body.repPasswdRegisterInput.length >= 8 &&
+				req.body.repPasswdRegisterInput.length <= 255 &&
 				req.body.repPasswdRegisterInput.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/)
 			) {
 				this.repPassword = req.body.repPasswdRegisterInput;

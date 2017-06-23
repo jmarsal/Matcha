@@ -17,11 +17,11 @@
 
 	&.offline {
 		border: 2px solid red;
-		// filter: grayscale(100%);
+		filter: grayscale(100%);
 	}
 
 	&.select {
-		border: 2px solid white;
+		// border: 2px solid white;
 		width: 60px;
 		height: 60px;
 		margin-right: 15px;
@@ -77,6 +77,13 @@
 		background-color: rgba($primary-color, 0.5);
 		color: $primary-text-color;
 		float: right;
+	}
+
+	&.left-in {
+		left: 3px;
+	}
+	&.right-in {
+		right: 5px;
 	}
 }
 .border {
