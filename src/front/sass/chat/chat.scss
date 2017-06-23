@@ -8,19 +8,34 @@
 	height: 40px;
 	background-position: center;
 	background-size: cover;
-	border: 2px solid white;
+	border: 2px solid green;
 	border-radius: 50%;
-	margin-left: 15px;
+	margin-right: -15px;
+	margin-left: 25px;
 	margin-top: 15px;
 	cursor: pointer;
 
-	&.select {
-		border: 2px solid yellowgreen;
-		margin-top: 0;
-	}
 	&.offline {
 		border: 2px solid red;
-		filter: grayscale(100%);
+		// filter: grayscale(100%);
+	}
+
+	&.select {
+		border: 2px solid white;
+		width: 60px;
+		height: 60px;
+		margin-right: 15px;
+		margin-left: 15px;
+		// margin-top: 0;
+	}
+
+	&.notifs {
+		display: flex;
+		-webkit-animation: rotating 2s linear infinite;
+		-moz-animation: rotating 2s linear infinite;
+		-ms-animation: rotating 2s linear infinite;
+		-o-animation: rotating 2s linear infinite;
+		animation: rotating 2s linear infinite;
 	}
 }
 
@@ -40,19 +55,28 @@
 	width: 60%;
 }
 
+.container-message {
+	overflow-x: none;
+	width: 100%;
+	display: block;
+}
+
 .talk-bubble {
-	margin: 40px;
+	margin: 20px;
 	display: block;
 	position: relative;
-	width: 200px;
+	width: 50%;
 	height: auto;
 	background-color: rgba($primary-color-dark, 0.5);
 	color: $primary-color-text;
+	// left: -2%;
+	float: left;
 
 	&.me {
-		margin-left: 335px;
+		margin-left: 49%;
 		background-color: rgba($primary-color, 0.5);
 		color: $primary-text-color;
+		float: right;
 	}
 }
 .border {
@@ -84,7 +108,7 @@
 	height: 0;
 	left: -24px;
 	right: auto;
-	top: 38px;
+	top: 33.8%;
 	bottom: auto;
 	border: 12px solid;
 	border-color: rgba($primary-color-dark, 0.5) rgba($primary-color-dark, 0.5) transparent transparent;
@@ -111,7 +135,7 @@
 	height: 0;
 	left: auto;
 	right: -24px;
-	top: 38px;
+	top: 33.8%;
 	bottom: auto;
 	border: 12px solid;
 	border-color: rgba($primary-color, 0.5) transparent transparent rgba($primary-color, 0.5);

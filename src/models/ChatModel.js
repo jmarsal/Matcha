@@ -41,8 +41,20 @@ class ChatModel {
 					messages.push(message);
 				}
 			});
-			debugger;
 			resolve(messages);
+		});
+	}
+
+	static getLoginById(idUser) {
+		return new Promise((resolve, reject) => {
+			const sql = 'SELECT login FROM users WHERE id = ?';
+
+			connection.query(sql, idUser, (err, res) => {
+				if (err) {
+					reject(err);
+				}
+				resolve(res);
+			});
 		});
 	}
 }

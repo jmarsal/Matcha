@@ -56,6 +56,8 @@ function displayNotifs() {
 					action = notif.likeUnlike == true
 						? ' a liké votre profil le '
 						: ' ne like plus votre profil depuis le ';
+				} else if (notif.action === 'message') {
+					action = ' vous a laissé un message le ';
 				}
 				let login = notif.login_user_visit,
 					date = notif.date_visit,

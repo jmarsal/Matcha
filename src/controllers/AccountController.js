@@ -75,6 +75,7 @@ class AccountController {
 								}
 							}
 						}
+						req.session.user.photoFav = photos.photosProfil;
 						res.render('./views/account/accountContent.pug', {
 							photosUsers: photosUsers,
 							photoFav: photos ? photos.photosProfil : '',
@@ -182,6 +183,7 @@ class AccountController {
 			UserModel.updateFavoritePhotoById(req.body.id, req.session.user.id)
 				.then((fav) => {
 					favorite = fav;
+					req.session.user.photoFav = favorite.src;
 					return UserModel.modifyPhotoForNotifications(req.session.user.id, favorite);
 				})
 				.then(() => {

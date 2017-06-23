@@ -373,5 +373,49 @@ class SocketModel {
 			})
 		});
 	}
+
+	static addNewNotifForMess(myId, myLogin, idUserMess) {
+		return new Promise((resolve, reject) => {
+			// recupere photo user
+			let sql = 'SELECT src_photo FROM users_photos_profils WHERE id_user = ? && photo_profil = 1',
+				photoProfilSrc = '/images/upload/default-user.png';
+
+			connection.query(sql, myId, (err, res) => {
+				if (err) {
+					reject(err);
+				} else {
+					if (res[0] && (res[0].src_photo !== photoProfilSrc || res[0].src_photo !== '')) {
+						photoProfilSrc = res[0].src_photo;
+					}
+					sql = 'INSERT INTO user_notifications(photo_user_visit, id_user, login_user_visit, id_user_visit, date_visit, action) VALUES(?, ?, ?, ?, NOW(), ?)';
+					connection.query(sql, [ photoProfilSrc, idUserMess, myLogin, myId, 'message' ], (err) => {
+						if (err) {
+							reject(err);
+						} else {
+							// ajoute au compteur de notifications du champs user le nouveau like
+							sql = 'UPDATE users SET notifications = notifications + 1 WHERE id = ?';
+
+							connection.query(sql, [ idUserMess ], (err) => {
+								if (err) {
+									reject(err);
+								} else {
+									sql = 'SELECT notifications FROM users WHERE id = ?';		
+									connection.query(sql, idUserMess, (err, res) => {
+										if (err) {
+											reject(err);
+										}
+										resolve({
+											nbNotifs: res[0].notifications,
+											status: true
+										});
+									});
+								}
+							});
+						}
+					});
+				}
+			});
+		});
+	}
 }
 module.exports = SocketModel;

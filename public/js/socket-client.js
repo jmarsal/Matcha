@@ -6,22 +6,72 @@ const socketClient = {
 
 		this.webSocket.on('message', (message) => {
 			let index = parseInt($('#nbMess')[0].className),
-				classTmp = $('#nbMess')[0].className;
+				classTmp = $('#nbMess')[0].className,
+				idUserSelect = parseInt($('#chatUser')[0].className);
 
+			$('<div/>', {
+				class: 'container-message',
+				id: 'cont' + index,
+				appendTo: $('#container-chat' + idUserSelect)
+			});
 			$('<div/>', {
 				class: 'talk-bubble tri-right round right-in me',
 				id: 'mess' + index,
-				appendTo: $('#container-chat')
+				appendTo: $('#cont' + index)
 			});
 			$('<div/>', {
 				class: 'talktext',
 				appendTo: $('#mess' + index)
 			}).text(message);
 
-			$('#container-chat').animate({ scrollTop: $('#container-chat')[0].scrollHeight }, 1000);
+			$('#container-chat' + idUserSelect).animate(
+				{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
+				1000
+			);
 			$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
 			$('#input-chat').val('');
 		});
+
+		this.webSocket.on('messageOtherUser', (data) => {
+			let index = parseInt($('#nbMess')[0].className),
+				classTmp = $('#nbMess')[0].className,
+				idUserSelect = data.myId,
+				testContainer = $('container-chat' + idUserSelect);
+
+			$('<div/>', {
+				class: 'container-message',
+				id: 'cont' + index,
+				appendTo: $('#container-chat' + idUserSelect)
+			});
+			$('<div/>', {
+				class: 'talk-bubble tri-right round left-in',
+				id: 'mess' + index,
+				appendTo: $('#cont' + index)
+			});
+			$('<div/>', {
+				class: 'talktext',
+				appendTo: $('#mess' + index)
+			}).text(data.message);
+
+			$('#container-chat' + idUserSelect).animate(
+				{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
+				1000
+			);
+			$('#' + idUserSelect).addClass('notifs');
+			$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
+			$('#input-chat').val('');
+		});
+
+		this.webSocket.on('notifMess', (notifMess) => {
+			$('#round-nb').css('display', 'inline-flex');
+			$('#nb').text(notifMess.nbNotifs);
+			if (notifMess.connected) {
+				$('#connect-users').addClass('con');
+			} else {
+				$('#connect-users').removeClass('con');
+			}
+		});
+
 		// m'affiche que l'user vu est connecter ou pas sur browse/profil
 		this.webSocket.on('online', (classColor) => {
 			if (classColor.class === 'green') {
@@ -46,12 +96,14 @@ const socketClient = {
 				$('#lastConnect').remove();
 				$('#online').removeClass('red');
 				$('#online').addClass('green');
+				$('#' + connected.id).removeClass('offline');
 			} else if (connected.status === 'disconnect') {
 				let disconnect = connected.disconnect;
 
 				$('#lastConnect').remove();
 				$('#online').removeClass('green');
 				$('#online').addClass('red');
+				$('#' + connected.id).addClass('offline');
 				if (disconnect) {
 					$('<div/>', {
 						id: 'lastConnect',
@@ -61,10 +113,12 @@ const socketClient = {
 				}
 			}
 		});
+
 		this.webSocket.on('visit', (visit) => {
 			$('#round-nb').css('display', 'inline-flex');
 			$('#nb').text(visit);
 		});
+
 		this.webSocket.on('like', (like) => {
 			$('#round-nb').css('display', 'inline-flex');
 			$('#nb').text(like.nbNotifs);
@@ -74,6 +128,7 @@ const socketClient = {
 				$('#connect-users').removeClass('con');
 			}
 		});
+
 		this.webSocket.on('likeSession', (like) => {
 			if (like.status || like === true) {
 				$('#like-profil').css('background-image', 'url("/images/like/like.png")');

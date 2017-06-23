@@ -18,9 +18,7 @@ class SocketIo {
 
 			if (user) {
 				this.clientsList[user.id] = socket;
-				socket.broadcast.emit('onlineMe', { status: 'connected' });
-				console.log('Un client est connecté');
-				console.log(Object.keys(this.clientsList));
+				socket.broadcast.emit('onlineMe', { status: 'connected', id: user.id });
 
 				socket.on('visit', (idUserProfil) => {
 					SocketModel.addNewVisitToDb(user.id, user.login, idUserProfil)
@@ -56,8 +54,18 @@ class SocketIo {
 				socket.on('message', (data) => {
 					SocketModel.saveMessageOnDb(user.id, data.userId, data.message, user.id)
 						.then(() => {
+							return SocketModel.addNewNotifForMess(user.id, user.login, data.userId);
+						})
+						.then((notifs) => {
 							if (this.clientsList[data.userId]) {
-								this.clientsList[data.userId].emit('message', data.message);
+								let res = {
+									message: data.message,
+									myId: user.id,
+									otherId: data.userId
+								};
+
+								this.clientsList[data.userId].emit('notifMess', notifs);
+								this.clientsList[data.userId].emit('messageOtherUser', res);
 							}
 							this.clientsList[user.id].emit('message', data.message);
 						})
