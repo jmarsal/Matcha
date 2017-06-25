@@ -9,58 +9,59 @@ html(lang='fr')
         //meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0")
         meta(name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no")
         meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
-        link(rel="icon" type="image/png" href="")
+        link(rel="icon" type="image/png" href="/images/logo/logo.png")
         link(rel="stylesheet" href= "../css/app.css")
         link(rel="stylesheet" href="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.css")
         block jsHeader
             script(src="http://localhost:35729/livereload.js?snipver=1")
             
     body(onload= (page === "account" || sousPage === "browse/profil" ? "initialize("+lat+","+lng+")" : ""))
-        div(class="site-container")
-            div(class="site-pusher")
-                header(class="header")
-                    a(href="#" class="header__icon" id="header__icon" onclick="showhide()")
-                    a(class="header__logo" href="#") MATCHA
-                    nav(class="menu")
-                        if !noheader
-                            a(href="../browse", "class"=(page == "browse" ? "is-active" : "" )) Parcourir
-                            a(href="../search", "class"=(page == "search" ? "is-active" : "")) Rechercher
-                            a(href="../messenger", "class"=(page == "messenger" ? "is-active" : "" )) Messenger                            
-                            a(href="../account", "class"=(page == "account" ? "is-active" : "")) Mon Compte
-                                if (locals.photoFav)
-                                    div(
-                                        class="fav default-img-user" id="default-img-user"
-                                        style='background-image: url("' + photoFav + '")'
-                                        )
-                                else
-                                    div(
-                                        class=("default-img-user") id="default-img-user"
-                                        style='background-image: url("/images/upload/default-user.png")'
-                                        )
-                            a(href='#', class="is_active" id="notifs") 
-                                div(
-                                        class=("notif-img") id="imgNotifs"
-                                        style=(nbNotif == 0 || !nbNotif) ? 'left: 15px ; background-image: url("/images/notifs/notification.png")' : 'background-image: url("/images/notifs/notification.png")'
-                                        )
-                                    div(class="round-nb" id="round-nb" style=(nbNotif == 0 || !nbNotif) ?"display:none" : "display:inline-flex")
-                                        div(class="nb" id="nb") #{nbNotif}
-                            a(href="../accueil", "class"=(page == "accueil" ? "is-active" : "")) Delog
+        div(class="header" id="header")
+            div(class="topnav" id="myTopnav")
+                if !noheader
+                    img(class="logo-matcha" src="/images/logo/logo.png")
+                    a(href="#" class="nav-a matcha") MATCHA
+                    a(href="../browse", "class"=(page == "browse" ? "nav-a is-active" : "nav-a" )) Parcourir
+                    a(href="../search", "class"=(page == "search" ? "nav-a is-active" : "nav-a")) Rechercher
+                    a(href="../messenger", "class"=(page == "messenger" ? "nav-a is-active" : "nav-a" )) Messenger                             
+                    a(href="../account", "class"=(page == "account" ? "nav-a is-active" : "nav-a")) Mon Compte
+                        if (locals.photoFav)
+                            div(
+                                class="fav default-img-user" id="default-img-user"
+                                style='background-image: url("' + photoFav + '")'
+                                )
                         else
-                            a(href="../login", "class"=(page == "login" ? "is-active" : "")) se connecter
-                            a(href="../logon", "class"=(page == "logon" ? "is-active" : "")) créer un compte
-                    div(class="developpe-notif" id="developpe-notif"
-                        style="display='none'")
-                div(class="post" onload=(page === "browse" || page ==="search" || page === "account") ? 'getConnectWithOthers()' : '')
-                    div(class="content" id="app")
-                        block content
-                        div(class="footer")
-                            p(class="footer") &copy; 2017 - Made by Jmarsal
-                div(class="site-cache" id="site-cache" onclick="showhide()")
-        block jsFooter
-            <script src="../js/jquery-3.2.1.min.js"></script>
-            <script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
-            <script src="../js/jquery.form.min.js"></script>
-            <script src="../js/ajaxLayout.js"></script>
-            if (page === 'search')
-                <script src="../js/socket.io.js"></script>
-                <script src="../js/socket-client.js"></script>
+                            div(
+                                class=("default-img-user") id="default-img-user"
+                                style='background-image: url("/images/upload/default-user.png")'
+                                )
+                    a(href='#', class="nav-a is_active" id="notifs") 
+                        div(
+                                class=("notif-img header-notif") id="imgNotifs"
+                                style=(nbNotif == 0 || !nbNotif) ? 'left: 15px ; background-image: url("/images/notifs/notification.png")' : 'background-image: url("/images/notifs/notification.png")'
+                                )
+                            div(class="round-nb" id="round-nb" style=(nbNotif == 0 || !nbNotif) ?"display:none" : "display:inline-flex")
+                                div(class="nb" id="nb") #{nbNotif}
+                    a(href="../accueil", "class"=(page == "accueil" ? "nav-a is-active" : "nav-a")) Delog
+                    <a href="javascript:void(0);" class="nav-a icon" onclick="showHide()">&#9776;</a>
+                else
+                    img(class="logo-matcha" src="/images/logo/logo.png")
+                    a(href="#" class="nav-a matcha no-log") MATCHA
+                    a(href="../login", "class"=(page == "login" ? "nav-a is-active no-log" : "nav-a no-log")) se connecter
+                    a(href="../logon", "class"=(page == "logon" ? "nav-a is-active no-log" : "nav-a no-log")) créer un compte
+                    <a href="javascript:void(0);" class="nav-a icon no-log" onclick="showHide()">&#9776;</a>
+            div(class="developpe-notif" id="developpe-notif"
+                style="display='none'")
+        div(class="post" onload=(page === "browse" || page ==="search" || page === "account") ? 'getConnectWithOthers()' : '')
+            div(class="content" id="app")
+                block content
+                div(class="footer")
+                    p(class="footer") &copy; 2017 - Made by Jmarsal
+    block jsFooter
+        <script src="../js/jquery-3.2.1.min.js"></script>
+        <script src="../js/jquery-ui-1.12.1/jquery-ui-1.12.1/jquery-ui.js"></script>
+        <script src="../js/jquery.form.min.js"></script>
+        <script src="../js/ajaxLayout.js"></script>
+        if (page === 'search')
+            <script src="../js/socket.io.js"></script>
+            <script src="../js/socket-client.js"></script>

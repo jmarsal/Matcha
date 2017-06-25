@@ -16,226 +16,226 @@ block var
 block content
     div(class="container-account-user")
         div(class="content-account-user")
-            div(class="welcome-text-account")
+            div(class="welcome-text-account account-welcome")
                 div(class="welcome-account" id="welcome-account") Bienvenue #{login}
                 div(class="text1-account")
                     | Afin d'avoir accès à toutes les fonctionnalités,
                     br
                     | merci de compléter ton profil !
-            hr(class="hr-login")
-            div(class="select-photo-profil-text-account") Upload et choisis une photo pour ton profil (5 max)
-            div(class="photos-user-account", id="photos-user-account")
-                if photosUsers
-                    for photo in photosUsers
-                        div(
-                            class=((photo.photo_profil == 1) ? "div-photo-user star " : "div-photo-user")
-                            id=photo.id
-                            style='background-image: url("' + photo.src_photo + '")'
-                            onclick= (photo.src_photo === "/images/upload/default-user.png") ? "" : "interactPhoto("+ photo.id +")"
-                        )
-                        if photo.photo_profil
+                hr(class="hr-login")
+                div(class="select-photo-profil-text-account") Upload et choisis une photo pour ton profil (5 max)
+                div(class="photos-user-account", id="photos-user-account")
+                    if photosUsers
+                        for photo in photosUsers
+                            div(
+                                class=((photo.photo_profil == 1) ? "div-photo-user star no-photo" : "div-photo-user no-photo")
+                                id=photo.id
+                                style='background-image: url("' + photo.src_photo + '")'
+                                onclick= (photo.src_photo === "/images/upload/default-user.png") ? "" : "interactPhoto("+ photo.id +")"
+                            )
+                                if photo.photo_profil
+                                    img(
+                                        class="imgStar" id="imgStar"
+                                        src="/images/tools/star.png"
+                                    )
+                            - countElems++;
+                    if photosUsers && countElems < 5 ||!photosUsers
+                        label(for="my-file")
                             img(
-                                class="imgStar" id="imgStar"
-                                src="/images/tools/star.png"
+                                class="input-file-trigger"
+                                src="/images/upload/upload-female.png"
                             )
-                        - countElems++;
-                if photosUsers && countElems < 5 ||!photosUsers
-                    label(for="my-file")
-                        img(
-                            class="input-file-trigger"
-                            src="/images/upload/upload-female.png"
-                        )
-                    div(class="upload-app" id="upload-app")
-                        form(
-                            id="frmUploader" enctype="multipart/form-data"
-                            action="/account/Upload" method="post"
-                            )
-                            input(
-                                type="file" id="my-file"
-                                name="photos-profil" accept="image/*"
-                                onchange="submitPhoto()"
-                            )
+                        div(class="upload-app" id="upload-app")
+                            form(
+                                id="frmUploader" enctype="multipart/form-data"
+                                action="/account/Upload" method="post"
+                                )
+                                input(
+                                    type="file" id="my-file"
+                                    name="photos-profil" accept="image/*"
+                                    onchange="submitPhoto()"
+                                )
                 div(class="interact-photos" id="interact-photos")
                     button(class="button del" id="button-del-account") supprimer ?
                     button(class="button profil" id="button-profil-account") photo de profil ?
-                div(class=( locals.error ? "error red" : "error"), id="error") #{error}
-            form(class="formAccount", id="formAccount")
-                hr(class="hr-login")
-                p Modifier mes infos ?
-                div(class=( locals.error2 ? "error red" : "error"), id="errorInfoProfil") #{error2}
-                div(class="emailRegisterText") Mon adresse Email
-                    div: input(
-                            class="modify-account emailRegisterInput" id="emailAccountInput"
-                            name="emailRegisterInput"
-                            type="email"
-                            value= email
-                            onblur="submitForm('email')"
-                        )
-                    div: input(
-                    class="hiddenEmailRegisterInput" id="hiddenEmailAccountInput"
-                    name="hiddenEmailRegisterInput"
-                    type="hidden"
-                    value=email
-                    )
-                div(class="loginRegisterText") Mon Login
-                    div: input(
-                            class="modify-account loginRegisterInput" id="loginAccountInput"
-                            name="loginRegisterInput"
-                            minlength="3" maxlength="16"
-                            value=login
-                            onblur="submitForm('login')"
-                        )
-                    div: input(
-                    class="hiddenloginRegisterInput" id="hiddenloginAccountInput"
-                    name="hiddenloginRegisterInput"
-                    type="hidden"
-                    value=login
-                    )
-                div(class="lastNameRegisterText") Mon Nom
-                    div: input(
-                            class="modify-account lastNameRegisterInput" id="lastNameAccountInput"
-                            name="lastNameRegisterInput"
-                            value=name
-                            onblur="submitForm('name')"
-                        )
-                    div: input(
-                    class="hiddenNameRegisterInput" id="hiddenNameAccountInput"
-                    name="hiddenNameRegisterInput"
-                    type="hidden"
-                    value=name
-                    )
-                div(class="firstNameRegisterText") Mon Prénom
-                    div: input(
-                            class="modify-account firstNameRegisterInput" id="firstNameAccountInput"
-                            name="firstNameRegisterInput"
-                            value=firstName
-                            onblur="submitForm('firstName')"
-                    )
-                    div: input(
-                    class="hiddenFirstNameRegisterInput" id="hiddenFirstNameAccountInput"
-                    name="hiddenFirstNameRegisterInput"
-                    type="hidden"
-                    value=firstName
-                    )
-                div(class="birthdayRegisterText") Ma date de naissance
-                    div: input(
-                    type="date"
-                    autocomplete=true
-                    class="modify-account birthdayRegisterInput" id="birthdayAccountInput"
-                    name="birthdayRegisterInput"
-                    value=birthday
-                    onblur="submitForm('birthday')"
-                    )
-                div(class="location-container")
-                    div(class="location-town") Mon adresse
+                    div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+                form(class="formAccount", id="formAccount")
+                    hr(class="hr-login")
+                    p Modifier mes infos ?
+                    div(class=( locals.error2 ? "error red" : "error"), id="errorInfoProfil") #{error2}
+                    div(class="emailRegisterText") Mon adresse Email
                         div: input(
-                                id="autocomplete"
-                                placeholder="Enter your address"
-                                value=address
-                                onFocus="geolocate()"
-                                type="text"
+                                class="modify-account emailRegisterInput" id="emailAccountInput"
+                                name="emailRegisterInput"
+                                type="email"
+                                value= email
+                                onblur="submitForm('email')"
                             )
-                    div(class=( locals.error7 ? "error red" : "error"), id="errorLocation") #{error7}
-                    div(class="location-auto") Google Map
-                        img(
-                        class="google-button"
-                        src="/images/location/google-maps.png"
-                        title="Me geolocalisé ?"
-                        onclick="initialize()"
+                        div: input(
+                        class="hiddenEmailRegisterInput" id="hiddenEmailAccountInput"
+                        name="hiddenEmailRegisterInput"
+                        type="hidden"
+                        value=email
                         )
-                    div(id="map_canvas" class="map_canvas")
-                hr(class="hr-login")
-                div(class="sex-user") tu es :
-                    div(class="container-checkbox")
-                        div(class="sex-user-input") un homme
-                            input(
-                            class="input-sex-user-male checkbox-account"
-                            type="radio" name="input-sex-user"
-                            checked=(sex == 1 ? true : false)
-                            value="1"
-                            onclick="submitForm('sex')"
+                    div(class="loginRegisterText") Mon Login
+                        div: input(
+                                class="modify-account loginRegisterInput" id="loginAccountInput"
+                                name="loginRegisterInput"
+                                minlength="3" maxlength="16"
+                                value=login
+                                onblur="submitForm('login')"
                             )
-                        div(class="sex-user-input") une femme
-                            input(
-                            class="input-sex-user-female checkbox-account"
-                            type="radio" name="input-sex-user"
-                            checked=(sex == 2 ? true : false)
-                            value="2"
-                            onclick="submitForm('sex')"
+                        div: input(
+                        class="hiddenloginRegisterInput" id="hiddenloginAccountInput"
+                        name="hiddenloginRegisterInput"
+                        type="hidden"
+                        value=login
+                        )
+                    div(class="lastNameRegisterText") Mon Nom
+                        div: input(
+                                class="modify-account lastNameRegisterInput" id="lastNameAccountInput"
+                                name="lastNameRegisterInput"
+                                value=name
+                                onblur="submitForm('name')"
                             )
-                div(class=( locals.error3 ? "error red" : "error"), id="errorInfoSex") #{error3}
-                div(class="orientation-user") tu recherches :
-                    div(class="container-checkbox")
-                        div(class="orientation-user-input") un homme
-                            input(
-                                class="input-orientation-user checkbox-account"
-                                type="radio" name="input-orientation-user"
-                                checked=(orientation == 1 ? true : false)
-                                value="1"
-                                onclick="submitForm('orientation')"
-                            )
-                        div(class="orientation-user-input") une femme
-                            input(
-                                class="input-orientation-user checkbox-account"
-                                type="radio" name="input-orientation-user"
-                                checked=(orientation == 2 ? true : false)
-                                value="2"
-                                onclick="submitForm('orientation')"
-                            )
-                        div(class="orientation-user-input") les deux
-                            input(
-                                class="input-orientation-user checkbox-account"
-                                type="radio" name="input-orientation-user"
-                                checked=(orientation == 3 ? true : false)
-                                value="3"
-                                onclick="submitForm('orientation')"
-                            )
-                div(class=( locals.error4 ? "error red" : "error"), id="errorInfoOrientation") #{error4}
-                div(class="biographie-account") A propos de toi :
-                    div: textarea(
-                        class="bio-account" id="bioAccount"
-                        type="text"
-                        name="bioAccount"
-                        maxlength="21844"
-                        onblur="submitForm('bio')"
-                    ) #{bio}
-                div(class=( locals.error5 ? "error red" : "error"), id="errorInfoBio") #{error5}
-                div(class="tags-account")
-                    div(class="tag-slider")
-                        div(class="slider-before") Tous les tags
-                        label(class="switch")
-                            input(
-                            class="switch-input"
-                            name="switch-input"
-                            type="checkbox"
-                            checked=false
-                            value="0"
-                            onclick="changeTagsDisplay()"
-                            )
-                            div(class="slider round")
-                        div(class="slider-after") Mes tags
-                    div(class="container-tags" id="container-tags")
-                        if tags
-                            - countElems = 0;
-                            for tag in tags
-                                div(
-                                class=(check[countElems].idTag == tag.id && check[countElems].check ? "tags button check" : "tags button")
-                                id=tag.tag
-                                onclick="modifyTagUser("+tag.tag+")"
-                                ) ##{tag.tag}
-                                - countElems++;
-                    div(class=( locals.error6 ? "error red" : "error"), id="errorTag") #{error6}
-                    div(class="new-tag" id="new-tag") Rechercher ou créer un nouveau Tag ?
-                        div(class="container-input-search-tag")
-                            p(class="tags-input-account-p") #
-                            input(
-                                class="tags-input-account"
-                                id="tagsInputAccount"
-                                type="text"
-                                name="tags-input-account"
-                                minlength="2" maxlength="150"
+                        div: input(
+                        class="hiddenNameRegisterInput" id="hiddenNameAccountInput"
+                        name="hiddenNameRegisterInput"
+                        type="hidden"
+                        value=name
+                        )
+                    div(class="firstNameRegisterText") Mon Prénom
+                        div: input(
+                                class="modify-account firstNameRegisterInput" id="firstNameAccountInput"
+                                name="firstNameRegisterInput"
+                                value=firstName
+                                onblur="submitForm('firstName')"
+                        )
+                        div: input(
+                        class="hiddenFirstNameRegisterInput" id="hiddenFirstNameAccountInput"
+                        name="hiddenFirstNameRegisterInput"
+                        type="hidden"
+                        value=firstName
+                        )
+                    div(class="birthdayRegisterText") Ma date de naissance
+                        div: input(
+                        type="date"
+                        autocomplete=true
+                        class="modify-account birthdayRegisterInput" id="birthdayAccountInput"
+                        name="birthdayRegisterInput"
+                        value=birthday
+                        onblur="submitForm('birthday')"
+                        )
+                    div(class="location-container")
+                        div(class="location-town") Mon adresse
+                            div: input(
+                                    id="autocomplete"
+                                    placeholder="Enter your address"
+                                    value=address
+                                    onFocus="geolocate()"
+                                    type="text"
                                 )
-                        div(
-                            class="button account"
-                            onclick="addTagToDb()"
-                        ) ajouter ce tag !
+                        div(class=( locals.error7 ? "error red" : "error"), id="errorLocation") #{error7}
+                        div(class="location-auto") Google Map
+                            img(
+                            class="google-button"
+                            src="/images/location/google-maps.png"
+                            title="Me geolocalisé ?"
+                            onclick="initialize()"
+                            )
+                        div(id="map_canvas" class="map_canvas")
+                    hr(class="hr-login")
+                    div(class="sex-user") tu es :
+                        div(class="container-checkbox")
+                            div(class="sex-user-input") un homme
+                                input(
+                                class="input-sex-user-male checkbox-account"
+                                type="radio" name="input-sex-user"
+                                checked=(sex == 1 ? true : false)
+                                value="1"
+                                onclick="submitForm('sex')"
+                                )
+                            div(class="sex-user-input") une femme
+                                input(
+                                class="input-sex-user-female checkbox-account"
+                                type="radio" name="input-sex-user"
+                                checked=(sex == 2 ? true : false)
+                                value="2"
+                                onclick="submitForm('sex')"
+                                )
+                    div(class=( locals.error3 ? "error red" : "error"), id="errorInfoSex") #{error3}
+                    div(class="orientation-user") tu recherches :
+                        div(class="container-checkbox")
+                            div(class="orientation-user-input") un homme
+                                input(
+                                    class="input-orientation-user checkbox-account"
+                                    type="radio" name="input-orientation-user"
+                                    checked=(orientation == 1 ? true : false)
+                                    value="1"
+                                    onclick="submitForm('orientation')"
+                                )
+                            div(class="orientation-user-input") une femme
+                                input(
+                                    class="input-orientation-user checkbox-account"
+                                    type="radio" name="input-orientation-user"
+                                    checked=(orientation == 2 ? true : false)
+                                    value="2"
+                                    onclick="submitForm('orientation')"
+                                )
+                            div(class="orientation-user-input") les deux
+                                input(
+                                    class="input-orientation-user checkbox-account"
+                                    type="radio" name="input-orientation-user"
+                                    checked=(orientation == 3 ? true : false)
+                                    value="3"
+                                    onclick="submitForm('orientation')"
+                                )
+                    div(class=( locals.error4 ? "error red" : "error"), id="errorInfoOrientation") #{error4}
+                    div(class="biographie-account") A propos de toi :
+                        div: textarea(
+                            class="bio-account" id="bioAccount"
+                            type="text"
+                            name="bioAccount"
+                            maxlength="21844"
+                            onblur="submitForm('bio')"
+                        ) #{bio}
+                    div(class=( locals.error5 ? "error red" : "error"), id="errorInfoBio") #{error5}
+                    div(class="tags-account")
+                        div(class="tag-slider")
+                            div(class="slider-before") Tous les tags
+                            label(class="switch")
+                                input(
+                                class="switch-input"
+                                name="switch-input"
+                                type="checkbox"
+                                checked=false
+                                value="0"
+                                onclick="changeTagsDisplay()"
+                                )
+                                div(class="slider round")
+                            div(class="slider-after") Mes tags
+                        div(class="container-tags" id="container-tags")
+                            if tags
+                                - countElems = 0;
+                                for tag in tags
+                                    div(
+                                    class=(check[countElems].idTag == tag.id && check[countElems].check ? "tags button check" : "tags button")
+                                    id=tag.tag
+                                    onclick="modifyTagUser("+tag.tag+")"
+                                    ) ##{tag.tag}
+                                    - countElems++;
+                        div(class=( locals.error6 ? "error red" : "error"), id="errorTag") #{error6}
+                        div(class="new-tag" id="new-tag") Rechercher ou créer un nouveau Tag ?
+                            div(class="container-input-search-tag")
+                                p(class="tags-input-account-p") #
+                                input(
+                                    class="tags-input-account"
+                                    id="tagsInputAccount"
+                                    type="text"
+                                    name="tags-input-account"
+                                    minlength="2" maxlength="150"
+                                    )
+                            div(
+                                class="button account"
+                                onclick="addTagToDb()"
+                            ) ajouter ce tag !

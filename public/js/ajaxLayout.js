@@ -31,7 +31,7 @@ function displayNotifs() {
 		if (dataRes.response.notifs && dataRes.response.notifs.length) {
 			let data = dataRes.response.notifs;
 
-			$('#developpe-notif').css('display', 'block');
+			$('#developpe-notif').css('display', 'flex');
 			$('<div/>', {
 				id: 'containerNotifs',
 				class: 'container-Notifs',
@@ -109,4 +109,19 @@ function removeHistoryNotifs() {
 		removeNotif();
 		$('#round-nb').css('display', 'none');
 	});
+}
+
+function showHide() {
+	var x = document.getElementById('myTopnav'),
+		y = document.getElementById('header');
+	if (x.className === 'topnav') {
+		x.className += ' responsive';
+	} else {
+		x.className = 'topnav';
+	}
+	if (y.className === 'header') {
+		y.className += ' responsive';
+	} else {
+		y.className = 'header';
+	}
 }

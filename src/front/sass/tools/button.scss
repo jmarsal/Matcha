@@ -1,26 +1,27 @@
 @import "../variables/paletteColors";
 
 .button {
-    display: block;
-    cursor: pointer;
-    background: $primary-color;
-    color: #FFF;
-    text-decoration: none;
-    position: relative;
-    font-size: 1.5vw;
-    padding: 10px;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    border: solid 1px darken($primary-color, 20);
-    border-radius: 25px;
-    box-shadow:inset 0 px 1 px 1 px lighten($primary-color, 20);
-    background-image:linear-gradient(top, $primary-color, darken($primary-color, 10));
-    margin-bottom: 14px;
-    
-    &:hover, &.active {
-        background: $primary-color-dark;
-    }
-    &:focus {
-        outline: none;
-    }
+	display: block;
+	cursor: pointer;
+	background: $primary-color;
+	color: #FFF;
+	text-decoration: none;
+	position: relative;
+	font-size: 1.5vw;
+	padding: 10px;
+	text-align: center;
+	font-family: Arial, sans-serif;
+	border: solid 1px darken($primary-color, 20);
+	border-radius: 25px;
+	box-shadow: inset 0 px 1 px 1 px lighten($primary-color, 20);
+	background-image: linear-gradient(top, $primary-color, darken($primary-color, 10));
+	margin-bottom: 14px;
+
+	&:hover,
+	&.active {
+		background: $primary-color-dark;
+	}
+	&:focus {
+		outline: none;
+	}
 }

@@ -17,7 +17,7 @@ block var
 block content
     div(class="container-account-user" onload="getStatusOnline("+profil.id+")")
         div(class="content-account-user" id="contentAccountUser")
-            div(class="welcome-text-account" id="welcomeTextAccount")
+            div(class="welcome-text-account profil-welcome" id="welcomeTextAccount")
                 div(class="welcome-account" id="welcome-account")
                 div(class=( locals.error ? "error red" : "error"), id="error") #{error}
                 div(class="report button" onclick="reportLockUser('report')" title="Nous reporter ce compte comme faux...") Faux Compte

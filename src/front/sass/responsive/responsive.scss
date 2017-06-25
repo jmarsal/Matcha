@@ -1,0 +1,242 @@
+@media only screen and (max-width: 2340px) {
+	font-size: 17px;
+	.menu,
+	.header__logo {
+		font-size: 17px;
+		display: inline-flex;
+		p {
+			padding: 0;
+			margin: 0 auto;
+		}
+		a {
+			font-size: 17px;
+		}
+	}
+
+	// .button-header  {
+	// 	color: yellow;
+
+	// 	font-size: 0.5em;
+	// }
+}
+
+@media only screen and (max-width: 750px) {
+	font-size: 17px;
+	.menu,
+	.header__logo {
+		font-size: 17px;
+		display: inline-flex;
+		p {
+			padding: 0;
+			margin: 0 auto;
+		}
+		a {
+			font-size: 17px;
+		}
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	font-size: 1em;
+	.menu,
+	.header__logo {
+		// font-size: 0.8rem;
+		display: inline-flex;
+		p {
+			padding: 0;
+			margin: 0 auto;
+		}
+		a {
+			position: relative;
+			top: 32px;
+			width: 100;
+			line-height: 0px;
+			font-size: 17px;
+		}
+	}
+
+	.content {
+		height: 100%;
+	}
+	.containerRegister {
+		height: 100%;
+	}
+	.formRegister {
+		height: 75%;
+		width: 80%;
+		margin-top: 10%;
+		// font-size: 17px;
+	}
+	.loginRegisterText {
+		margin-top: 10%;
+	}
+
+	.button {
+		// font-size: 0.7rem;
+	}
+	.button.forget {
+		margin-top: 45px;
+		// font-size: 0.6rem;
+	}
+	.logon {
+		margin-top: 21%;
+		// font-size: 0.6rem;
+	}
+	.forget-text {
+		// font-size: 0.4rem;
+		margin-bottom: 15%;
+	}
+}
+
+// @media only screen and (max-width: 685px) {
+// 	color: yellow;
+// 	font-size: 0.5em;
+// 	.button-header  {
+// 		font-size: 0.5em;
+// 	}
+// }
+
+/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+	form input,
+	textarea {
+		// color: $primary-text-color;
+		// text-align: center;
+		width: 75%;
+		font-size: 17px;
+		// border: solid 1px darken($gold-color, 5);
+		// border-radius: 5px;
+		// background-color: linear-gradient(top, $primary-color, darken($primary-color, 15));
+	}
+
+	.error {
+		font-size: 17px;
+	}
+
+	.topnav a:not(:first-child) {
+		display: none;
+	}
+	.topnav a.icon {
+		float: right;
+		display: block;
+		width: 45px;
+		margin-top: 3px;
+		font-size: 30px;
+		color: $gold-color;
+	}
+
+	.header {
+		line-height: 0.75;
+		line-height: 1.2;
+		height: 73px;
+	}
+
+	.formRegister {
+		height: auto;
+	}
+
+	.forget-text {
+		padding-bottom: 42px;
+	}
+
+	.log {
+		margin-top: 45px;
+	}
+
+	.forget-logo {
+		top: 105px;
+	}
+
+	.content-account-user {
+		width: 100%;
+	}
+	.account-welcome {
+		margin-top: 0px;
+	}
+
+	.photos-user-account {
+		overflow-x: auto;
+		left: 0px;
+
+		.div-photo-user {
+			margin-left: 10px;
+			width: 50px;
+			height: 50px;
+			display: flex;
+			margin-right: 0px;
+
+			.imgStar {
+				width: 10px;
+				height: 10px;
+			}
+		}
+
+		.input-file-trigger {
+			top: 5px;
+		}
+	}
+
+	.interact-photos {
+		margin-bottom: 38px;
+	}
+
+	.welcome-text-account {
+		width: 100%;
+	}
+	.container-trie-options {
+		width: 250px;
+	}
+	.commun-tags-browse {
+		margin-left: 70px;
+	}
+	.container-users {
+		display: inline-flex;
+		width: 100%;
+		overflow-x: auto;
+		padding-bottom: 10px;
+	}
+	.photo-user.select {
+		margin-top: 6px;
+	}
+	.photo-user {
+		margin-left: 0px;
+	}
+	.container-chat {
+		margin-left: 30px;
+		height: 55%;
+	}
+
+	.container-Notifs {
+		left: 0;
+		font-size: 17px;
+		overflow-y: auto;
+	}
+	.containerOneNotifs {
+		top: 29px;
+	}
+	.lock {
+		margin-left: 0;
+	}
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 600px) {
+	.topnav.responsive {
+		position: relative;
+	}
+	.topnav.responsive a.icon {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	.topnav.responsive a {
+		float: none;
+		display: block;
+		text-align: left;
+	}
+
+	.responsive.header {
+		line-height: 1.5;
+		height: 164px;
+	}
+}

@@ -1,4 +1,9 @@
 @import "../variables/paletteColors";
+
+html {
+	font-size: 17px;
+}
+
 .container-account-user {
 	margin: 0% auto;
 }
@@ -6,17 +11,24 @@
 .content-account-user {
 	margin: 0% auto;
 	font-family: Indie Flower;
-	background-color: rgba($primary-color-dark, 0.6);
+	background-color: rgba($header-color, 0.6);
 	text-align: center;
 	width: 60%;
 }
 
 .welcome-text-account {
-	background-color: rgba($primary-color-dark, 0.8);
+	margin-top: 15px;
+	padding-top: 10px;
+	background-color: rgba($header-color, 0.8);
 	margin-bottom: -2%;
+	color: $white-no-white;
 }
 
 .photos-user-account {
+	left: 365px;
+	display: flex;
+	margin: 25 auto;
+	width: 100%;
 	position: relative;
 	.upload {
 		display: none;
@@ -28,26 +40,28 @@
 		cursor: pointer;
 		width: 50px;
 		height: 50px;
-		bottom: 20px;
+		left: 30px;
+		top: 50px;
 		-webkit-transition: width 1s, height 1s, filter 1s, transform 1s;
 		transition: width 1s, height 1s, filter 1s, transform 1s;
 		&:hover {
 			filter: invert(100%);
-			filter: hue-rotate(360deg);
 			transform: rotate(360deg);
-			width: 10%;
-			height: 10%;
-			bottom: 0;
+		}
+
+		&.no-img {
+			top: -25px;
 		}
 	}
 	.div-photo-user {
-		display: inline-block;
+		display: inline-flex;
 		position: relative;
 		width: 100px;
 		height: 100px;
-		background-position: center;
-		margin-right: 4%;
+		margin-right: 20px;
+		// margin-left: 4%;
 		/* Make the background image cover the area of the <div>, and clip the excess */
+		background-position: center;
 		background-size: cover;
 		border: 2px solid #ddd;
 		/* Gray border */
@@ -56,12 +70,12 @@
 		cursor: pointer;
 		-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
 		transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
-		z-index: 0;
+		// z-index: 0;
 		&:hover {
-			border: 2px solid #ddd900;
+			border: 2px solid $gold-color;
 		}
 		&.profil {
-			border: 2px solid #ddd900;
+			border: 2px solid $gold-color;
 			width: 200px;
 			height: 200px;
 			border-radius: 0;
@@ -70,22 +84,32 @@
 			z-index: 1;
 		}
 		&.star {
-			left: 40px;
-			margin-left: -40px; //top: -32px;
+			// left: 40px;
+			// margin-left: -40px;
+			// top: -78px; //top: -32px;
 		}
-		&.profil.star {
-			//top: -50px;
+
+		&.no-photo:hover {
+			border: 2px solid #ddd;
 		}
 	}
 }
 
 .imgStar {
 	width: 25px;
+	height: 25px;
 	position: relative;
-	left: -15px;
+	// top: 85px;
+	// left: 40px;
 	z-index: 0;
 	&.profilStar {
 		z-index: 2;
+		// top: 190px;
+		// left: 105px;
+	}
+	&.ajax-add {
+		// top: 0px;
+		// left: -25px;
 	}
 }
 
@@ -97,7 +121,7 @@
 	-webkit-transition: width 1s, height 1s, -webkit-transform 1s;
 	transition: width 1s, height 1s, transform 1s;
 	.button {
-		display: inline-block;
+		display: flex;
 		-webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
 		transition: width 1s, height 1s, opacity 1s, transform 1s;
 		opacity: 0;
@@ -105,11 +129,18 @@
 		margin: 0 auto;
 		padding: 0;
 		height: 0;
+		border-radius: 0px;
+		border: 3px solid lighten($header-color, 10);
+
+		&:hover {
+			background: $gold-color;
+			color: $header-color;
+		}
 	}
 	&.expand {
 		height: auto;
 		.button {
-			display: inline-block;
+			display: inline-flex;
 			height: auto;
 			width: auto;
 			font-size: inherit;
@@ -146,7 +177,7 @@
 		display: inline-block;
 		position: relative;
 		margin: 0% auto;
-		width: 6%;
+		width: 17px;
 		margin-left: 8%;
 	}
 }
@@ -154,15 +185,15 @@
 .content-account-user {
 	margin: 0% auto;
 	font-family: Indie Flower;
-	background-color: rgba($primary-color-dark, 0.6);
+	background-color: rgba($header-color, 0.6);
 	text-align: center;
 	width: 60%;
 }
 
-.footer {
-	position: relative;
-	bottom: -63%;
-}
+// .footer {
+// 	position: relative;
+// 	bottom: -63%;
+// }
 
 .modify-account {
 	&.red {
@@ -205,12 +236,12 @@
 	transition: transform 1s;
 	width: auto;
 	&:hover {
-		background-color: $primary-color;
+		background-color: $dark-blue-color;
 		-webkit-transform: rotate(360deg);
 		transform: rotate(360deg);
 	}
 	&.check {
-		background-color: $primary-color;
+		background-color: $bleu-de-france;
 		border: 1px solid whitesmoke;
 		&:hover {
 			background-color: #919191;
@@ -331,7 +362,7 @@
 }
 
 .container-tags {
-	border: 2px solid $primary-color;
+	border: 2px solid $header-color;
 	max-height: 20%;
 	overflow-y: auto;
 }

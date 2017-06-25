@@ -29,7 +29,7 @@ function showResponse(responseText, statusText, xhr, $form) {
 	}
 	$('<div/>', {
 		id: dataRes.response.idPhoto,
-		class: 'div-photo-user',
+		class: 'div-photo-user no-img',
 		css: {
 			'background-image': 'url(' + dataRes.response.srcPhoto + ')'
 		},
@@ -43,10 +43,11 @@ function showResponse(responseText, statusText, xhr, $form) {
 	if (dataRes.response.fav) {
 		let imgStar = $('<img/>', {
 			id: 'imgStar',
-			class: 'imgStar profilStar',
-			src: '/images/tools/star.png'
+			class: 'imgStar ajax-add',
+			src: '/images/tools/star.png',
+			prependTo: $('#' + dataRes.response.idPhoto)
 		});
-		$('#' + dataRes.response.idPhoto).addClass('star').after(imgStar);
+		// $('#' + dataRes.response.idPhoto).addClass('star').after(imgStar);
 	}
 	if ($('.div-photo-user').length >= 5) {
 		$('.input-file-trigger').css('display', 'none');
@@ -104,7 +105,8 @@ function interactPhoto(photoId) {
 }
 
 function removePhoto(idPhoto) {
-	const testIfStar = $('#' + idPhoto)[0].classList.contains('star');
+	// Je supprime la favorite ?
+	const testIfStar = $('#' + idPhoto)[0].firstChild.classList.contains('imgStar') ? true : false;
 
 	$.post(
 		'/account/Delete',
@@ -126,7 +128,7 @@ function removePhoto(idPhoto) {
 			if ($('.div-photo-user').length < 1) {
 				$('<div/>', {
 					id: 'noPhotoUpload',
-					class: 'div-photo-user',
+					class: 'div-photo-user no-photo',
 					css: {
 						'background-image': 'url("/images/upload/default-user.png")',
 						cursor: 'initial'
@@ -134,6 +136,7 @@ function removePhoto(idPhoto) {
 					prependTo: $('#photos-user-account')
 				});
 			}
+			// C'ete la favorite ?
 			if (testIfStar) {
 				let count = 0;
 
@@ -174,10 +177,10 @@ function addFavoritePhoto(idPhoto) {
 			$('.div-photo-user').removeClass('star');
 			let imgStar = $('<img/>', {
 				id: 'imgStar',
-				class: 'imgStar profilStar',
-				src: '/images/tools/star.png'
+				class: 'imgStar',
+				src: '/images/tools/star.png',
+				prependTo: $('#' + idPhoto)
 			});
-			$('#' + idPhoto).addClass('star').after(imgStar);
 			reduceInteract();
 		}
 	);
@@ -713,4 +716,12 @@ $('#tagsInputAccount').on('keypress', function() {
 			}
 		});
 	});
+});
+
+window.addEventListener('load', () => {
+	let check = $('#noPhotoUpload');
+
+	if (check) {
+		console.log('no upload');
+	}
 });

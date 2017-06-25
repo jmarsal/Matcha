@@ -1,26 +1,32 @@
-.text1-account {
-	p {
-		border: 5px solid $primary-color-dark;
-	}
+.browse-text1 {
+	border-bottom: 1px solid rgba($primary-color-dark, 0.6);
+}
+
+.container-filters {
+	margin-top: 15px;
+	padding-bottom: 25px;
+	border-bottom: 1px solid $primary-color;
 }
 
 .separator-profil {
 	margin-bottom: 5%;
 }
 
+.profil-browse {
+	margin-top: 23px;
+}
+
 .infos-profil-browse {
-	border: 5px solid $primary-color-dark;
-	background-color: rgba(
-		$primary-color,
-		0.6
-	); //-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
-	//transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
+	border: 5px solid $header-color;
+	background-color: rgba($header-color, 0.8);
+	color: $white-no-white;
 	cursor: pointer;
 	z-index: 0;
 	border-radius: 0;
 	transition-duration: 2s;
 	&:hover {
-		background-color: rgba($primary-color-light, 0.6); //&, .infos {
+		background-color: rgba($gold-color, 0.6);
+		color: $primary-text-color; //&, .infos {
 	}
 }
 
@@ -33,58 +39,60 @@
 	background-size: cover;
 	border: 2px solid #ddd;
 	border-radius: 0;
+	margin-top: 15px;
+}
+
+.login-profil-browse {
+	// padding-bottom: 5px;
 }
 
 .infos {
 	margin: 0% auto;
-	background-color: rgba($primary-color-dark, 0.6);
+	background-color: rgba($dark-blue-color, 0.9);
 	color: $color_text;
 }
 
 .info-pop-tag {
-	background-color: lighten($primary-color, 0.9);
+	margin: 0 auto;
+	background-color: rgba($dark-blue-color, 0.6);
 	display: flex;
 	width: 100%;
+	color: $white-no-white;
 }
 
 .popularity-browse {
-	margin-left: 40px;
+	// float: left;
+	margin-left: 20px;
 	float: left;
-	display: block;
+	display: flex;
 	position: relative;
 }
 
 .commun-tags-browse {
-	display: block;
+	float: right;
+	display: flex;
 	position: relative;
-	margin-left: 50%;
-	margin-right: 20px;
+	margin-left: 78%;
+	// margin-right: 20px;
 }
 
-.trie {
-	width: 50%;
-	&.button {
-		text-align: center;
-	}
-	&:hover {
-		background-color: $primary-color;
-	}
-}
-
-.fitres-interval {
-	width: 50%;
+.button {
+	border: 1px solid darken($header-color, 10);
+	width: 250px;
+	text-align: center;
 	margin: 0 auto 0px;
+	border-radius: 0px;
 	&:hover {
-		background-color: $primary-color;
+		background-color: $dark-blue-color;
 	}
 }
 
 .fitres-tags {
-	width: 50%;
+	// width: 50%;
 	margin: 0 auto 50px;
-	&:hover {
-		background-color: $primary-color;
-	}
+	// &:hover {
+	// 	background-color: $primary-color;
+	// }
 }
 
 .container-trie-options {
@@ -96,18 +104,21 @@
 
 .trie-option {
 	border: 1px solid $color_text;
-	background-color: lighten($primary-color-dark, 10);
+	background-color: lighten($dark-blue-color, 10);
 	cursor: pointer;
-	border-radius: 50px;
-	width: auto;
+	margin: 0 auto;
+	// border-radius: 50px;
+	width: 250px;
 	&:hover {
-		background-color: $primary-color;
+		background-color: $bleu-de-france;
 	}
 	&.active {
-		background-color: darken($primary-color, 10);
+		background-color: $gold-color;
+		color: $primary-text-color;
 	}
 	&.activeTrie {
-		background-color: darken($primary-color, 10);
+		background-color: $gold-color;
+		color: $primary-text-color;
 	}
 }
 
@@ -135,6 +146,8 @@
 }
 
 .container-tags {
+	margin-top: 25px;
+	margin-bottom: 25px;
 	display: inline-flex;
 	width: 80%;
 }
@@ -232,4 +245,17 @@
 		background-color: $primary-color-light;
 		color: black;
 	}
+}
+
+.browse-content {
+	background-color: rgba($header-color, 0.6);
+}
+
+.profil-welcome {
+	border-bottom: 1px solid $primary-color;
+}
+
+.container-profils-browse {
+	margin-top: 25px;
+	color: $white-no-white;
 }

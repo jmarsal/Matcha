@@ -1,5 +1,5 @@
 .container-users {
-	width: 15%;
+	width: 10px;
 }
 
 .photo-user {
@@ -67,14 +67,14 @@
 	position: relative;
 	width: 50%;
 	height: auto;
-	background-color: rgba($primary-color-dark, 0.5);
+	background-color: rgba($dark-blue-color, 0.5);
 	color: $primary-color-text;
 	// left: -2%;
 	float: left;
 
 	&.me {
 		margin-left: 49%;
-		background-color: rgba($primary-color, 0.5);
+		background-color: rgba($bleu-de-france, 0.5);
 		color: $primary-text-color;
 		float: right;
 	}
@@ -118,7 +118,7 @@
 	top: 33.8%;
 	bottom: auto;
 	border: 12px solid;
-	border-color: rgba($primary-color-dark, 0.5) rgba($primary-color-dark, 0.5) transparent transparent;
+	border-color: rgba($dark-blue-color, 0.5) rgba($dark-blue-color, 0.5) transparent transparent;
 	// border-color: rgba($primary-color, 0.5) rgba($primary-color, 0.5) transparent transparent;
 }
 
@@ -145,7 +145,7 @@
 	top: 33.8%;
 	bottom: auto;
 	border: 12px solid;
-	border-color: rgba($primary-color, 0.5) transparent transparent rgba($primary-color, 0.5);
+	border-color: rgba($bleu-de-france, 0.5) transparent transparent rgba($bleu-de-france, 0.5);
 }
 
 /* talk bubble contents */

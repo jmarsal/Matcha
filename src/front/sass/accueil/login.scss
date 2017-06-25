@@ -1,17 +1,22 @@
 @import "../variables/paletteColors";
 
 .hr-login {
-    color: $primary-color;
-    background-color: $primary-color;
-    border: none;
-    height: 0.1em;
+	color: $primary-color;
+	background-color: $primary-color;
+	border: none;
+	height: 0.1em;
 }
 
 .button.forget {
-    width: 42%;
-    font-size: 1vw;
+	width: 42%;
+	font-size: 1vw;
 }
 
 .formRegister {
-    padding-bottom: 2%;
+	padding-bottom: 2%;
+	color: $white-no-white;
+}
+
+.login-logo {
+	width: 55px;
 }

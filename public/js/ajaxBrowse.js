@@ -9,20 +9,7 @@ function displayTrieOptions() {
 		$('#containerFiltersOptions').css('display', 'none');
 		$('#containerTagsOption').css('display', 'none');
 		buttonFilter.css('display', 'block');
-		$.post(
-			'/search/Click-tag',
-			{
-				data: []
-			},
-			function(data, textStatus, jqXHR) {
-				var dataRes = JSON.parse(jqXHR.responseText),
-					divError = $('#errorTag');
-
-				divError.removeClass('red green');
-				divError.text(dataRes.response.mess);
-				rebaseBrowseUsers(dataRes.response);
-			}
-		);
+		displayOptions('browse', 'TOP');
 	} else {
 		buttonFilter.css('display', 'none');
 	}
@@ -35,6 +22,7 @@ function displayFilterOptions(page) {
 		$('#containerTrieOptions').css('display', 'none');
 		$('#containerTagsOption').css('display', 'none');
 		buttonFilter.css('display', 'block');
+		$('.fitres-tags').css('margin', '30 auto 50px');
 
 		let urlPost = page === 'browse' ? '/browse/Change-Filters-Intervals' : '/search/Change-Filters-Intervals';
 
@@ -104,6 +92,7 @@ function displayFilterOptions(page) {
 		});
 	} else {
 		buttonFilter.css('display', 'none');
+		$('.fitres-tags').css('margin', '0 auto 50px');
 	}
 }
 
