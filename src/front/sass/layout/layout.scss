@@ -237,3 +237,29 @@ body {
 		background-color: darken(red, 10);
 	}
 }
+
+@-webkit-keyframes colorChange {
+	from {
+		filter: hue-rotate(360deg);
+	}
+	to {
+		filter: hue-rotate(0deg);
+	}
+}
+
+@keyframes colorChange {
+	from {
+		filter: hue-rotate(360deg);
+	}
+	to {
+		filter: hue-rotate(0deg);
+	}
+}
+
+.double-logo {
+	-webkit-animation: colorChange 5s linear infinite;
+	-moz-animation: colorChange 5s linear infinite;
+	-ms-animation: colorChange 5s linear infinite;
+	-o-animation: colorChange 5s linear infinite;
+	animation: colorChange 5s linear infinite;
+}

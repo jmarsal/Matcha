@@ -40,8 +40,7 @@
     "sharp": "^0.17.3",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
-    "uniqid": "^4.1.1",
-    "validator": "^7.0.0"
+    "uniqid": "^4.1.1"
   },
   "babel": {
     "presets": [

@@ -19,7 +19,7 @@ html(lang='fr')
         div(class="header" id="header")
             div(class="topnav" id="myTopnav")
                 if !noheader
-                    img(class="logo-matcha" src="/images/logo/logo.png")
+                    img(class="logo-matcha double-logo" src="/images/logo/logo.png")
                     a(href="#" class="nav-a matcha") MATCHA
                     a(href="../browse", "class"=(page == "browse" ? "nav-a is-active" : "nav-a" )) Parcourir
                     a(href="../search", "class"=(page == "search" ? "nav-a is-active" : "nav-a")) Rechercher
@@ -45,7 +45,7 @@ html(lang='fr')
                     a(href="../accueil", "class"=(page == "accueil" ? "nav-a is-active" : "nav-a")) Delog
                     <a href="javascript:void(0);" class="nav-a icon" onclick="showHide()">&#9776;</a>
                 else
-                    img(class="logo-matcha" src="/images/logo/logo.png")
+                    img(class="logo-matcha double-logo" src="/images/logo/logo.png")
                     a(href="#" class="nav-a matcha no-log") MATCHA
                     a(href="../login", "class"=(page == "login" ? "nav-a is-active no-log" : "nav-a no-log")) se connecter
                     a(href="../logon", "class"=(page == "logon" ? "nav-a is-active no-log" : "nav-a no-log")) créer un compte

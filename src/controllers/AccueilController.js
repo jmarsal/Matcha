@@ -410,7 +410,6 @@ class AccueilController {
 		res.setHeader('Content-Type', 'application/json');
 
 		if (this.checkJsonReq(req, res) == true) {
-			console.log(req.body.loginRegisterInput.length);
 			if (req.body.loginRegisterInput.length >= 3 && req.body.loginRegisterInput.length <= 16) {
 				this.login = _.escape(req.body.loginRegisterInput).trim();
 			} else {

@@ -717,11 +717,3 @@ $('#tagsInputAccount').on('keypress', function() {
 		});
 	});
 });
-
-window.addEventListener('load', () => {
-	let check = $('#noPhotoUpload');
-
-	if (check) {
-		console.log('no upload');
-	}
-});

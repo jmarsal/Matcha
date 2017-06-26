@@ -43,7 +43,6 @@ class ChatModel {
 					message.message = _.unescape(message.message);
 
 					messages.push(message);
-					console.log(message.message);
 				}
 			});
 			resolve(messages);
