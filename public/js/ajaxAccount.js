@@ -106,7 +106,10 @@ function interactPhoto(photoId) {
 
 function removePhoto(idPhoto) {
 	// Je supprime la favorite ?
-	const testIfStar = $('#' + idPhoto)[0].firstChild.classList.contains('imgStar') ? true : false;
+	let testIfStar = false;
+	if ($('#' + idPhoto)[0].firstChild) {
+		testIfStar = $('#' + idPhoto)[0].firstChild.classList.contains('imgStar') ? true : false;
+	}
 
 	$.post(
 		'/account/Delete',

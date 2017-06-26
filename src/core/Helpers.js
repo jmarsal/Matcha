@@ -97,5 +97,9 @@ class Helpers {
 	static getExtension(url) {
 		return (url = url.substr(1 + url.lastIndexOf('/')).split('?')[0]).split('#')[0].substr(url.lastIndexOf('.'));
 	}
+
+	static isASCII(str) {
+		return /^[\x00-\x7F]*$/.test(str);
+	}
 }
 module.exports = Helpers;

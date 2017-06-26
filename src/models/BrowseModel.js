@@ -73,24 +73,27 @@ class BrowseModel {
 
 	static getDistanceFromAddress(idUserSession, infosUserSession, profil) {
 		return new Promise((resolve, reject) => {
-			let distance = geolib.getDistanceSimple(
-				{
-					latitude: infosUserSession[0].lat,
-					longitude: infosUserSession[0].lng
-				},
-				{
-					latitude: profil.lat,
-					longitude: profil.lng
-				}
-			);
+			if (profil.lat && profil.lng) {
+				let distance = geolib.getDistanceSimple(
+					{
+						latitude: infosUserSession[0].lat,
+						longitude: infosUserSession[0].lng
+					},
+					{
+						latitude: profil.lat,
+						longitude: profil.lng
+					}
+				);
 
-			BrowseModel.sendDistanceFromUserSessionInDb(idUserSession, distance, profil.id)
-				.then(() => {
-					resolve();
-				})
-				.catch((err) => {
-					reject(err);
-				});
+				BrowseModel.sendDistanceFromUserSessionInDb(idUserSession, distance, profil.id)
+					.then(() => {
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			}
+			resolve(false);
 		});
 	}
 
@@ -248,7 +251,7 @@ class BrowseModel {
 					'FROM users ' +
 					'INNER JOIN user_interacts ' +
 					'ON user_interacts.id_user = users.id ' +
-					'WHERE users.id != ? && (locked != true) && ',
+					'WHERE users.id != ? && (locked != true) && active = 1 && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
 			if (orientation == 3 && sex == 1) {

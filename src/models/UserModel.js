@@ -112,7 +112,7 @@ class UserModel {
 				if (err) {
 					reject(err);
 				}
-				if (res.length) {
+				if (res && res.length) {
 					if (res[0].active) {
 						resolve(true);
 					} else {
@@ -136,7 +136,7 @@ class UserModel {
 				if (err) {
 					reject(err);
 				}
-				if (res.length) {
+				if (res && res.length) {
 					resolve(res[0].id);
 				} else {
 					resolve(false);

@@ -1,6 +1,8 @@
 let idUserSelect = parseInt($('#chatUser')[0].className);
 
-$('#container-chat' + idUserSelect).scrollTop($('#container-chat' + idUserSelect)[0].scrollHeight);
+if ($('#container-chat' + idUserSelect)) {
+	$('#container-chat' + idUserSelect).scrollTop($('#container-chat' + idUserSelect)[0].scrollHeight);
+}
 
 window.addEventListener('load', () => {
 	let id_user_visit = $('#online-hidden').text(),

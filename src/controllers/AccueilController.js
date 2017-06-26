@@ -111,7 +111,7 @@ class AccueilController {
 		this.router.post('/login/form', (req, res) => {
 			if (this.checkFormLogin(req, res)) {
 				let dataUser = {
-					login: this.login,
+					login: _.escape(this.login),
 					passwd: Helpers.hashString(this.password, 'sha512')
 				};
 
@@ -376,7 +376,7 @@ class AccueilController {
 				return false;
 			}
 			// check email
-			if (Helper.isEmail(req.body.emailRegisterInput)) {
+			if (Helpers.isEmail(req.body.emailRegisterInput)) {
 				this.email = req.body.emailRegisterInput;
 			} else {
 				Helpers.sendResponseToClient('Email non valide !', 1, res);

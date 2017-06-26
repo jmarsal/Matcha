@@ -2,14 +2,14 @@
  * Created by jmarsal on 6/7/17.
  */
 
-function displayTrieOptions() {
+function displayTrieOptions(page) {
 	let buttonFilter = $('#containerTrieOptions');
 
 	if (buttonFilter[0].style.display === 'none') {
 		$('#containerFiltersOptions').css('display', 'none');
 		$('#containerTagsOption').css('display', 'none');
 		buttonFilter.css('display', 'block');
-		displayOptions('browse', 'TOP');
+		displayOptions(page, 'TOP');
 	} else {
 		buttonFilter.css('display', 'none');
 	}

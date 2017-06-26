@@ -15,7 +15,7 @@ html(lang='fr')
         block jsHeader
             script(src="http://localhost:35729/livereload.js?snipver=1")
             
-    body(onload= (page === "account" || sousPage === "browse/profil" ? "initialize("+lat+","+lng+")" : ""))
+    body(id="body" onload= (page === "account" || sousPage === "browse/profil" ? "initialize("+lat+","+lng+")" : ""))
         div(class="header" id="header")
             div(class="topnav" id="myTopnav")
                 if !noheader
