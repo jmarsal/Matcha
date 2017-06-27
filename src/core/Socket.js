@@ -36,6 +36,7 @@ class SocketIo {
 				});
 
 				socket.on('like', (idUserProfil) => {
+					// Voir ici pour stop le chat si deux users connecte et un des deux dislike.
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
 						.then((response) => {
 							if (response.error) {

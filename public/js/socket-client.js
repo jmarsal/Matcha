@@ -9,6 +9,9 @@ const socketClient = {
 				classTmp = $('#nbMess')[0].className,
 				idUserSelect = parseInt($('#chatUser')[0].className);
 
+			if (!index) {
+				index = 0;
+			}
 			$('<div/>', {
 				class: 'container-message',
 				id: 'cont' + index,
@@ -39,6 +42,10 @@ const socketClient = {
 				idUserSelect = data.myId,
 				testContainer = $('container-chat' + idUserSelect),
 				users = $('#container-users');
+
+			if (!index) {
+				index = 0;
+			}
 
 			$('<div/>', {
 				class: 'container-message',

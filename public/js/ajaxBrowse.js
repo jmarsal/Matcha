@@ -187,16 +187,16 @@ function rebaseBrowseUsers(data) {
 		$('<div/>', {
 			id: profil.id,
 			class: 'profil-browse',
-			on: {
-				click: function() {
-					printDetailsProfils(profil.id);
-				}
-			},
 			appendTo: $('#separatorProfil')
 		});
 		$('<div/>', {
 			class: 'infos-profil-browse',
 			id: 'infosProfilBrowse' + profil.id,
+			on: {
+				click: function() {
+					printDetailsProfils(profil.id);
+				}
+			},
 			appendTo: $('#' + profil.id)
 		});
 		$('<div/>', {

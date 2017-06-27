@@ -1,6 +1,7 @@
-let idUserSelect = parseInt($('#chatUser')[0].className);
+let idUserSelect = parseInt($('#chatUser')[0].className),
+	containerChat = $('#container-chat' + idUserSelect);
 
-if ($('#container-chat' + idUserSelect)) {
+if (containerChat.length && $('#container-chat' + idUserSelect)) {
 	$('#container-chat' + idUserSelect).scrollTop($('#container-chat' + idUserSelect)[0].scrollHeight);
 }
 

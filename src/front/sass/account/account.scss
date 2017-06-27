@@ -26,10 +26,10 @@ html {
 
 .photos-user-account {
 	left: 365px;
-	display: flex;
+	// display: flex;
 	margin: 25 auto;
-	width: 100%;
-	position: relative;
+	// width: 100%;
+	// position: relative;
 	.upload {
 		display: none;
 		left: 5%;
@@ -98,7 +98,7 @@ html {
 .imgStar {
 	width: 25px;
 	height: 25px;
-	position: relative;
+	position: absolute;
 	// top: 85px;
 	// left: 40px;
 	z-index: 0;
@@ -444,4 +444,9 @@ input:checked + .slider:before {
 
 .account-welcome {
 	padding-bottom: 45px;
+}
+
+.pop-nb {
+	display: inline-flex;
+	color: gold;
 }

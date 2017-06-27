@@ -94,7 +94,8 @@ class AccountController {
 							lat: infosUser.lat,
 							lng: infosUser.lng,
 							birthday: infosUser.birthday,
-							nbNotif: infosUser.notifications
+							nbNotif: infosUser.notifications,
+							pop: infosUser.popularity
 						});
 					})
 					.catch((err) => {

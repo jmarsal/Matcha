@@ -55,7 +55,7 @@ let paths = [
 		'http://baomoi-photo-3-td.zadn.vn/15/11/25/139/18070073/9_58951.jpg',
 		'https://s-media-cache-ak0.pinimg.com/736x/7e/a4/f4/7ea4f4c1dc642981407b4bfc2a47f764.jpg',
 		'https://s-media-cache-ak0.pinimg.com/originals/89/48/6a/89486a05dbddb26aab6b7db4378596d6.jpg',
-		'http://img.viva.ua/pictures/content/12/12008.jpg',
+		'http://images.shape.mdpcdn.com/sites/shape.com/files/styles/facebook_og_image/public/media/jessica-alba-700_4.jpg',
 		'https://media.giphy.com/media/3aX8uXXw6Nf6U/giphy.gif'
 	],
 	[

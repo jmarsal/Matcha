@@ -152,7 +152,8 @@ body {
 	background-size: cover;
 	width: 35px;
 	height: 32px;
-	margin: 0px 15px 0px -15px;
+	// margin: 0px 15px 0px -15px;
+	margin: auto;
 
 	&.header-notif {
 		filter: invert(100%);
@@ -210,6 +211,7 @@ body {
 	margin-left: 20px;
 	color: white;
 	font-family: Indie Flower;
+	line-height: 4.5;
 }
 
 .remove-Notifs {

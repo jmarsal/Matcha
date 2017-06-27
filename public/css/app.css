@@ -14,12 +14,6 @@ button:active,
   outline: none;
   outline: 0; }
 
-/**
- * Foundation for Sites by ZURB
- * Version 6.3.1
- * foundation.zurb.com
- * Licensed under MIT Open Source
- */
 @font-face {
   font-family: "Indie Flower";
   src: url("../fonts/Indie_Flower/IndieFlower.ttf"); }
@@ -171,16 +165,16 @@ body {
   background-size: cover;
   width: 35px;
   height: 32px;
-  margin: 0px 15px 0px -15px; }
+  margin: auto; }
   .notif-img.header-notif {
     filter: invert(100%); }
 
 .nb {
   position: absolute;
-  top: -21px;
-  left: 4px;
+  top: -2px;
+  left: 3px;
   color: white;
-  font-size: 20px; }
+  font-size: 15px; }
 
 .container-Notifs {
   display: block;
@@ -218,7 +212,8 @@ body {
   display: inline-flex;
   margin-left: 20px;
   color: white;
-  font-family: Indie Flower; }
+  font-family: Indie Flower;
+  line-height: 4.5; }
 
 .remove-Notifs {
   top: 0px;
@@ -454,10 +449,7 @@ html {
 
 .photos-user-account {
   left: 365px;
-  display: flex;
-  margin: 25 auto;
-  width: 100%;
-  position: relative; }
+  margin: 25 auto; }
   .photos-user-account .upload {
     display: none;
     left: 5%; }
@@ -508,7 +500,7 @@ html {
 .imgStar {
   width: 25px;
   height: 25px;
-  position: relative;
+  position: absolute;
   z-index: 0; }
   .imgStar.profilStar {
     z-index: 2; }
@@ -781,6 +773,10 @@ input:checked + .slider:before {
 
 .account-welcome {
   padding-bottom: 45px; }
+
+.pop-nb {
+  display: inline-flex;
+  color: gold; }
 
 .browse-text1 {
   border-bottom: 1px solid rgba(194, 24, 91, 0.6); }
@@ -1081,7 +1077,7 @@ input:checked + .slider:before {
   position: absolute;
   width: 0;
   height: 0;
-  left: -24px;
+  left: -21px;
   right: auto;
   top: 33.8%;
   bottom: auto;
@@ -1107,7 +1103,7 @@ input:checked + .slider:before {
   width: 0;
   height: 0;
   left: auto;
-  right: -24px;
+  right: -21px;
   top: 33.8%;
   bottom: auto;
   border: 12px solid;
@@ -1156,6 +1152,10 @@ input:checked + .slider:before {
     left: 250px; }
   .commun-tags-browse {
     margin-left: 55%; } }
+
+@media only screen and (max-width: 1000px) {
+  .lock {
+    margin-left: 0; } }
 
 @media only screen and (max-width: 850px) {
   .photos-user-account {
@@ -1211,7 +1211,7 @@ input:checked + .slider:before {
     margin-bottom: 15%; } }
 
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
   form input,
   textarea {
     width: 75%;
@@ -1245,7 +1245,8 @@ input:checked + .slider:before {
     margin-top: 0px; }
   .photos-user-account {
     overflow-x: auto;
-    left: 0px; }
+    display: inline-flex;
+    margin: 25; }
     .photos-user-account .div-photo-user {
       margin-left: 10px;
       width: 50px;
@@ -1286,10 +1287,14 @@ input:checked + .slider:before {
   .lock {
     margin-left: 0; }
   .logo-account {
-    display: none; } }
+    display: none; }
+  .pop-account {
+    margin: 25px; }
+  .notif {
+    line-height: 2.5; } }
 
 /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 850px) {
   .topnav.responsive {
     position: relative; }
   .topnav.responsive a.icon {
@@ -1303,3 +1308,7 @@ input:checked + .slider:before {
   .responsive.header {
     line-height: 1.5;
     height: 164px; } }
+
+@media screen and (max-width: 600px) {
+  .notif {
+    line-height: 1.5; } }
