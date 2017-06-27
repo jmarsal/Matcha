@@ -94,6 +94,7 @@ const socketClient = {
 
 		// m'affiche que l'user vu est connecter ou pas sur browse/profil
 		this.webSocket.on('online', (classColor) => {
+			// debugger;
 			if (classColor.class === 'green') {
 				$('#lastConnect').remove();
 				$('#online').removeClass('red');
@@ -152,6 +153,9 @@ const socketClient = {
 			$('#nb').text(like.nbNotifs);
 			if (like.connected) {
 				$('#connect-users').addClass('con');
+				if ($('#chatUser').length) {
+					window.location.replace('../messenger');
+				}
 			} else {
 				$('#connect-users').removeClass('con');
 			}
@@ -170,6 +174,21 @@ const socketClient = {
 		});
 		this.webSocket.on('likeSessionError', (error) => {
 			$('#error').text(error).addClass('red');
+		});
+		this.webSocket.on('removeUserFromChat', (status) => {
+			let users = $('#container-users'),
+				count = 0,
+				lastUser = {};
+			$('#' + status.idToRemove).remove();
+			users.children('div').each(function() {
+				count++;
+				lastUser = this;
+			});
+			if (count == 0) {
+				if ($('#chatUser').length) {
+					window.location.replace('../messenger');
+				}
+			}
 		});
 	},
 	visit: (idUserProfil) => {

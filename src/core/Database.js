@@ -49,8 +49,7 @@ class Database {
 				'prenom VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL ,' +
 				'login VARCHAR(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,' +
 				'email VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,' +
-				'birthday VARCHAR(10)CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT "1901-01-01" ,' +
-				'age SMALLINT DEFAULT 116,' +
+				'age SMALLINT DEFAULT 18,' +
 				'passwd VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,' +
 				'cle VARCHAR(255) DEFAULT NULL,' +
 				'active BOOLEAN DEFAULT 0,' +

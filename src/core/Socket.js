@@ -39,12 +39,17 @@ class SocketIo {
 					// Voir ici pour stop le chat si deux users connecte et un des deux dislike.
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
 						.then((response) => {
+							debugger;
 							if (response.error) {
 								this.clientsList[user.id].emit('likeSessionError', response.error);
 							} else if (!response.error) {
 								this.clientsList[user.id].emit('likeSession', response);
 								if (response.nbNotifs && this.clientsList[idUserProfil]) {
 									this.clientsList[idUserProfil].emit('like', response);
+								}
+								if (!response.connected && this.clientsList[idUserProfil]) {
+									response.idToRemove = user.id;
+									this.clientsList[idUserProfil].emit('removeUserFromChat', response);
 								}
 							}
 						})

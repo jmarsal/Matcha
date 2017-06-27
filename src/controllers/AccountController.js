@@ -93,7 +93,7 @@ class AccountController {
 							address: infosUser.address ? _.unescape(infosUser.address) : '',
 							lat: infosUser.lat,
 							lng: infosUser.lng,
-							birthday: infosUser.birthday,
+							age: infosUser.age,
 							nbNotif: infosUser.notifications,
 							pop: infosUser.popularity
 						});
@@ -174,7 +174,10 @@ class AccountController {
 						.then((path) => {
 							return UserModel.modifyPhotoFavForConnect(req.session.user.id, null);
 						})
-						.then(() => {
+						.then((status) => {
+							if (status === false) {
+								req.session.user.photoFav = '';
+							}
 							Helper.sendResponseToClient('photo supprimée!', 0, res);
 						})
 						.catch((err) => {
@@ -310,13 +313,13 @@ class AccountController {
 				}
 			} else if (input === 'birthday') {
 				// check birthday
-				if (Helper.isValidDate(data)) {
+				if (data.age >= 18 && data.age <= 130) {
 					let resData = {
-						mess: 'Date de naissance modifié !',
+						mess: 'Age modifié !',
 						input: input,
-						data: data.date
+						data: data.age
 					};
-					UserModel.modifyBirthdayByUserId(req.session.user.id, data.date)
+					UserModel.modifyBirthdayByUserId(req.session.user.id, data.age)
 						.then(() => {
 							Helper.sendResponseToClient(resData, 0, res);
 						})
@@ -327,7 +330,7 @@ class AccountController {
 						});
 				} else {
 					let resData = {
-						mess: "Votre date de naissance doit être renseigné ou n'est pas correct!",
+						mess: "Votre age doit être renseigné ou n'est pas correct!",
 						input: input
 					};
 					Helper.sendResponseToClient(resData, 1, res);
@@ -466,7 +469,6 @@ class AccountController {
 				mess: '',
 				data: req.body
 			};
-			console.log(req.body);
 			UserModel.addLocationProfil(req.body, req.session.user.id).catch((err) => {
 				console.error(err);
 				resData.mess = "Une erreur s'est produite!";

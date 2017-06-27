@@ -23,6 +23,7 @@ class ChatController {
 	messengerRoute() {
 		this.router.get('/messenger', (req, res) => {
 			if (req.session.start && req.session.user.photoFav) {
+				console.log(req.session.user.photoFav);
 				let data = {};
 
 				ChatModel.getUsersForChat(req.session.user.id)

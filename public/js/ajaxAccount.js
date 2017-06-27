@@ -2,6 +2,11 @@
  * Created by jbmar on 16/05/2017.
  */
 
+// $(function() {
+// 	$('#birthdayAccountInput').datepicker({ dateFormat: 'yy-mm-dd' });
+// 	checkIfInputIsModify('birthday');
+// });
+
 function submitPhoto() {
 	$('#frmUploader').ajaxSubmit({
 		success: showResponse
@@ -251,14 +256,7 @@ function checkIfInputIsModify(input) {
 		diff = $('#birthdayAccountInput')[0].defaultValue;
 		checkInput = $('#birthdayAccountInput')[0].value;
 		if (diff !== checkInput) {
-			let data = {
-				date: checkInput,
-				yf: checkInput.split('-')[0],
-				mf: checkInput.split('-')[1],
-				df: checkInput.split('-')[2]
-			};
-
-			return data;
+			return (data = { age: checkInput });
 		}
 	} else if (input === 'sex') {
 		diff = $('input[name=input-sex-user]:checked');
@@ -525,7 +523,6 @@ function fillInAddress() {
 		.then((latLng) => {
 			$('#errorLocation').removeClass('red green');
 			if (latLng !== false) {
-				console.log('ici');
 				let infos = {
 					address: place.formatted_address,
 					lat: latLng.lat,

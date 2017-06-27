@@ -519,12 +519,11 @@ class UserModel {
 		});
 	}
 
-	static modifyBirthdayByUserId(userId, birthday) {
+	static modifyBirthdayByUserId(userId, age) {
 		return new Promise((resolve, reject) => {
-			let sql = 'UPDATE users SET birthday = ?, age = ? WHERE id = ?',
-				age = Helper.getAge(birthday);
+			let sql = 'UPDATE users SET age = ? WHERE id = ?';
 
-			connection.query(sql, [ birthday, age, userId ], (err) => {
+			connection.query(sql, [ age, userId ], (err) => {
 				if (err) {
 					reject(err);
 				} else {
@@ -774,7 +773,7 @@ class UserModel {
 									if (err) {
 										reject(err);
 									}
-									resolve();
+									resolve(false);
 								});
 							}
 						});

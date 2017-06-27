@@ -7,13 +7,21 @@ if (containerChat.length && $('#container-chat' + idUserSelect)) {
 
 window.addEventListener('load', () => {
 	let id_user_visit = $('#online-hidden').text(),
-		id_user_select = $('#chatUser')[0].className;
+		id_user_select = $('#chatUser')[0].className,
+		users = $('#container-users');
 
 	if (id_user_visit) {
 		socketClient.onlineMe(id_user_visit);
 	}
-	if (id_user_select) {
-		socketClient.getOnlineUser(id_user_select);
+	// if (id_user_select) {
+	// 	socketClient.getOnlineUser(id_user_select);
+	// }
+	if (users.length) {
+		users.children('div').each(function() {
+			if (this.id) {
+				socketClient.getOnlineUser(this.id);
+			}
+		});
 	}
 });
 

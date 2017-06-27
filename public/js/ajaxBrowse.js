@@ -396,6 +396,7 @@ document.addEventListener('load', () => {
 	let id_user_visit = $('#online-hidden').text();
 
 	if (id_user_visit) {
+		alert('ici');
 		socketClient.online(id_user_visit);
 	}
 });

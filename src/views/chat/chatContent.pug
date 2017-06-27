@@ -19,7 +19,7 @@ block content
                 div(class="welcome-account" id="welcome-account")
                 div(class="text1-account"): p(id="login-chat") #{title}
                     br
-                div(error): p #{error}
+                div(class="error" id="error"): p #{error}
                 div(class="online-hidden" id="online-hidden" style="display:none") #{myId}
                 div(class="container-users" id="container-users")
                     if (users)

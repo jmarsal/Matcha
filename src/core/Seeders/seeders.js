@@ -8,7 +8,6 @@ let seeders = [
 		prenom: 'Isis',
 		login: 'IsisArrondo',
 		email: 'IsisArrondo@gmail.com',
-		birthday: '1989-03-08',
 		age: 28,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -28,7 +27,6 @@ let seeders = [
 		prenom: 'Alexandra',
 		login: 'AlexLacrabere',
 		email: 'AlexandraLacrabere@gmail.com',
-		birthday: '1987-04-27',
 		age: 30,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -48,7 +46,6 @@ let seeders = [
 		prenom: 'Vianney',
 		login: 'Vianney',
 		email: 'VianneyBureau@gmail.com',
-		birthday: '1991-02-13',
 		age: 26,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -68,7 +65,6 @@ let seeders = [
 		prenom: 'Frédéric',
 		login: 'FredericLopez',
 		email: 'FredericLopez@gmail.com',
-		birthday: '1967-04-04',
 		age: 50,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -89,7 +85,6 @@ let seeders = [
 		prenom: 'Yves',
 		login: 'YvesCamdeborde',
 		email: 'YvesCamdeborde@gmail.com',
-		birthday: '1964-12-07',
 		age: 52,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -110,7 +105,6 @@ let seeders = [
 		prenom: 'Angelina',
 		login: 'laraCroft',
 		email: 'angelina.jolie@gmail.com',
-		birthday: '1975-06-04',
 		age: 41,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -130,7 +124,6 @@ let seeders = [
 		prenom: 'Jessica',
 		login: 'jAlba',
 		email: 'jessica.alba@gmail.com',
-		birthday: '1981-04-28',
 		age: 36,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -150,7 +143,6 @@ let seeders = [
 		prenom: 'Madonna Louise',
 		login: 'madonna',
 		email: 'madonna@gmail.com',
-		birthday: '1958-08-16',
 		age: 58,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -171,7 +163,6 @@ let seeders = [
 		prenom: 'Anne',
 		login: 'louane',
 		email: 'louane@gmail.com',
-		birthday: '1996-11-26',
 		age: 20,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -191,7 +182,6 @@ let seeders = [
 		prenom: 'Jean',
 		login: 'jean',
 		email: 'j.dujardin@gmail.com',
-		birthday: '1972-06-19',
 		age: 44,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',
@@ -211,7 +201,6 @@ let seeders = [
 		prenom: 'Jean-Baptiste',
 		login: 'jibe',
 		email: 'jb.marsal@gmail.com',
-		birthday: '1985-10-23',
 		age: 31,
 		passwd:
 			'8d78ad13452b39de768806c1bbc0225cff2608a726003310c329edbacbbb694c7965f3eccfea1508ac0b8debe7cbe8087993bb617ffd0f23acb3140f3df06f6c',

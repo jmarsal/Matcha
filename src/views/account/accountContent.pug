@@ -74,6 +74,7 @@ block content
                                 type="email"
                                 value= email
                                 onblur="submitForm('email')"
+                                required
                             )
                         div: input(
                         class="hiddenEmailRegisterInput" id="hiddenEmailAccountInput"
@@ -88,6 +89,7 @@ block content
                                 minlength="3" maxlength="16"
                                 value=login
                                 onblur="submitForm('login')"
+                                required
                             )
                         div: input(
                         class="hiddenloginRegisterInput" id="hiddenloginAccountInput"
@@ -101,6 +103,7 @@ block content
                                 name="lastNameRegisterInput"
                                 value=name
                                 onblur="submitForm('name')"
+                                required
                             )
                         div: input(
                         class="hiddenNameRegisterInput" id="hiddenNameAccountInput"
@@ -114,6 +117,7 @@ block content
                                 name="firstNameRegisterInput"
                                 value=firstName
                                 onblur="submitForm('firstName')"
+                                required
                         )
                         div: input(
                         class="hiddenFirstNameRegisterInput" id="hiddenFirstNameAccountInput"
@@ -121,14 +125,16 @@ block content
                         type="hidden"
                         value=firstName
                         )
-                    div(class="birthdayRegisterText") Ma date de naissance
+                    div(class="birthdayRegisterText") Mon age
                         div: input(
-                        type="date"
+                        type="number"
                         autocomplete=true
                         class="modify-account birthdayRegisterInput" id="birthdayAccountInput"
                         name="birthdayRegisterInput"
-                        value=birthday
+                        value=age
+                        min="18" max="130"
                         onblur="submitForm('birthday')"
+                        required
                         )
                     div(class="location-container")
                         div(class="location-town") Mon adresse
@@ -138,6 +144,7 @@ block content
                                     value=address
                                     onFocus="geolocate()"
                                     type="text"
+                                    required
                                 )
                         div(class=( locals.error7 ? "error red" : "error"), id="errorLocation") #{error7}
                         div(class="location-auto") Google Map
