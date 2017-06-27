@@ -610,16 +610,16 @@ class UserModel {
 
 	static modifyTagUserByTag(userId, tag) {
 		return new Promise((resolve, reject) => {
-			let sql = 'SELECT tag FROM tags_user WHERE tag = ?';
+			let sql = 'SELECT tag FROM tags_user WHERE tag = ? && id_user = ?';
 
-			connection.query(sql, [ tag ], (err, res) => {
+			connection.query(sql, [ tag, userId ], (err, res) => {
 				if (err) {
 					reject(err);
 				} else {
 					if (res.length) {
-						sql = 'DELETE FROM tags_user WHERE tag = ?';
+						sql = 'DELETE FROM tags_user WHERE tag = ? && id_user = ?';
 
-						connection.query(sql, [ tag ], (err, res) => {
+						connection.query(sql, [ tag, userId ], (err, res) => {
 							if (err) {
 								reject(err);
 							} else {

@@ -49,7 +49,8 @@ class BrowseController {
 					.then(() => {
 						return BrowseModel.getCommunTagsByUsers(req.session.user.id);
 					})
-					.then(() => {
+					.then((tagsCommun) => {
+						profils.tagsCommun = tagsCommun;
 						return UserModel.getPhotoProfil(req.session.user.id);
 					})
 					.then((photoUserSession) => {
@@ -64,13 +65,13 @@ class BrowseController {
 						);
 					})
 					.then((profilsOrder) => {
-						debugger;
 						res.render('./views/browse/browseContent', {
 							title: 'Voici quelques profils qui pourraient te convenir ...',
 							profils: profilsOrder,
 							photos: profils.photos,
 							photoFav: profils.photosProfil ? profils.photosProfil : '',
-							nbNotif: profils.infosUserSession[0].notifications
+							nbNotif: profils.infosUserSession[0].notifications,
+							tagsCommun: profils.tagsCommun
 						});
 					})
 					.catch((err) => {

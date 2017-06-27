@@ -73,6 +73,7 @@ class AccountController {
 								} else {
 									retTags.check[i].check = false;
 								}
+								retTags.tags[i].tag = _.unescape(retTags.tags[i].tag);
 							}
 						}
 						req.session.user.photoFav = photos.photosProfil;
@@ -246,7 +247,6 @@ class AccountController {
 							Helper.sendResponseToClient(resData, 0, res);
 						})
 						.catch((err) => {
-							console.error(err);
 							resData.mess = "Une erreur s'est produite!";
 							Helper.sendResponseToClient(resData, 1, res);
 						});
@@ -465,6 +465,7 @@ class AccountController {
 				mess: '',
 				data: req.body
 			};
+			console.log(req.body);
 			UserModel.addLocationProfil(req.body, req.session.user.id).catch((err) => {
 				console.error(err);
 				resData.mess = "Une erreur s'est produite!";

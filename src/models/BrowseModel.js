@@ -162,16 +162,20 @@ class BrowseModel {
 							reject(err);
 						} else {
 							AllTags.tagsUserSession = res;
-							BrowseModel.calculateCommunTagsByUsers(AllTags).then((tagsCommun) => {
-								for (let i = 0; i < tagsCommun.length; i++) {
-									BrowseModel.addCommunTagsToDb(
-										tagsCommun[i].tagsCommun,
-										tagsCommun[i].id,
-										idUserSession
-									);
-								}
-								resolve();
-							});
+							BrowseModel.calculateCommunTagsByUsers(AllTags)
+								.then((tagsCommun) => {
+									for (let i = 0; i < tagsCommun.length; i++) {
+										BrowseModel.addCommunTagsToDb(
+											tagsCommun[i].tagsCommun,
+											tagsCommun[i].id,
+											idUserSession
+										);
+									}
+									resolve(tagsCommun);
+								})
+								.catch((err) => {
+									console.error(err);
+								});
 						}
 					});
 				}
@@ -247,7 +251,7 @@ class BrowseModel {
 	) {
 		return new Promise((resolve, reject) => {
 			let sql =
-					'SELECT DISTINCT * ' +
+					'SELECT * ' +
 					'FROM users ' +
 					'INNER JOIN user_interacts ' +
 					'ON user_interacts.id_user = users.id ' +
@@ -292,7 +296,7 @@ class BrowseModel {
 			}
 
 			sql += ' ORDER BY distanceFromUser ' + orderBy;
-			connection.query(sql, [ idUserSession, idUserSession ], (err, res) => {
+			connection.query(sql, [ idUserSession ], (err, res) => {
 				let result1stQuery = res;
 				if (err) {
 					reject(err);
@@ -300,27 +304,48 @@ class BrowseModel {
 					if (!option) {
 						option = 'zone';
 					}
-					res = BrowseModel.removeDuplicateRow(res);
-					let resultAfterRemoveDuplicateRow = res;
+					let resultAfterRemoveDuplicateRow = BrowseModel.removeDuplicateRow(result1stQuery);
 
-					sql = 'UPDATE users SET nbUsersMatch = ? WHERE id = ?';
-					connection.query(sql, [ res.length, idUserSession ], (err) => {
-						if (err) {
+					BrowseModel.getCommunTagsByUsers(idUserSession)
+						.then((goodTagsCommun) => {
+							if (goodTagsCommun.length) {
+								if (resultAfterRemoveDuplicateRow.length) {
+									resultAfterRemoveDuplicateRow.map((profil) => {
+										goodTagsCommun.map((tag) => {
+											if (tag.id == profil.id_user) {
+												profil.tagsCommun = tag.tagsCommun;
+											}
+										});
+									});
+								}
+							} else if (resultAfterRemoveDuplicateRow.length) {
+								resultAfterRemoveDuplicateRow.map((profil) => {
+									profil.tagsCommun = 0;
+								});
+							}
+
+							sql = 'UPDATE users SET nbUsersMatch = ? WHERE id = ?';
+							connection.query(sql, [ resultAfterRemoveDuplicateRow.length, idUserSession ], (err) => {
+								if (err) {
+									reject(err);
+								}
+								BrowseModel.engineFilterUsers(
+									resultAfterRemoveDuplicateRow,
+									option,
+									zoneSize,
+									orderBy,
+									trie,
+									tagsArray,
+									infosUserSession,
+									idUserSession
+								).then((newTabUsers) => {
+									resolve(newTabUsers);
+								});
+							});
+						})
+						.catch((err) => {
 							reject(err);
-						}
-						BrowseModel.engineFilterUsers(
-							res,
-							option,
-							zoneSize,
-							orderBy,
-							trie,
-							tagsArray,
-							infosUserSession,
-							idUserSession
-						).then((newTabUsers) => {
-							resolve(newTabUsers);
 						});
-					});
 				}
 			});
 		});

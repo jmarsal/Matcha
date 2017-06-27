@@ -6,7 +6,8 @@ const express = require('express'),
 	BrowseModel = require('../models/BrowseModel'),
 	UserModel = require('../models/UserModel'),
 	Helper = require('../core/Helpers'),
-	SocketIo = require('../core/Socket');
+	SocketIo = require('../core/Socket'),
+	_ = require('lodash');
 
 class SearchController {
 	constructor() {
@@ -28,7 +29,8 @@ class SearchController {
 	searchRoute() {
 		this.router.get('/search', (req, res) => {
 			if (req.session.start) {
-				let profils = [];
+				let profils = [],
+					goodTagsCommun;
 
 				BrowseModel.getInfosAllProfils(req.session.user.id)
 					.then((infos) => {
@@ -51,7 +53,8 @@ class SearchController {
 						profils.distances = distancesFromUsers;
 						return BrowseModel.getCommunTagsByUsers(req.session.user.id);
 					})
-					.then(() => {
+					.then((tagsCommun) => {
+						goodTagsCommun = tagsCommun;
 						return UserModel.getTagsInDb(req.session.user.id);
 					})
 					.then((retTags) => {
@@ -64,6 +67,7 @@ class SearchController {
 								} else {
 									retTags.check[i].check = false;
 								}
+								retTags.tags[i].tag = _.unescape(retTags.tags[i].tag);
 							}
 						}
 						profils.tags = retTags;
@@ -91,7 +95,8 @@ class SearchController {
 							tags: profils.tags.tags,
 							tagsUser: profils.tags.tags_user,
 							check: profils.tags.check,
-							nbNotif: profils.infosUserSession[0].notifications
+							nbNotif: profils.infosUserSession[0].notifications,
+							tagsCommun: profils.tagsCommun
 						});
 					})
 					.catch((err) => {

@@ -27,7 +27,6 @@ class ChatController {
 
 				ChatModel.getUsersForChat(req.session.user.id)
 					.then((users) => {
-						debugger;
 						data.users = users;
 						return BrowseModel.getInfosUserSession(req.session.user.id);
 					})

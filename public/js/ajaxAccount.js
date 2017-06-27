@@ -26,37 +26,40 @@ function showResponse(responseText, statusText, xhr, $form) {
 				$('.div-photo-user').remove();
 			}
 		}
-	}
-	$('<div/>', {
-		id: dataRes.response.idPhoto,
-		class: 'div-photo-user no-img',
-		css: {
-			'background-image': 'url(' + dataRes.response.srcPhoto + ')'
-		},
-		prependTo: $('#photos-user-account'),
-		on: {
-			click: function() {
-				interactPhoto(dataRes.response.idPhoto);
+		$('<div/>', {
+			id: dataRes.response.idPhoto,
+			class: 'div-photo-user no-img',
+			css: {
+				'background-image': 'url(' + dataRes.response.srcPhoto + ')'
+			},
+			prependTo: $('#photos-user-account'),
+			on: {
+				click: function() {
+					interactPhoto(dataRes.response.idPhoto);
+				}
 			}
-		}
-	});
-	if (dataRes.response.fav) {
-		let imgStar = $('<img/>', {
-			id: 'imgStar',
-			class: 'imgStar ajax-add',
-			src: '/images/tools/star.png',
-			prependTo: $('#' + dataRes.response.idPhoto)
 		});
-		// $('#' + dataRes.response.idPhoto).addClass('star').after(imgStar);
-	}
-	if ($('.div-photo-user').length >= 5) {
-		$('.input-file-trigger').css('display', 'none');
+		if (dataRes.response.fav) {
+			let imgStar = $('<img/>', {
+				id: 'imgStar',
+				class: 'imgStar ajax-add',
+				src: '/images/tools/star.png',
+				prependTo: $('#' + dataRes.response.idPhoto)
+			});
+			// $('#' + dataRes.response.idPhoto).addClass('star').after(imgStar);
+		}
+		if ($('.div-photo-user').length >= 5) {
+			$('.input-file-trigger').css('display', 'none');
+		}
 	}
 
 	if ((dataRes.isErr === 0 || dataRes.isErr === 1) && dataRes.response) {
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
 		dataRes.isErr === 1 ? divError.text(dataRes.response) : divError.text(dataRes.response.mess);
+		if (dataRes.isErr === 1) {
+			$('#formAccount').css('margin-top', '54px');
+		}
 	}
 }
 
@@ -513,7 +516,6 @@ function initAutocomplete() {
 			types: [ 'geocode' ]
 		}
 	);
-
 	autocomplete.addListener('place_changed', fillInAddress);
 }
 
@@ -525,6 +527,7 @@ function fillInAddress() {
 		.then((latLng) => {
 			$('#errorLocation').removeClass('red green');
 			if (latLng !== false) {
+				console.log('ici');
 				let infos = {
 					address: place.formatted_address,
 					lat: latLng.lat,
@@ -542,6 +545,9 @@ function fillInAddress() {
 			}
 		})
 		.catch((err) => {
+			$('#errorLocation')
+				.addClass('red')
+				.text("Soit plus precis sur l'addresse... ex: numero de rue, arrondissement, code postal");
 			console.error(err);
 		});
 }
