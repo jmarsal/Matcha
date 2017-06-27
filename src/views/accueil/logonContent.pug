@@ -1,0 +1,26 @@
+extends ../layout/layout
+
+block append jsFooter
+    script(src="../js/ajaxLogon.js")
+
+block var
+    - page = "logon";
+    - noheader = true;
+
+block content
+    div(class="error", id="error")
+    div(class="containerRegister")
+        form(class="formRegister", id="formRegister", method="post")
+            img(class="logo-matcha login-logo double-logo" src="/images/logo/logo.png")
+            div(class="loginRegisterText logon") Login
+                div: input(class="loginRegisterInput", name="loginRegisterInput", autofocus=true, autocomplete="username", minlength="3", maxlength="16")
+            div(class="lastNameRegisterText") Nom
+                div: input(class="lastNameRegisterInput", name="lastNameRegisterInput", autocomplete="family-name")
+            div(class="firstNameRegisterText") Prénom
+                div: input(class="firstNameRegisterInput", name="firstNameRegisterInput", autocomplete="given-name")
+            div(class="emailRegisterText") Email
+                div: input(class="emailRegisterInput", name="emailRegisterInput", type="email", autocomplete="email")
+            div(class="passwdRegisterText") Mot de Passe
+                div: input(class="passwdRegisterInput", name="passwdRegisterInput", type="password", autocomplete="new-password")
+            div(class="submitRegister")
+                input(class="button", type="submit", value="Créer mon compte")

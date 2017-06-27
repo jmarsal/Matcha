@@ -1,0 +1,263 @@
+.browse-text1 {
+	border-bottom: 1px solid rgba($primary-color-dark, 0.6);
+}
+
+.container-filters {
+	margin-top: 15px;
+	padding-bottom: 25px;
+	border-bottom: 1px solid $primary-color;
+}
+
+.separator-profil {
+	margin-bottom: 5%;
+}
+
+.profil-browse {
+	margin-top: 23px;
+}
+
+.infos-profil-browse {
+	width: 65%;
+	margin: 0 auto;
+	border: 5px solid $header-color;
+	background-color: rgba($header-color, 0.8);
+	color: $white-no-white;
+	cursor: pointer;
+	z-index: 0;
+	border-radius: 0;
+	transition-duration: 2s;
+	&:hover {
+		background-color: rgba($gold-color, 0.6);
+		color: $primary-text-color; //&, .infos {
+	}
+}
+
+.photo-profil-browse {
+	display: inline-flex;
+	position: relative;
+	width: 200px;
+	height: 200px;
+	background-position: center;
+	background-size: cover;
+	border: 2px solid #ddd;
+	border-radius: 0;
+	margin-top: 15px;
+}
+
+.login-profil-browse {
+	// padding-bottom: 5px;
+}
+
+.infos {
+	margin: 0% auto;
+	background-color: rgba($dark-blue-color, 0.9);
+	color: $color_text;
+}
+
+.info-pop-tag {
+	margin: 0 auto;
+	background-color: rgba($dark-blue-color, 0.6);
+	display: flex;
+	width: 100%;
+	color: $white-no-white;
+}
+
+.popularity-browse {
+	// float: left;
+	margin-left: 20px;
+	float: left;
+	display: flex;
+	position: relative;
+}
+
+.commun-tags-browse {
+	float: right;
+	display: flex;
+	position: relative;
+	margin-left: 78%;
+	// margin-right: 20px;
+}
+
+.button {
+	border: 1px solid darken($header-color, 10);
+	width: 250px;
+	text-align: center;
+	margin: 0 auto 0px;
+	border-radius: 0px;
+	&:hover {
+		background-color: $dark-blue-color;
+	}
+}
+
+.fitres-tags {
+	// width: 50%;
+	margin: 0 auto 50px;
+	// &:hover {
+	// 	background-color: $primary-color;
+	// }
+}
+
+.container-trie-options {
+	display: none;
+	margin: 0px auto;
+	width: 50%;
+	margin-top: 0;
+}
+
+.trie-option {
+	border: 1px solid $color_text;
+	background-color: lighten($dark-blue-color, 10);
+	cursor: pointer;
+	margin: 0 auto;
+	// border-radius: 50px;
+	width: 250px;
+	&:hover {
+		background-color: $bleu-de-france;
+	}
+	&.active {
+		background-color: $gold-color;
+		color: $primary-text-color;
+	}
+	&.activeTrie {
+		background-color: $gold-color;
+		color: $primary-text-color;
+	}
+}
+
+.padding-browse {
+	margin-top: 60px; //    background-color: rgba($primary-color-dark, 0.6);
+	//padding-top: 5px;
+}
+
+.container-trie-options {
+	cursor: pointer;
+	border-radius: 50px;
+}
+
+.containerFiltresOptions {
+	input {
+		background-color: rgba($primary-color-dark, 0);
+		font-family: inherit;
+		font-size: 1rem;
+	}
+}
+
+.sliders {
+	width: 60%;
+	margin: 0 auto;
+}
+
+.container-tags {
+	margin-top: 25px;
+	margin-bottom: 25px;
+	display: inline-flex;
+	width: 80%;
+}
+
+.photo-profil-browse {
+	cursor: pointer;
+	z-index: 0;
+	-webkit-transition: width 1s, height 1s;
+	transition: width 1s, height 1s;
+	&.active {
+		width: 95%;
+		height: 80%;
+		z-index: 2;
+	}
+}
+
+.error.errorSlide {
+	margin: 40 auto;
+}
+
+.like-profil {
+	width: 40px;
+	height: 40px;
+	background-size: cover;
+	margin: 0 auto;
+	display: inline-flex;
+	margin-left: 15px;
+	position: relative;
+	top: 15px;
+	cursor: pointer;
+	transition: filter 2s;
+
+	&:hover {
+		filter: invert(180deg);
+	}
+}
+
+.connected_users {
+	width: 40px;
+	height: 40px;
+	background-size: cover;
+	margin: 20 auto;
+	display: none;
+
+	&.con {
+		display: flex;
+		-webkit-animation: rotating 2s linear infinite;
+		-moz-animation: rotating 2s linear infinite;
+		-ms-animation: rotating 2s linear infinite;
+		-o-animation: rotating 2s linear infinite;
+		animation: rotating 2s linear infinite;
+	}
+}
+
+.login {
+	display: inline-flex;
+}
+
+.online {
+	display: inline-flex;
+	margin-right: 15px;
+	width: 20px;
+	height: 20px;
+	border-radius: 100%;
+	border: 1px solid white;
+
+	&.green {
+		background-color: $mess-accept-color-rgba;
+	}
+	&.red {
+		background-color: $mess-error-color-rgba;
+	}
+}
+
+.report {
+	display: inline-block;
+	position: relative;
+	margin: 0 auto;
+	text-align: center;
+	transition: background-color 2s, color 2s;
+
+	&:hover {
+		background-color: $primary-color-light;
+		color: black;
+	}
+}
+.lock {
+	position: relative;
+	display: inline-block;
+	margin-left: 50px;
+	text-align: center;
+	transition: background-color 2s, color 2s;
+
+	&:hover {
+		background-color: $primary-color-light;
+		color: black;
+	}
+}
+
+.browse-content {
+	background-color: rgba($header-color, 0.6);
+}
+
+.profil-welcome {
+	border-bottom: 1px solid $primary-color;
+}
+
+.container-profils-browse {
+	margin-top: 25px;
+	color: $white-no-white;
+}

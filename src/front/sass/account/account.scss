@@ -1,0 +1,452 @@
+@import "../variables/paletteColors";
+
+html {
+	font-size: 17px;
+}
+
+.container-account-user {
+	margin: 0% auto;
+}
+
+.content-account-user {
+	margin: 0% auto;
+	font-family: Indie Flower;
+	background-color: rgba($header-color, 0.6);
+	text-align: center;
+	width: 60%;
+}
+
+.welcome-text-account {
+	margin-top: 15px;
+	padding-top: 10px;
+	background-color: rgba($header-color, 0.8);
+	margin-bottom: -2%;
+	color: $white-no-white;
+}
+
+.photos-user-account {
+	left: 365px;
+	// display: flex;
+	margin: 25 auto;
+	// width: 100%;
+	// position: relative;
+	.upload {
+		display: none;
+		left: 5%;
+	}
+	.input-file-trigger {
+		position: relative;
+		display: inline-block;
+		cursor: pointer;
+		width: 50px;
+		height: 50px;
+		left: 30px;
+		// top: 50px;
+		-webkit-transition: width 1s, height 1s, filter 1s, transform 1s;
+		transition: width 1s, height 1s, filter 1s, transform 1s;
+		&:hover {
+			filter: invert(100%);
+			transform: rotate(360deg);
+		}
+
+		&.no-img {
+			top: -25px;
+		}
+	}
+	.div-photo-user {
+		display: inline-flex;
+		position: relative;
+		width: 100px;
+		height: 100px;
+		margin-right: 20px;
+		// margin-left: 4%;
+		/* Make the background image cover the area of the <div>, and clip the excess */
+		background-position: center;
+		background-size: cover;
+		border: 2px solid #ddd;
+		/* Gray border */
+		border-radius: 50%;
+		/* Rounded border */
+		cursor: pointer;
+		-webkit-transition: width 1s, height 1s, border-radius 1s, background-color 1s, -webkit-transform 1s;
+		transition: width 1s, height 1s, border-radius 1s, background-color 1s, transform 1s;
+		// z-index: 0;
+		&:hover {
+			border: 2px solid $gold-color;
+		}
+		&.profil {
+			border: 2px solid $gold-color;
+			width: 200px;
+			height: 200px;
+			border-radius: 0;
+			-webkit-transform: rotate(360deg);
+			transform: rotate(360deg);
+			z-index: 1;
+		}
+		&.star {
+			// left: 40px;
+			// margin-left: -40px;
+			// top: -78px; //top: -32px;
+		}
+
+		&.no-photo:hover {
+			border: 2px solid #ddd;
+		}
+	}
+}
+
+.imgStar {
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	// top: 85px;
+	// left: 40px;
+	z-index: 0;
+	&.profilStar {
+		z-index: 2;
+		// top: 190px;
+		// left: 105px;
+	}
+	&.ajax-add {
+		// top: 0px;
+		// left: -25px;
+	}
+}
+
+.interact-photos {
+	//display: none;
+	height: 0;
+	margin: 0px auto;
+	padding: 0px;
+	-webkit-transition: width 1s, height 1s, -webkit-transform 1s;
+	transition: width 1s, height 1s, transform 1s;
+	.button {
+		display: flex;
+		-webkit-transition: width 1s, height 1s, opacity 1s, -webkit-transform 1s;
+		transition: width 1s, height 1s, opacity 1s, transform 1s;
+		opacity: 0;
+		cursor: none;
+		margin: 0 auto;
+		padding: 0;
+		height: 0;
+		border-radius: 0px;
+		border: 3px solid lighten($header-color, 10);
+
+		&:hover {
+			background: $gold-color;
+			color: $header-color;
+		}
+	}
+	&.expand {
+		height: auto;
+		.button {
+			display: inline-flex;
+			height: auto;
+			width: auto;
+			font-size: inherit;
+			-webkit-transform: rotate(360deg);
+			transform: rotate(360deg);
+			opacity: 1;
+			margin-right: 4%;
+			cursor: pointer;
+			padding: 7.5px;
+		}
+	}
+}
+
+.get-img {
+	display: inline-block;
+}
+
+#my-file {
+	display: none;
+}
+
+.container-checkbox {
+	width: 75%;
+	display: inline-flex;
+	position: relative;
+	.sex-user-input,
+	.orientation-user-input {
+		font-size: inherit;
+		width: 100%;
+		display: inline-block;
+		position: relative;
+	}
+	.checkbox-account {
+		display: inline-block;
+		position: relative;
+		margin: 0% auto;
+		width: 17px;
+		margin-left: 8%;
+	}
+}
+
+.content-account-user {
+	margin: 0% auto;
+	font-family: Indie Flower;
+	background-color: rgba($header-color, 0.6);
+	text-align: center;
+	width: 60%;
+}
+
+// .footer {
+// 	position: relative;
+// 	bottom: -63%;
+// }
+
+.modify-account {
+	&.red {
+		background-color: $mess-error-color-rgba;
+	}
+	&.green {
+		background-color: $mess-accept-color-rgba;
+	}
+}
+
+.biographie-account {
+	display: block;
+	margin: 0% auto;
+	position: relative;
+	.bio-account {
+		font-family: "Indie Flower";
+		position: relative;
+		margin: 0px 22% 0px 0px;
+		width: 66%;
+		height: 20%;
+		display: block;
+		margin: 0% auto;
+		padding-top: 2%;
+	}
+}
+
+.tags-account {
+	display: inline-block;
+	margin-top: 10px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 0;
+}
+
+.tags {
+	display: inline-block;
+	background-color: #919191;
+	margin: 30px 10px;
+	-webkit-transition: -webkit-transform 1s;
+	transition: transform 1s;
+	width: auto;
+	&:hover {
+		background-color: $dark-blue-color;
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+	&.check {
+		background-color: $bleu-de-france;
+		border: 1px solid whitesmoke;
+		&:hover {
+			background-color: #919191;
+		}
+	}
+}
+
+.new-tag {
+	display: block;
+}
+
+.tags-input-account-p {
+	position: relative;
+	display: inline-block;
+	margin-left: 3%;
+}
+
+.tags-input-account {
+	text-align: left;
+	display: inline-block;
+	position: relative;
+	margin: 0% auto;
+	width: 42%;
+}
+
+#errorTag {
+	margin-top: 10px;
+}
+
+.location-button {
+	margin: 0px auto;
+	background-image: url("/images/location/google-maps.png");
+	position: relative;
+	width: 50px;
+	height: 50px;
+	background-position: center; //margin-right: 4%;
+	/* Make the background image cover the area of the <div>, and clip the excess */
+	background-size: cover;
+	border: 2px solid #ddd;
+	/* Gray border */
+	border-radius: 50%;
+	/* Rounded border */
+	cursor: pointer;
+}
+
+.map_canvas {
+	width: 90%;
+	height: 50%;
+	margin: 0px auto;
+}
+
+.account {
+	margin-top: -15px;
+	margin-bottom: 25px;
+}
+
+@-webkit-keyframes rotating {
+	from {
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes rotating {
+	from {
+		-ms-transform: rotate(360deg);
+		-moz-transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		-o-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+	to {
+		-ms-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		-o-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+}
+
+.location-auto {
+	display: block;
+	margin-bottom: 10px;
+	img {
+		//display: block;
+		//margin: 0px auto;
+		width: 5%;
+		margin: 10px 0 0 15px;
+		position: relative;
+		top: 10px;
+		cursor: pointer;
+		-webkit-animation: rotating 2s linear infinite;
+		-moz-animation: rotating 2s linear infinite;
+		-ms-animation: rotating 2s linear infinite;
+		-o-animation: rotating 2s linear infinite;
+		animation: rotating 2s linear infinite;
+	}
+}
+
+.tag-slider {
+	display: block;
+}
+
+.slider-before {
+	display: inline-block;
+	margin-right: 2%;
+}
+
+.slider-after {
+	margin-left: 2%;
+	display: inline-block;
+}
+
+.container-tags {
+	border: 2px solid $header-color;
+	max-height: 20%;
+	overflow-y: auto;
+}
+
+/* The switch - the box around the slider */
+
+.switch {
+	position: relative;
+	display: inline-block;
+	margin: 0px auto;
+	width: 60px;
+	height: 34px;
+	margin-top: 2%;
+	top: 2%;
+}
+
+/* Hide default HTML checkbox */
+
+.switch input {
+	display: none;
+}
+
+/* The slider */
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+
+input:checked + .slider {
+	background-color: $primary-color;
+}
+
+input:focus + .slider {
+	box-shadow: 0 0 1px $primary-color;
+}
+
+input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+}
+
+/* Rounded sliders */
+
+.slider.round {
+	border-radius: 34px;
+}
+
+.slider.round:before {
+	border-radius: 50%;
+}
+
+.logo-account {
+	position: relative;
+	float: left;
+	left: -5px;
+	top: -14px;
+}
+
+.account-welcome {
+	padding-bottom: 45px;
+}
+
+.pop-nb {
+	display: inline-flex;
+	color: gold;
+}

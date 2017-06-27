@@ -1,0 +1,268 @@
+@import "../variables/colors";
+@import "../variables/paletteColors";
+
+html {
+	margin: 0;
+	padding: 0;
+	font-size: 2em;
+	font-family: "Comic Sans MS";
+}
+
+body {
+	height: auto;
+	margin: 0;
+	padding: 0;
+	background: url("/images/background/background.jpg") no-repeat center fixed;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
+.header {
+	display: block;
+	width: 100%;
+	padding: 0;
+	letter-spacing: 1px;
+	box-sizing: inherit;
+	top: 0;
+	font-size: 17px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	height: 66px;
+	line-height: 1.5;
+	z-index: 10;
+	background-color: $primary-color-dark;
+}
+
+.topnav {
+	background-color: #333;
+	overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav .nav-a {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+	margin-bottom: -7px;
+
+	&.no-log {
+		margin-bottom: 0px;
+	}
+}
+
+/* Change the color of links on hover */
+.topnav .nav-a:hover {
+	background-color: $gold-color;
+	color: black;
+}
+
+.topnav .nav-a.is-active {
+	background-color: $gold-color;
+	color: black;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+	display: none;
+}
+
+.topnav .matcha {
+	margin-left: 55px;
+	border-right: 1px solid $gold-color;
+}
+
+.topnav .matcha:hover {
+	background-color: #333;
+	color: #f2f2f2;
+	cursor: default;
+}
+
+.topnav .logo-matcha {
+	margin-left: 55px;
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+	width: 45px;
+	top: -10px;
+	left: -10px;
+	position: absolute;
+	margin-left: 0px;
+}
+
+.logo-matcha {
+	margin-left: 55px;
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 17px;
+	width: 45px;
+	top: -10px;
+	left: -10px;
+	position: absolute;
+	margin-left: 0px;
+}
+
+.content {
+	height: auto;
+}
+
+.footer {
+	font-size: 17px;
+	// float: bottom;
+	position: relative;
+	// bottom: 0px;
+	height: 100%;
+	width: 100%;
+	color: $primary-text-color;
+
+	p {
+		position: relative;
+		padding: 0;
+		//bottom: -650px;
+		//margin-bottom: -50px;
+	}
+}
+
+.round-nb {
+	background: rgba(255, 0, 0, 0.6);
+	border-radius: 100%;
+	border: 1px solid white;
+	position: absolute;
+	left: 30px;
+	top: 13px;
+	padding: 12px 12px;
+	z-index: 400;
+}
+
+.notif-img {
+	display: inline-flex;
+	position: relative;
+	background-position: center;
+	background-size: cover;
+	width: 35px;
+	height: 32px;
+	// margin: 0px 15px 0px -15px;
+	margin: auto;
+
+	&.header-notif {
+		filter: invert(100%);
+	}
+}
+
+.nb {
+	position: absolute;
+	top: -2px;
+	left: 3px;
+	color: $white-no-white;
+	font-size: 17px;
+}
+
+.container-Notifs {
+	display: block;
+	position: absolute;
+	margin: 0 auto;
+	left: 24%;
+	height: 410%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	// top: 136px;
+	font-size: 17px;
+}
+.containerOneNotifs {
+	top: 29px;
+	position: relative;
+	display: flex;
+	cursor: pointer;
+	// width: 100%;
+	padding: 0 46;
+	background-color: rgba($dark-blue-color, 0.9);
+	width: 85%;
+	-webkit-transition: background-color 2s;
+	transition: background-color 2s;
+	&:hover {
+		background-color: lighten(rgba($gold-color, 0.9), 10);
+	}
+
+	&.first {
+		background-color: darken(rgba($bleu-de-france, 0.9), 5);
+		&:hover {
+			background-color: lighten(rgba($gold-color, 0.9), 10);
+		}
+	}
+}
+.notif-img {
+	display: inline-flex;
+	border: 1px solid white-no-white;
+	border-radius: 50%;
+}
+.notif {
+	display: inline-flex;
+	margin-left: 20px;
+	color: white;
+	font-family: Indie Flower;
+	line-height: 4.5;
+}
+
+.remove-Notifs {
+	top: 0px;
+	width: 99%;
+	text-align: center;
+	// width: 27.5%;
+	margin: 0 auto;
+	position: absolute;
+	// left: 40%;
+	// top: 510%;
+	background-color: darken($primary-color, 20);
+	// padding: 0 15.6%;
+	border-left: 2px solid white;
+	border-right: 2px solid white;
+	border-bottom: 2px solid white;
+	border-top: 2px solid white;
+	color: white;
+	font-family: Indie Flower;
+	cursor: pointer;
+	-webkit-transition: background-color 2s;
+	transition: background-color 2s;
+
+	&:hover {
+		background-color: darken(red, 10);
+	}
+}
+
+@-webkit-keyframes colorChange {
+	from {
+		filter: hue-rotate(360deg);
+	}
+	to {
+		filter: hue-rotate(0deg);
+	}
+}
+
+@keyframes colorChange {
+	from {
+		filter: hue-rotate(360deg);
+	}
+	to {
+		filter: hue-rotate(0deg);
+	}
+}
+
+.double-logo {
+	-webkit-animation: colorChange 5s linear infinite;
+	-moz-animation: colorChange 5s linear infinite;
+	-ms-animation: colorChange 5s linear infinite;
+	-o-animation: colorChange 5s linear infinite;
+	animation: colorChange 5s linear infinite;
+}

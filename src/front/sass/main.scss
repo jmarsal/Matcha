@@ -1,0 +1,73 @@
+a,
+a:active,
+a:focus,
+button,
+button:focus,
+button:active,
+.btn,
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn.active.focus {
+	outline: none;
+	outline: 0;
+}
+
+@font-face {
+	font-family: "Indie Flower";
+	src: url("../fonts/Indie_Flower/IndieFlower.ttf");
+}
+@font-face {
+	font-family: "Raleway";
+	src: url("../fonts/Raleway/Raleway-black.ttf");
+}
+
+@font-face {
+	font-family: "Kurale";
+	src: url("../fonts/Kurale/Kurale-Regular.ttf");
+}
+
+@font-face {
+	font-family: "Lato-regular";
+	src: url("../fonts/lato/Lato-Regular.ttf");
+}
+
+input::-moz-focus-inner {
+	border: 0;
+}
+
+/*
+    Layout
+ */
+
+@import "layout/layout";
+@import "tools/button";
+
+/*
+    All Pages
+ */
+
+// Accueil
+@import "accueil/accueil";
+@import "accueil/form";
+@import "accueil/logon";
+@import "accueil/login";
+@import "accueil/forgetPasswd";
+@import "accueil/reinitPasswd";
+
+// Account
+@import "account/account";
+
+// Browse
+@import "browse/browse";
+
+// chat
+@import "chat/chat";
+
+// Responsive
+@import "responsive/responsive";
+
+// 404
+@import "page404/page404";

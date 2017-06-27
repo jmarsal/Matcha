@@ -1,0 +1,69 @@
+extends ../layout/layout
+
+block prepend jsHeader
+    script(src="http://maps.google.com/maps/api/js?key=AIzaSyC-QpPQdgESP_iKFtbuIchUgp-NjZBqCFA&libraries=places" async defer)
+    <script src="../js/socket.io.js"></script>
+    <script src="../js/socket-client.js"></script>
+
+block append jsFooter
+    script(src="../js/ajaxBrowse.js")
+    script(src="../js/ajaxAccount.js")
+
+block var
+    - page = "browse";
+    - sousPage = "browse/profil"
+    - countPhotos = 0;
+
+block content
+    div(class="container-account-user" onload="getStatusOnline("+profil.id+")")
+        div(class="content-account-user" id="contentAccountUser")
+            div(class="welcome-text-account profil-welcome" id="welcomeTextAccount")
+                div(class="welcome-account" id="welcome-account")
+                div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+                div(class="report button" onclick="reportLockUser('report')" title="Nous reporter ce compte comme faux...") Faux Compte
+                div(class="lock button" onclick="reportLockUser('lock')" title="tu ne verra plus et recevra plus de notifications de cet utilisateur ...") Bloquer Compte
+                div(id="connect-users" class=connect ? "connected_users con": "connected_users" title="Tu peut maintenant engager la conversation dans l'onglet messenger avec cet utilisateur !" style='background-image: url("/images/connect/connect.png")')
+                div(class="text1-account" id="text1-account"): p #{title}
+                div(class="online" id="online" onmouseover="userConnected()")
+                div(class="online-hidden" id="online-hidden" style="display:none") #{profil.id}
+                div(class="print-profil login") #{profil.login}
+                div(class="like-profil" id="like-profil"
+                    title="Like ?" style= (like == true) ? 'background-image: url("/images/like/like.png")' : 'background-image: url("/images/like/unlike.png")'
+                    onclick="userLike("+profil.id+")")            
+                p Popularité : #{profil.popularity}%
+            div(class="container-profils-browse" id="containerProfilsBrowse")
+                div(class="all-img" id="allImg")
+                if photos
+                    for photo in photos
+                        div(class="photo-profil-browse profil"
+                            id='photo' + countPhotos
+                            style='background-image: url("' + photo.src_photo + '")'
+                            onclick="displayLarge('photo"+ countPhotos +"')"
+                            onchange="displayNormalise('photo"+ countPhotos +"')"
+                            )
+                        - countPhotos++;    
+                if profil
+                    div(class="print-profil name") Nom : #{profil.nom}
+                    div(class="print-profil firstname") Prénom : #{profil.prenom}
+                    div(class="print-profil age") Age : #{profil.age} ans
+                    div(class="print-profil sex") Sex : #{profil.sex == 1 ? "Masculin" : "Féminin"}
+                    if (profil.orientation == 1)
+                        div(class="print-profil orientation") Recherhe : Un homme
+                    else if (profil.orientation == 2)
+                        div(class="print-profil orientation") Recherhe : Une femme
+                    else
+                        div(class="print-profil orientation") Recherhe : Un homme ou une femme   
+                    div(class="print-profil bio") A Propos : "#{profil.bio}"
+                    div(class="print-profil adress") Adresse : #{profil.city}
+                    div(id="map_canvas" class="map_canvas")
+
+                div(class="container-tags" id="container-tags")
+                    if tagsUser2
+                        - countElems = 0;
+                        for tag in tagsUser2
+                            div(
+                            class=(check[countElems].idTag == tag.id && check[countElems].check ? "tags button check" : "tags button")
+                            id=tag.tag
+                            onclick="modifyTagUser("+tag.tag+")"
+                            ) ##{tag.tag}
+                            - countElems++;        

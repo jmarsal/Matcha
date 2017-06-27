@@ -1,0 +1,64 @@
+// html {
+// 	//background: none;
+// 	background-color: $accent-color;
+// }
+
+.formRegister,
+.button {
+	position: relative;
+	width: 25%;
+	margin: 0% auto;
+	margin-top: 5%;
+	background-color: rgba($header-color, 0.8);
+	font-family: Indie Flower;
+	text-align: center;
+	font-size: 17px;
+	padding-top: 1%;
+
+	.passwdRegisterText {
+		margin-bottom: 4%;
+	}
+
+	.submitRegister {
+		padding-bottom: 6%;
+	}
+
+	input {
+		margin: 2% 0 2%;
+	}
+
+	.button {
+		width: auto;
+		background: $header-color;
+		margin: 0% auto;
+		border-radius: 0;
+		border: 3px solid lighten($header-color, 10);
+
+		&:hover,
+		&.active {
+			background: $gold-color;
+			color: $header-color;
+			// border: 3px solid $header-color;
+		}
+	}
+}
+
+.error {
+	display: none;
+	padding: 1% 0 1% 0;
+	text-align: center;
+	font-family: Arial;
+	font-size: 17px;
+
+	&.red {
+		display: block;
+		background-color: $mess-error-color-rgba;
+		color: $mess-error-color;
+	}
+
+	&.green {
+		display: block;
+		background-color: $mess-accept-color-rgba;
+		color: $mess-accept-color;
+	}
+}

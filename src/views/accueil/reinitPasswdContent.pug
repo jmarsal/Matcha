@@ -1,0 +1,25 @@
+extends ../layout/layout
+
+block append jsFooter
+    script(src="../js/ajaxReinitPasswd.js")
+
+block var
+    - page = "login";
+    - noheader = true;
+
+block content
+    div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+    div(class="containerRegister")
+        form(class="formRegister reinitRegister", id="formRegister", method="post")
+            div(class="reinit-text")
+                | Alors #{login} on change de mot de passe ?
+            br
+            br
+            hr(class="hr-login hr-reinit")
+            div(class="passwdRegisterText") Vas-y, tu peux entrer ton nouveau mot de passe :
+                div: input(class="passwdRegisterInput", name="passwdRegisterInput", type="password", autocomplete="new-password")
+            div(class="repPasswdRegisterText") Une deuxieme fois, histoire d'etre sur !
+                div: input(class="repPasswdRegisterInput", name="repPasswdRegisterInput", type="password", autocomplete="new-password")
+            div(class="submitForget")
+                input(class="button", type="submit", value="Enregistrer")
+            div(class="margin-botton-form")

@@ -1,0 +1,49 @@
+extends ../layout/layout
+
+block prepend jsHeader
+    <script src="../js/socket.io.js"></script>
+    <script src="../js/socket-client.js"></script>
+
+block append jsFooter
+    script(src="../js/ajaxChat.js")    
+
+block var
+    - page = "messenger";
+    - index = 0;
+    - idChat = 0;
+
+block content
+    div(class="container-account-user")
+        div(class="content-account-user" id="contentAccountUser")
+            div(class="welcome-text-account" id="welcomeTextAccount")
+                div(class="welcome-account" id="welcome-account")
+                div(class="text1-account"): p(id="login-chat") #{title}
+                    br
+                div(class="error" id="error"): p #{error}
+                div(class="online-hidden" id="online-hidden" style="display:none") #{myId}
+                div(class="container-users" id="container-users")
+                    if (users)
+                        - index = 0;
+                        for user in users
+                            div(
+                                class=(index) ? "photo-user offline" : "photo-user select offline" 
+                                id=user.id_user2
+                                style='background-image: url("' + user.photo_user2 + '")'
+                                title=user.login_user2
+                                onclick="changeUserChat("+user.id_user2+","+myId+")"
+                                )
+                            if idChat == 0
+                                - idChat = user.id_user2;
+                            - index++;
+            div(class=idChat id="chatUser" style="display:none")
+            div(class="container-profils-browse" id="containerProfilsBrowse")
+                div(id="container-chat"+idChat class="container-chat")
+                    - index = 0;
+                    if messages
+                        for mess in messages
+                            div(class="container-message" id="cont"+index)
+                                div(id='mess'+index class=(mess.id_user1 == myId) ? "talk-bubble tri-right round right-in me" : "talk-bubble tri-right round left-in")
+                                    div(class="talktext") #{mess.message}
+                            - index++;
+                div(id="nbMess" class=index)
+                input(id="input-chat" class="tags-input-account input-chat" type="text" placeholder="Tape ton texte et appuis sur la touche entrée..." autofocus=true)

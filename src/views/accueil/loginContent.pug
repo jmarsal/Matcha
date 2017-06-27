@@ -1,0 +1,24 @@
+extends ../layout/layout
+
+block append jsFooter
+    script(src="../js/ajaxLogin.js")
+
+block var
+    - page = "login";
+    - noheader = true;
+
+block content
+    div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+    div(class="containerRegister")
+        form(class="formRegister", id="formRegister", method="post")
+            img(class="logo-matcha login-logo double-logo" src="/images/logo/logo.png")
+            div(class="loginRegisterText log") Login
+                div: input(class="loginRegisterInput", name="loginRegisterInput", autofocus=true, autocomplete="username", minlength="3", maxlength="16")
+            div(class="passwdRegisterText") Mot de Passe
+                div: input(class="passwdRegisterInput", name="passwdRegisterInput", type="password", autocomplete="password")
+            div(class="submitLogin")
+                input(class="button", type="submit", value="se connecter")
+            div(class="margin-botton-form")
+            hr(class="hr-login")
+            div(class="forget-passwd")
+                div(class="button", id="forget-button") Mot de passe oublié ou compte non activé ?

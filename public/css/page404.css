@@ -1,0 +1,14 @@
+html {
+	background-color: black;
+}
+
+body {
+	/*width: 100%;*/
+	/*height: auto;*/
+	margin: 0;
+	padding: 0;
+	background: url("http://www.katzenfinch.com/b3ta/hal_animated.gif") no-repeat center;
+	/*background-position: center;*/
+	/*background-size: cover;*/
+	/*-webkit-background-size: cover;*/
+}

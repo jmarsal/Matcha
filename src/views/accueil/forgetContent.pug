@@ -1,0 +1,22 @@
+extends ../layout/layout
+
+block append jsFooter
+    script(src="../js/ajaxForgetPass.js")
+
+block var
+    - page = "login";
+    - noheader = true;
+
+block content
+    div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+    div(class="containerRegister")
+        form(class="formRegister", id="formRegister", method="post")
+            div(class="forget-text")
+                | Vous avez oublier votre mot de passe, ou votre compte n'est pas actif ?
+                | Veuillez renseigner votre adresse email...
+            img(class="logo-matcha login-logo forget-logo double-logo" src="/images/logo/logo.png")
+            div(class="emailRegisterText") Email
+                div: input(class="emailRegisterInput", name="emailRegisterInput", type="email", autocomplete="email")
+            div(class="submitForget")
+                input(class="button", type="submit", value="Réinitialiser le mot de passe ou activer le compte ?")
+            div(class="margin-botton-form")

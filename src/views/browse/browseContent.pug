@@ -1,0 +1,90 @@
+extends ../layout/layout
+
+block append jsFooter
+    script(src="../js/ajaxBrowse.js")
+    script(src="http://maps.google.com/maps/api/js?key=AIzaSyC-QpPQdgESP_iKFtbuIchUgp-NjZBqCFA&libraries=places"
+    async defer)
+    script(src="../js/ajaxAccount.js")
+    <script src="../js/socket.io.js"></script>
+    <script src="../js/socket-client.js"></script>
+
+block var
+    - page = "browse";
+
+block content
+    div(class="container-account-user")
+        div(class="content-account-user browse-content" id="contentAccountUser")
+            div(class="welcome-text-account" id="welcomeTextAccount")
+                div(class="welcome-account" id="welcome-account")
+                div(class=( locals.error ? "error red" : "error"), id="error") #{error}
+                div(class="text1-account browse-text1"): p #{title}
+                    br
+                div(class="container-filters")
+                    div(class="button button-trie" onclick="displayTrieOptions('browse')") Filtres Basiques
+                    div(class="container-trie-options" id="containerTrieOptions"
+                        style="display:none")
+                        div(class="trie-option activeTrie" id="optionTOP" onclick="displayOptions('browse', 'TOP')") Matcha Top !
+                        div(class="trie-option" id="optionASC" onclick="displayOptions('browse', 'ASC')") Distance croissante
+                        div(class="trie-option" id="optionDESC" onclick="displayOptions('browse', 'DESC')") Distance decroissante
+                        div(class="trie-option" id="optionTAGS" onclick="displayOptions('browse', 'TAGS')") Tags en Commun
+                        div(class="trie-option" id="optionPOP" onclick="displayOptions('browse', 'POP')") Popularité
+                        div(class="trie-option" id="optionAgeASC" onclick="displayOptions('browse', 'AgeASC')") Age croissant
+                        div(class="trie-option" id="optionAgeDESC" onclick="displayOptions('browse', 'AgeDESC')") Age decroissant
+                    div(class="fitres-interval button" onclick="displayFilterOptions('browse')") Filtres par Intervales
+                    div(class="containerFiltresOptions" id="containerFiltersOptions"
+                        style="display:none")
+                        p
+                            label(for="amount-slider-distance") Distances: 
+                            input(type="text" id="amount-slider-distance" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-distance")
+                        p
+                            label(for="amount-slider-tags") Tags: 
+                            input(type="text" id="amount-slider-tags" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-tags")
+                        p
+                            label(for="amount-slider-pop") Popularité: 
+                            input(type="text" id="amount-slider-pop" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-pop")
+                        p
+                            label(for="amount-slider-age") Age: 
+                            input(type="text" id="amount-slider-age" readonly
+                                style="border:0; color:#f6931f; font-weight:bold;")
+                        div(class="sliders" id="slider-age")
+                        div(class="error errorSlide", id="errorSlide")
+                    div(class="padding-browse")
+            div(class="container-profils-browse" id="containerProfilsBrowse")
+                if profils
+                    for profil in profils
+                        div(
+                            class="profil-browse"
+                            id=profil.id_user
+                        )
+                            div(class='infos-profil-browse' id="infos-profil-browse" + profil.id_user
+                                onclick="printDetailsProfils('"+ profil.id_user +"')")
+                                div(class='login-profil-browse infos') #{profil.login}    #{profil.age} ans
+                                for photo in photos
+                                    if photo.id_user == profil.id_user
+                                        div(class="info-pop-tag")
+                                            div(class="popularity-browse") Popularité:  #{profil.popularity}%
+                                            div(class="commun-tags-browse") #: #{profil.tagsCommun} commun
+                                        div(
+                                        class="photo-profil-browse"
+                                        style='background-image: url("' + photo.src_photo + '")'
+                                        )
+                                div(class="primary-infos")
+                                    div(class="localite-infos") #{profil.city} #{profil.country === "États-Unis" ? "aux" : "en"} #{profil.country}
+                                div(class='secondary-infos')
+                                    div(class='about-me infos') A propos de moi :
+                                    div(class="about")
+                                        div(class="bio-browse") "#{profil.bio}"
+                                    div(class='looking-for infos') Je recherche :
+                                    if (profil.orientation == 1)
+                                        div(class='looking') un homme
+                                    else if (profil.orientation == 2)
+                                        div(class='looking') une femme
+                                    else
+                                        div(class='looking') un homme ou une femme
+                            div(class="separator-profil")
