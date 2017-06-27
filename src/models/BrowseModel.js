@@ -255,7 +255,7 @@ class BrowseModel {
 					'FROM users ' +
 					'INNER JOIN user_interacts ' +
 					'ON user_interacts.id_user = users.id ' +
-					'WHERE users.id != ? && (locked != true) && active = 1 && ',
+					'WHERE users.id != ? && user_interacts.id_user_session = ? && (locked != true) && active = 1 && ',
 				orientation = infosUserSession[0].orientation,
 				sex = infosUserSession[0].sex;
 			if (orientation == 3 && sex == 1) {
@@ -296,7 +296,7 @@ class BrowseModel {
 			}
 
 			sql += ' ORDER BY distanceFromUser ' + orderBy;
-			connection.query(sql, [ idUserSession ], (err, res) => {
+			connection.query(sql, [ idUserSession, idUserSession ], (err, res) => {
 				let result1stQuery = res;
 				if (err) {
 					reject(err);
@@ -329,6 +329,7 @@ class BrowseModel {
 								if (err) {
 									reject(err);
 								}
+								debugger;
 								BrowseModel.engineFilterUsers(
 									resultAfterRemoveDuplicateRow,
 									option,
@@ -353,7 +354,6 @@ class BrowseModel {
 
 	static removeDuplicateRow(data) {
 		let i = 0;
-
 		while (i < data.length) {
 			if (data[i].id != data[i].id_user) {
 				data[i].id = data[i].id_user;
@@ -365,6 +365,7 @@ class BrowseModel {
 				if (j < data.length) {
 					if (data[j].id === data[i].id) {
 						data.splice(j, 1);
+						i = 0;
 					}
 				}
 			}
@@ -381,7 +382,7 @@ class BrowseModel {
 			if (!zoneSize) {
 				zoneSize = 50000;
 			}
-
+			debugger;
 			if (orderBy !== 'ASC' && orderBy !== 'DESC') {
 				orderBy = 'ASC';
 			}
@@ -516,7 +517,6 @@ class BrowseModel {
 					retTab.map((user) => {
 						user.id = user.id_user;
 					});
-					// retTab = BrowseModel.removeDuplicateRow(retTab);
 					resolve(retTab);
 				} else {
 					resolve(false);

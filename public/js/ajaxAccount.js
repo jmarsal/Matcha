@@ -57,9 +57,7 @@ function showResponse(responseText, statusText, xhr, $form) {
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : divError.addClass('green');
 		dataRes.isErr === 1 ? divError.text(dataRes.response) : divError.text(dataRes.response.mess);
-		if (dataRes.isErr === 1) {
-			$('#formAccount').css('margin-top', '54px');
-		}
+		$('#formAccount').css('margin-top', '54px');
 	}
 }
 

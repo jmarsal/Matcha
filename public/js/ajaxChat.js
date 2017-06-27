@@ -60,24 +60,26 @@ function changeUserChat(id_user, myId) {
 			class: 'container-chat',
 			appendTo: $('#containerProfilsBrowse')
 		});
-		dataRes.response.messages.map((mess, index) => {
-			$('<div/>', {
-				id: 'cont' + index,
-				class: 'container-message',
-				appendTo: $('#container-chat' + id_user)
+		if (dataRes.response && dataRes.response.messages) {
+			dataRes.response.messages.map((mess, index) => {
+				$('<div/>', {
+					id: 'cont' + index,
+					class: 'container-message',
+					appendTo: $('#container-chat' + id_user)
+				});
+				$('<div/>', {
+					id: 'mess' + index,
+					class: mess.id_user1 == myId
+						? 'talk-bubble tri-right round right-in me'
+						: 'talk-bubble tri-right round left-in',
+					appendTo: $('#' + 'cont' + index)
+				});
+				$('<div/>', {
+					class: 'talktext',
+					appendTo: $('#' + 'mess' + index)
+				}).text(mess.message);
 			});
-			$('<div/>', {
-				id: 'mess' + index,
-				class: mess.id_user1 == myId
-					? 'talk-bubble tri-right round right-in me'
-					: 'talk-bubble tri-right round left-in',
-				appendTo: $('#' + 'cont' + index)
-			});
-			$('<div/>', {
-				class: 'talktext',
-				appendTo: $('#' + 'mess' + index)
-			}).text(mess.message);
-		});
+		}
 		$('<input/>', {
 			id: 'input-chat',
 			class: 'tags-input-account input-chat',
@@ -86,6 +88,7 @@ function changeUserChat(id_user, myId) {
 			autofocus: 'true',
 			appendTo: $('#containerProfilsBrowse')
 		});
+
 		$('#container-chat' + id_user).scrollTop($('#container-chat' + id_user)[0].scrollHeight);
 		$('#input-chat').trigger('focus');
 
