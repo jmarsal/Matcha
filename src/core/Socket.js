@@ -66,6 +66,9 @@ class SocketIo {
 
 									this.clientsList[idUserProfil].emit('removelike', userToUnlike);
 								}
+								if (this.clientsList[idUserProfil]) {
+									this.clientsList[idUserProfil].emit('reload');
+								}
 							}
 						})
 						.catch((err) => {

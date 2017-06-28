@@ -195,6 +195,9 @@ const socketClient = {
 		this.webSocket.on('removelike', (users) => {
 			this.webSocket.emit('like', users.idUserDistant);
 		});
+		this.webSocket.on('reload', () => {
+			window.location.reload();
+		});
 	},
 	visit: (idUserProfil) => {
 		if (!webSocket) {
