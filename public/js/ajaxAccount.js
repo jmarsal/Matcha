@@ -490,7 +490,7 @@ function getLocalisationWithoutAgreeOfUser() {
 		};
 		$.post('/account/Get-location', infos, function(data, textStatus, jqXHR) {});
 		initialize(location.latitude, location.longitude);
-		$('#errorLocation').addClass('green').text('Ta localisation est trouvée et enregsitrée contre ton gré !');
+		$('#errorLocation').addClass('green').text('Ta localisation est trouvée et enregistrée contre ton gré !');
 	});
 }
 

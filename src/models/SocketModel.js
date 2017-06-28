@@ -93,201 +93,213 @@ class SocketModel {
 							} else {
 								// Si pas lock
 								if (!res.length) {
-									// insert dans l'historique le nouveau like
-									sql = 'INSERT INTO user_notifications(photo_user_visit, id_user, login_user_visit, id_user_visit, date_visit, action) VALUES(?, ?, ?, ?, NOW(), ?)';
-									connection.query(sql, [ photoProfilSrc, idUserToVisit, myLogin, myId, 'like' ], (err) => {
+									// Check si lui-meme ne l'a pas lock avant
+									connection.query(sql, [ myId, idUserToVisit ], (err, res) => {
 										if (err) {
 											reject(err);
 										} else {
-											// ajoute au compteur de notifications du champs user le nouveau like
-											sql = 'UPDATE users SET notifications = notifications + 1 WHERE id = ?';
+											// Si pas lock
+											if (!res.length) {
+												// insert dans l'historique le nouveau like
+												sql = 'INSERT INTO user_notifications(photo_user_visit, id_user, login_user_visit, id_user_visit, date_visit, action) VALUES(?, ?, ?, ?, NOW(), ?)';
+												connection.query(sql, [ photoProfilSrc, idUserToVisit, myLogin, myId, 'like' ], (err) => {
+													if (err) {
+														reject(err);
+													} else {
+														// ajoute au compteur de notifications du champs user le nouveau like
+														sql = 'UPDATE users SET notifications = notifications + 1 WHERE id = ?';
 
-											connection.query(sql, [ idUserToVisit ], (err) => {
-												if (err) {
-													reject(err);
-												} else {
-													// regarde dans le champs user_likes si l'utilisateur like deja ou non
-													sql = 'SELECT matcha_like FROM user_likes WHERE id_user_like = ? && id_user = ?';
-													connection.query(sql, [ myId, idUserToVisit ], (err, res) => {
-														if (err) {
-															reject(err);
-														}
-														if (res.length) {
-															// Si existe, donc like, le supprime pour unlike
-															sql = 'DELETE FROM user_likes WHERE id_user = ? && id_user_like = ?';
-															connection.query(sql, [ idUserToVisit, myId ], (err) => {
-																if (err) {
-																	reject(err);
-																} else {
-																	let res = false;
-																	// ajoute a l'historique que l'utilisateur ne like plus la personne visité
-																	sql = 'UPDATE user_notifications SET likeUnlike = ? WHERE id_user = ? && id_user_visit = ? ORDER BY id DESC LIMIT 1';
-																	connection.query(sql, [ res, idUserToVisit, myId ], (err) => {
-																		if (err) {
-																			reject(err);
-																		} else {
-																			// Supprime la connection des deux users si existante
-																			sql = "SELECT id FROM connect_users WHERE id_user1 = ? && id_user2 = ?"
-																			connection.query(sql, [myId, idUserToVisit], (err, res) => {
-																				if (res) {
-																					sql = "DELETE FROM connect_users WHERE id_user1 = ? && id_user2 = ?"
-																					connection.query(sql, [myId, idUserToVisit], (err) => {
-																						if (err) { reject(err); }
-																						connection.query(sql, [idUserToVisit, myId], (err) => {
-																							if (err) { reject(err); }
-																							// recupere le nb de notifications a afficher a chez la personne visité
-																							sql = 'SELECT notifications FROM users WHERE id = ?';
-																							connection.query(sql, idUserToVisit, (err, res) => {
-																								if (err) {
-																									reject(err);
-																								}
-																								resolve({
-																									nbNotifs: res[0].notifications,
-																									status: false,
-																									connected: false
+														connection.query(sql, [ idUserToVisit ], (err) => {
+															if (err) {
+																reject(err);
+															} else {
+																// regarde dans le champs user_likes si l'utilisateur like deja ou non
+																sql = 'SELECT matcha_like FROM user_likes WHERE id_user_like = ? && id_user = ?';
+																connection.query(sql, [ myId, idUserToVisit ], (err, res) => {
+																	if (err) {
+																		reject(err);
+																	}
+																	if (res.length) {
+																		// Si existe, donc like, le supprime pour unlike
+																		sql = 'DELETE FROM user_likes WHERE id_user = ? && id_user_like = ?';
+																		connection.query(sql, [ idUserToVisit, myId ], (err) => {
+																			if (err) {
+																				reject(err);
+																			} else {
+																				let res = false;
+																				// ajoute a l'historique que l'utilisateur ne like plus la personne visité
+																				sql = 'UPDATE user_notifications SET likeUnlike = ? WHERE id_user = ? && id_user_visit = ? ORDER BY id DESC LIMIT 1';
+																				connection.query(sql, [ res, idUserToVisit, myId ], (err) => {
+																					if (err) {
+																						reject(err);
+																					} else {
+																						// Supprime la connection des deux users si existante
+																						sql = "SELECT id FROM connect_users WHERE id_user1 = ? && id_user2 = ?"
+																						connection.query(sql, [myId, idUserToVisit], (err, res) => {
+																							if (res) {
+																								sql = "DELETE FROM connect_users WHERE id_user1 = ? && id_user2 = ?"
+																								connection.query(sql, [myId, idUserToVisit], (err) => {
+																									if (err) { reject(err); }
+																									connection.query(sql, [idUserToVisit, myId], (err) => {
+																										if (err) { reject(err); }
+																										// recupere le nb de notifications a afficher a chez la personne visité
+																										sql = 'SELECT notifications FROM users WHERE id = ?';
+																										connection.query(sql, idUserToVisit, (err, res) => {
+																											if (err) {
+																												reject(err);
+																											}
+																											resolve({
+																												nbNotifs: res[0].notifications,
+																												status: false,
+																												connected: false
+																											});
+																										});
+																									});
 																								});
-																							});
-																						});
-																					});
-																				} else {
-																					sql = 'SELECT notifications FROM users WHERE id = ?';
-																					connection.query(sql, idUserToVisit, (err, res) => {
-																						if (err) {
-																							reject(err);
-																						}
-																						resolve({
-																							nbNotifs: res[0].notifications,
-																							status: false,
-																							connected: false
-																						});
-																					});
-																				}
-																			});
-																		}
-																	});
-																}
-															});
-														} else {
-															// si unlike, l'ajoute pour garder le like dans l'historique
-															sql = 'INSERT INTO user_likes(id_user, id_user_like, matcha_like) VALUES(?, ?, ?)';
-															connection.query(sql, [ idUserToVisit, myId, true ], (err) => {
-																if (err) {
-																	reject(err);
-																} else {
-																	// check si l'utilisateur visite le like deja
-																	sql = "SELECT id FROM user_likes WHERE id_user = ? && id_user_like = ?"
-																	connection.query(sql, [myId, idUserToVisit], (err, res) => {
-																		if (err) { reject(err); }
-																		if (res.length) {
-																			// Si oui inscrit les deux users comme connecté dans la table connect_user
-																			sql = "SELECT login FROM users WHERE id = ?";
-																			connection.query(sql, idUserToVisit, (err, res) => {
-																				if (err) { reject(err); }
-																				let loginUserVisit = res[0].login;
-
-																				sql = "SELECT src_photo FROM users_photos_profils WHERE id_user = ? && photo_profil = 1";
-																				connection.query(sql, [myId], (err, res) => {
-																					if (err) { reject(err); }
-																					let myPhoto = null;
-																					if (res.length) {
-																						myPhoto = res[0].src_photo;
-																					}
-																					connection.query(sql, [idUserToVisit], (err, res) => {
-																						if (err) { reject(err); }
-																						let photoUserVisit = null;
-																						if (res.length) {
-																							photoUserVisit = res[0].src_photo;
-																						}
-																						sql = "INSERT INTO connect_users(id_user1, login_user1, photo_user1, id_user2, login_user2, photo_user2) VALUES(?, ?, ?, ?, ?, ?)";
-
-																						connection.query(sql, [myId, myLogin, myPhoto, idUserToVisit, loginUserVisit, photoUserVisit], (err) => {
-																							if (err) { reject(err); }
-																							connection.query(sql, [idUserToVisit, loginUserVisit, photoUserVisit, myId, myLogin, myPhoto], (err) => {
-																								if (err) { reject(err); }
+																							} else {
 																								sql = 'SELECT notifications FROM users WHERE id = ?';
-
 																								connection.query(sql, idUserToVisit, (err, res) => {
 																									if (err) {
 																										reject(err);
 																									}
 																									resolve({
 																										nbNotifs: res[0].notifications,
-																										status: true,
-																										connected: true
+																										status: false,
+																										connected: false
 																									});
-																								});	
-																							});																					
+																								});
+																							}
 																						});
-																					});
+																					}
 																				});
-																			});
-																		} else {
-																			// recupere le nb de notifications a afficher chez la personne visité
-																			sql = 'SELECT notifications FROM users WHERE id = ?';		
-																			connection.query(sql, idUserToVisit, (err, res) => {
-																				if (err) {
-																					reject(err);
-																				}
-																				resolve({
-																					nbNotifs: res[0].notifications,
-																					status: true
+																			}
+																		});
+																	} else {
+																		// si unlike, l'ajoute pour garder le like dans l'historique
+																		sql = 'INSERT INTO user_likes(id_user, id_user_like, matcha_like) VALUES(?, ?, ?)';
+																		connection.query(sql, [ idUserToVisit, myId, true ], (err) => {
+																			if (err) {
+																				reject(err);
+																			} else {
+																				// check si l'utilisateur visite le like deja
+																				sql = "SELECT id FROM user_likes WHERE id_user = ? && id_user_like = ?"
+																				connection.query(sql, [myId, idUserToVisit], (err, res) => {
+																					if (err) { reject(err); }
+																					if (res.length) {
+																						// Si oui inscrit les deux users comme connecté dans la table connect_user
+																						sql = "SELECT login FROM users WHERE id = ?";
+																						connection.query(sql, idUserToVisit, (err, res) => {
+																							if (err) { reject(err); }
+																							let loginUserVisit = res[0].login;
+
+																							sql = "SELECT src_photo FROM users_photos_profils WHERE id_user = ? && photo_profil = 1";
+																							connection.query(sql, [myId], (err, res) => {
+																								if (err) { reject(err); }
+																								let myPhoto = null;
+																								if (res.length) {
+																									myPhoto = res[0].src_photo;
+																								}
+																								connection.query(sql, [idUserToVisit], (err, res) => {
+																									if (err) { reject(err); }
+																									let photoUserVisit = null;
+																									if (res.length) {
+																										photoUserVisit = res[0].src_photo;
+																									}
+																									sql = "INSERT INTO connect_users(id_user1, login_user1, photo_user1, id_user2, login_user2, photo_user2) VALUES(?, ?, ?, ?, ?, ?)";
+
+																									connection.query(sql, [myId, myLogin, myPhoto, idUserToVisit, loginUserVisit, photoUserVisit], (err) => {
+																										if (err) { reject(err); }
+																										connection.query(sql, [idUserToVisit, loginUserVisit, photoUserVisit, myId, myLogin, myPhoto], (err) => {
+																											if (err) { reject(err); }
+																											sql = 'SELECT notifications FROM users WHERE id = ?';
+
+																											connection.query(sql, idUserToVisit, (err, res) => {
+																												if (err) {
+																													reject(err);
+																												}
+																												resolve({
+																													nbNotifs: res[0].notifications,
+																													status: true,
+																													connected: true
+																												});
+																											});	
+																										});																					
+																									});
+																								});
+																							});
+																						});
+																					} else {
+																						// recupere le nb de notifications a afficher chez la personne visité
+																						sql = 'SELECT notifications FROM users WHERE id = ?';		
+																						connection.query(sql, idUserToVisit, (err, res) => {
+																							if (err) {
+																								reject(err);
+																							}
+																							resolve({
+																								nbNotifs: res[0].notifications,
+																								status: true
+																							});
+																						});
+																					}
 																				});
-																			});
-																		}
-																	});
-																}
-															});
-														}
-													});
-												}
-											});
-										}
-									}); 
-								// action pour l'user mais qui n'interagis pas avec l'utilsateur visité car compte lock
-								} else {
-									sql = 'SELECT matcha_like FROM user_likes WHERE id_user = ? && id_user_like = ?';
-
-									connection.query(sql, [ idUserToVisit, myId ], (err, res) => {
-										if (err) {
-											reject(err);
-										} else {
-											if (res.length) {
-												let match = res[0].matcha_like;
-												if (match) {
-													sql =
-														'UPDATE user_likes SET matcha_like = ? WHERE id_user = ? && id_user_like = ?';
-
-													connection.query(sql, [ false, idUserToVisit, myId ], (err) => {
-														if (err) {
-															reject(err);
-														}
-														resolve(false);
-													});
-												} else {
-													sql =
-														'UPDATE user_likes SET matcha_like = ? WHERE id_user = ? && id_user_like = ?';
-
-													connection.query(sql, [ true, idUserToVisit, myId ], (err) => {
-														if (err) {
-															reject(err);
-														}
-														resolve(true);
-													});
-												}
+																			}
+																		});
+																	}
+																});
+															}
+														});
+													}
+												}); 
+											// action pour l'user mais qui n'interagis pas avec l'utilsateur visité car compte lock
 											} else {
-												sql =
-													'INSERT INTO user_likes(id_user, id_user_like, matcha_like) VALUES(?, ?, ?)';
+												sql = 'SELECT matcha_like FROM user_likes WHERE id_user = ? && id_user_like = ?';
 
-												connection.query(sql, [ idUserToVisit, myId, true ], (err) => {
+												connection.query(sql, [ idUserToVisit, myId ], (err, res) => {
 													if (err) {
 														reject(err);
 													} else {
-														resolve(true);
+														if (res.length) {
+															let match = res[0].matcha_like;
+															if (match) {
+																sql =
+																	'UPDATE user_likes SET matcha_like = ? WHERE id_user = ? && id_user_like = ?';
+
+																connection.query(sql, [ false, idUserToVisit, myId ], (err) => {
+																	if (err) {
+																		reject(err);
+																	}
+																	resolve(false);
+																});
+															} else {
+																sql =
+																	'UPDATE user_likes SET matcha_like = ? WHERE id_user = ? && id_user_like = ?';
+
+																connection.query(sql, [ true, idUserToVisit, myId ], (err) => {
+																	if (err) {
+																		reject(err);
+																	}
+																	resolve(true);
+																});
+															}
+														} else {
+															sql =
+																'INSERT INTO user_likes(id_user, id_user_like, matcha_like) VALUES(?, ?, ?)';
+
+															connection.query(sql, [ idUserToVisit, myId, true ], (err) => {
+																if (err) {
+																	reject(err);
+																} else {
+																	resolve(true);
+																}
+															});
+														}
 													}
 												});
 											}
 										}
 									});
+								} else {
+									resolve(false);
 								}
 							}
 						});
@@ -410,6 +422,27 @@ class SocketModel {
 										});
 									});
 								}
+							});
+						}
+					});
+				}
+			});
+		});
+	}
+
+	static removeUsersConnected(myId, idUserToVisit) {
+		return new Promise ((resolve, reject) => {
+			const sql = "SELECT id FROM connect_users WHERE id_user1 = ? && id_user2 = ?"
+			
+			connection.query(sql, [myId, idUserToVisit], (err, res) => {
+				if (res) {
+					sql = "DELETE FROM connect_users WHERE id_user1 = ? && id_user2 = ?"
+					connection.query(sql, [myId, idUserToVisit], (err) => {
+						if (err) { reject(err); }
+						else {
+							connection.query(sql, [idUserToVisit, myId], (err) => {
+								if (err) { reject(err); }
+								resolve();
 							});
 						}
 					});

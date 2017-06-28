@@ -19,11 +19,6 @@ function displayFilterOptions(page) {
 	let buttonFilter = $('#containerFiltersOptions');
 
 	if (buttonFilter[0].style.display === 'none') {
-		$('#containerTrieOptions').css('display', 'none');
-		$('#containerTagsOption').css('display', 'none');
-		buttonFilter.css('display', 'block');
-		$('.fitres-tags').css('margin', '30 auto 50px');
-
 		let urlPost = page === 'browse' ? '/browse/Change-Filters-Intervals' : '/search/Change-Filters-Intervals';
 
 		$.post(urlPost, {}, function(data, textStatus, jqXHR) {
@@ -47,48 +42,57 @@ function displayFilterOptions(page) {
 			divError.removeClass('red green');
 			dataRes.isErr === 1 ? divError.addClass('red') : '';
 			dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
+			if (dataRes.response.minMax.maxAge) {
+				$('#containerTrieOptions').css('display', 'none');
+				$('#containerTagsOption').css('display', 'none');
+				buttonFilter.css('display', 'block');
+				$('.fitres-tags').css('margin', '30 auto 50px');
+				setIntervalsMinMax(
+					'slider-distance',
+					dataRes.response.minMax.minDistanceKm,
+					dataRes.response.minMax.maxDistanceKm,
+					'Km'
+				);
+				setIntervalsMinMax('slider-tags', dataRes.response.minMax.minTags, dataRes.response.minMax.maxTags, '');
+				setIntervalsMinMax('slider-pop', dataRes.response.minMax.minPop, dataRes.response.minMax.maxPop, '%');
+				setIntervalsMinMax('slider-age', dataRes.response.minMax.minAge, dataRes.response.minMax.maxAge, 'ans');
+				$('#slider-distance').slider({
+					change: function(event, ui) {
+						(dataToSend.distance = 'distanceFromUserKm'), (dataToSend.minDistance =
+							ui.values[0]), (dataToSend.maxDistance = ui.values[1]);
+						modifyUsersByIntervals(dataToSend, urlPost);
+					}
+				});
 
-			setIntervalsMinMax(
-				'slider-distance',
-				dataRes.response.minMax.minDistanceKm,
-				dataRes.response.minMax.maxDistanceKm,
-				'Km'
-			);
-			setIntervalsMinMax('slider-tags', dataRes.response.minMax.minTags, dataRes.response.minMax.maxTags, '');
-			setIntervalsMinMax('slider-pop', dataRes.response.minMax.minPop, dataRes.response.minMax.maxPop, '%');
-			setIntervalsMinMax('slider-age', dataRes.response.minMax.minAge, dataRes.response.minMax.maxAge, 'ans');
-			$('#slider-distance').slider({
-				change: function(event, ui) {
-					(dataToSend.distance = 'distanceFromUserKm'), (dataToSend.minDistance =
-						ui.values[0]), (dataToSend.maxDistance = ui.values[1]);
-					modifyUsersByIntervals(dataToSend, urlPost);
-				}
-			});
+				$('#slider-tags').slider({
+					change: function(event, ui) {
+						(dataToSend.tags = 'tagsCommun'), (dataToSend.minTags = ui.values[0]), (dataToSend.maxTags =
+							ui.values[1]);
 
-			$('#slider-tags').slider({
-				change: function(event, ui) {
-					(dataToSend.tags = 'tagsCommun'), (dataToSend.minTags = ui.values[0]), (dataToSend.maxTags =
-						ui.values[1]);
+						modifyUsersByIntervals(dataToSend, urlPost);
+					}
+				});
 
-					modifyUsersByIntervals(dataToSend, urlPost);
-				}
-			});
+				$('#slider-pop').slider({
+					change: function(event, ui) {
+						(dataToSend.pop = 'popularity'), (dataToSend.minPop = ui.values[0]), (dataToSend.maxPop =
+							ui.values[1]);
 
-			$('#slider-pop').slider({
-				change: function(event, ui) {
-					(dataToSend.pop = 'popularity'), (dataToSend.minPop = ui.values[0]), (dataToSend.maxPop =
-						ui.values[1]);
+						modifyUsersByIntervals(dataToSend, urlPost);
+					}
+				});
 
-					modifyUsersByIntervals(dataToSend, urlPost);
-				}
-			});
-
-			$('#slider-age').slider({
-				change: function(event, ui) {
-					(dataToSend.age = 'age'), (dataToSend.minAge = ui.values[0]), (dataToSend.maxAge = ui.values[1]);
-					modifyUsersByIntervals(dataToSend, urlPost);
-				}
-			});
+				$('#slider-age').slider({
+					change: function(event, ui) {
+						(dataToSend.age = 'age'), (dataToSend.minAge = ui.values[0]), (dataToSend.maxAge =
+							ui.values[1]);
+						modifyUsersByIntervals(dataToSend, urlPost);
+					}
+				});
+			} else {
+				buttonFilter.css('display', 'none');
+				$('.fitres-tags').css('margin', '0 auto 50px');
+			}
 		});
 	} else {
 		buttonFilter.css('display', 'none');
@@ -166,7 +170,7 @@ function displayOptions(page, valeur) {
 		divError.removeClass('red green');
 		dataRes.isErr === 1 ? divError.addClass('red') : '';
 		dataRes.isErr === 1 ? divError.text(dataRes.response) : '';
-
+		// debugger;
 		rebaseBrowseUsers(dataRes.response);
 	});
 }
@@ -183,6 +187,7 @@ function rebaseBrowseUsers(data) {
 		id: 'separatorProfil',
 		appendTo: $('#containerProfilsBrowse')
 	});
+	// if (data && data.length && data.profilsOrder) {
 	data.profilsOrder.map((profil) => {
 		$('<div/>', {
 			id: profil.id,
@@ -292,6 +297,7 @@ function rebaseBrowseUsers(data) {
 			appendTo: $('#' + profil.id)
 		});
 	});
+	// }
 }
 
 function printDetailsProfils(idUser) {
@@ -396,7 +402,6 @@ document.addEventListener('load', () => {
 	let id_user_visit = $('#online-hidden').text();
 
 	if (id_user_visit) {
-		alert('ici');
 		socketClient.online(id_user_visit);
 	}
 });
@@ -423,6 +428,8 @@ function reportLockUser(action) {
 				var dataRes = JSON.parse(jqXHR.responseText),
 					divError = $('#error');
 				divError.removeClass('red green');
+				socketClient.like(id_user_visit);
+				window.location.replace('../search');
 				dataRes.isErr == 1 ? divError.addClass('red') : divError.addClass('green');
 				dataRes.isErr == 1 ? divError.text(dataRes.response.mess) : '';
 				if (dataRes.isErr == 0) {

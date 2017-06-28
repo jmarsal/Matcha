@@ -2,7 +2,8 @@
  * Created by jbmar on 31/05/2017.
  */
 
-const geolib = require('geolib');
+const geolib = require('geolib'),
+	SocketModel = require('./SocketModel');
 
 class BrowseModel {
 	static getInfosAllProfils(idUserSession) {
@@ -329,7 +330,6 @@ class BrowseModel {
 								if (err) {
 									reject(err);
 								}
-								debugger;
 								BrowseModel.engineFilterUsers(
 									resultAfterRemoveDuplicateRow,
 									option,
@@ -382,7 +382,6 @@ class BrowseModel {
 			if (!zoneSize) {
 				zoneSize = 50000;
 			}
-			debugger;
 			if (orderBy !== 'ASC' && orderBy !== 'DESC') {
 				orderBy = 'ASC';
 			}
@@ -831,7 +830,25 @@ class BrowseModel {
 						if (err) {
 							reject(err);
 						} else {
-							resolve();
+							sql = 'SELECT id FROM connect_users WHERE id_user1 = ? && id_user2 = ?';
+
+							connection.query(sql, [ idUser, idUserTolock ], (err, res) => {
+								if (res) {
+									sql = 'DELETE FROM connect_users WHERE id_user1 = ? && id_user2 = ?';
+									connection.query(sql, [ idUser, idUserTolock ], (err) => {
+										if (err) {
+											reject(err);
+										} else {
+											connection.query(sql, [ idUserTolock, idUser ], (err) => {
+												if (err) {
+													reject(err);
+												}
+												resolve();
+											});
+										}
+									});
+								}
+							});
 						}
 					});
 				}

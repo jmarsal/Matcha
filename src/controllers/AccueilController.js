@@ -440,7 +440,7 @@ class AccueilController {
 
 		if (this.checkJsonReq(req, res) == true) {
 			// check email
-			if (Helper.isEmail(req.body.emailRegisterInput)) {
+			if (Helpers.isEmail(req.body.emailRegisterInput)) {
 				this.email = req.body.emailRegisterInput;
 				return true;
 			} else {

@@ -19,7 +19,10 @@ class SocketIo {
 
 			if (user) {
 				this.clientsList[user.id] = socket;
-				socket.broadcast.emit('onlineMe', { status: 'connected', id: user.id });
+				socket.broadcast.emit('onlineMe', {
+					status: 'connected',
+					id: user.id
+				});
 
 				socket.on('visit', (idUserProfil) => {
 					SocketModel.addNewVisitToDb(user.id, user.login, idUserProfil)
@@ -39,7 +42,6 @@ class SocketIo {
 					// Voir ici pour stop le chat si deux users connecte et un des deux dislike.
 					SocketModel.addNewLikeToDb(user.id, user.login, idUserProfil)
 						.then((response) => {
-							debugger;
 							if (response.error) {
 								this.clientsList[user.id].emit('likeSessionError', response.error);
 							} else if (!response.error) {
@@ -47,9 +49,22 @@ class SocketIo {
 								if (response.nbNotifs && this.clientsList[idUserProfil]) {
 									this.clientsList[idUserProfil].emit('like', response);
 								}
-								if (!response.connected && this.clientsList[idUserProfil]) {
+								if (
+									!response.connected &&
+									this.clientsList[idUserProfil] &&
+									response !== false &&
+									response !== true
+								) {
 									response.idToRemove = user.id;
 									this.clientsList[idUserProfil].emit('removeUserFromChat', response);
+								}
+								if (this.clientsList[idUserProfil] && response === false) {
+									const userToUnlike = {
+										myId: idUserProfil,
+										idUserDistant: user.id
+									};
+
+									this.clientsList[idUserProfil].emit('removelike', userToUnlike);
 								}
 							}
 						})
@@ -83,11 +98,16 @@ class SocketIo {
 
 				socket.on('online', (idUserProfil) => {
 					if (this.clientsList[idUserProfil]) {
-						this.clientsList[user.id].emit('online', { class: 'green' });
+						this.clientsList[user.id].emit('online', {
+							class: 'green'
+						});
 					} else {
 						SocketModel.getDateOfLastConnectedUser(idUserProfil)
 							.then((date) => {
-								this.clientsList[user.id].emit('online', { class: 'red', disconnect: date });
+								this.clientsList[user.id].emit('online', {
+									class: 'red',
+									disconnect: date
+								});
 							})
 							.catch((err) => {
 								console.error(err);
@@ -96,12 +116,17 @@ class SocketIo {
 				});
 
 				socket.on('onlineMe', () => {
-					socket.broadcast.emit('onlineMe', { status: 'connected' });
+					socket.broadcast.emit('onlineMe', {
+						status: 'connected'
+					});
 				});
 
 				socket.on('getOnlineUser', (idUserProfil) => {
 					if (this.clientsList[idUserProfil]) {
-						this.clientsList[user.id].emit('getOnlineUser', { status: 'connect', idUser: idUserProfil });
+						this.clientsList[user.id].emit('getOnlineUser', {
+							status: 'connect',
+							idUser: idUserProfil
+						});
 					}
 				});
 
@@ -111,8 +136,14 @@ class SocketIo {
 							return SocketModel.getDateOfLastConnectedUser(user.id);
 						})
 						.then((date) => {
-							socket.broadcast.emit('onlineMe', { status: 'disconnect', disconnect: date });
-							socket.broadcast.emit('getOnlineUser', { status: 'disconnect', idUser: user.id });
+							socket.broadcast.emit('onlineMe', {
+								status: 'disconnect',
+								disconnect: date
+							});
+							socket.broadcast.emit('getOnlineUser', {
+								status: 'disconnect',
+								idUser: user.id
+							});
 							delete this.clientsList[user.id];
 						})
 						.catch((err) => {

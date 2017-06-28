@@ -23,7 +23,6 @@ class ChatController {
 	messengerRoute() {
 		this.router.get('/messenger', (req, res) => {
 			if (req.session.start && req.session.user.photoFav) {
-				console.log(req.session.user.photoFav);
 				let data = {};
 
 				ChatModel.getUsersForChat(req.session.user.id)
@@ -36,7 +35,7 @@ class ChatController {
 						return ChatModel.getHistoryMessage(req.session.user.id);
 					})
 					.then((allHistory) => {
-						if (allHistory.length) {
+						if (allHistory.length && data.users !== false) {
 							return ChatModel.getHistoryForUserDefault(allHistory, data.users[0].id_user2);
 						} else {
 							return false;

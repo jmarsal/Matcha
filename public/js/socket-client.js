@@ -37,48 +37,51 @@ const socketClient = {
 		});
 
 		this.webSocket.on('messageOtherUser', (data) => {
-			let index = parseInt($('#nbMess')[0].className),
-				classTmp = $('#nbMess')[0].className,
-				idUserSelect = data.myId,
-				testContainer = $('container-chat' + idUserSelect),
-				users = $('#container-users');
+			if ($('#nbMess').length) {
+				let index = parseInt($('#nbMess')[0].className),
+					classTmp = $('#nbMess')[0].className,
+					idUserSelect = data.myId,
+					testContainer = $('container-chat' + idUserSelect),
+					users = $('#container-users');
 
-			if (!index) {
-				index = 0;
-			}
-
-			$('<div/>', {
-				class: 'container-message',
-				id: 'cont' + index,
-				appendTo: $('#container-chat' + idUserSelect)
-			});
-			$('<div/>', {
-				class: 'talk-bubble tri-right round left-in',
-				id: 'mess' + index,
-				appendTo: $('#cont' + index)
-			});
-			$('<div/>', {
-				class: 'talktext',
-				appendTo: $('#mess' + index)
-			}).text(data.message);
-			if ($('#container-chat' + idUserSelect)[0]) {
-				$('#container-chat' + idUserSelect).animate(
-					{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
-					1000
-				);
-			}
-			let check = false;
-			users.children('div').each(function() {
-				if (this.classList.contains('select')) {
-					if ($('#' + this.id)[0].id == idUserSelect) {
-						check = true;
-					}
+				if (!index) {
+					index = 0;
 				}
-			});
-			if (check == false) {
-				$('#' + idUserSelect).addClass('notifs');
+
+				$('<div/>', {
+					class: 'container-message',
+					id: 'cont' + index,
+					appendTo: $('#container-chat' + idUserSelect)
+				});
+				$('<div/>', {
+					class: 'talk-bubble tri-right round left-in',
+					id: 'mess' + index,
+					appendTo: $('#cont' + index)
+				});
+				$('<div/>', {
+					class: 'talktext',
+					appendTo: $('#mess' + index)
+				}).text(data.message);
+				if ($('#container-chat' + idUserSelect)[0]) {
+					$('#container-chat' + idUserSelect).animate(
+						{ scrollTop: $('#container-chat' + idUserSelect)[0].scrollHeight },
+						1000
+					);
+				}
+				let check = false;
+				users.children('div').each(function() {
+					if (this.classList.contains('select')) {
+						if ($('#' + this.id)[0].id == idUserSelect) {
+							check = true;
+						}
+					}
+				});
+				if (check == false) {
+					$('#' + idUserSelect).addClass('notifs');
+				}
+				$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
 			}
-			$('#nbMess').removeClass(classTmp).addClass((index + 1).toString());
+
 			$('#input-chat').val('');
 		});
 
@@ -94,7 +97,6 @@ const socketClient = {
 
 		// m'affiche que l'user vu est connecter ou pas sur browse/profil
 		this.webSocket.on('online', (classColor) => {
-			// debugger;
 			if (classColor.class === 'green') {
 				$('#lastConnect').remove();
 				$('#online').removeClass('red');
@@ -189,6 +191,9 @@ const socketClient = {
 					window.location.replace('../messenger');
 				}
 			}
+		});
+		this.webSocket.on('removelike', (users) => {
+			this.webSocket.emit('like', users.idUserDistant);
 		});
 	},
 	visit: (idUserProfil) => {
