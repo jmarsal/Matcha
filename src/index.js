@@ -3,7 +3,7 @@
  */
 
 global.nameDb = 'matchaDb';
-global.setPort = 3307;
+global.setPort = 3306;
 
 const Database = require('./core/Database'),
 	Server = require('./core/Server'),

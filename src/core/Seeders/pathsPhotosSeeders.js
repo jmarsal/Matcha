@@ -28,7 +28,7 @@ let paths = [
 	],
 	[
 		// Frederic Lopez
-		'http://img.gal.pmdstatic.net/fit/http.3A.2F.2Fwww.2Egala.2Efr.2Fvar.2Fgal.2Fstorage.2Fimages.2Fstars_et_gotha.2Ffrederic_lopez.2F1944910-363-fre-FR.2Ffrederic_lopez.2Ejpg/460x259/quality/80/frederic-lopez.jpg',
+		'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Fr%C3%A9d%C3%A9ric_Lopez_-_Monte-Carlo_Television_Festival.jpg/220px-Fr%C3%A9d%C3%A9ric_Lopez_-_Monte-Carlo_Television_Festival.jpg',
 		'http://www.revue-reflets.org/wp-content/uploads/2014/01/F-lopez-site.jpg',
 		'http://static.lexpress.fr/medias_11233/w_1365,h_764,c_crop,x_0,y_678/w_640,h_360,c_fill,g_north/v1479993072/rendez-vous-en-terre-inconnue-avec-melanie-doutey-et-frederic-lopez-1_5751301.jpeg',
 		'http://images.programme.tv/2012/11/Fr%C3%A9d%C3%A9ric-Lopez.jpg',
