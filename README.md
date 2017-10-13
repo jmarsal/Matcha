@@ -3,7 +3,7 @@
 ## Contributeurs
 [@jmarsal](https://github.com/jmarsal)
 
-## Note Final
+## Note Finale
 `107/100`
 # Projet Matcha 42
 
